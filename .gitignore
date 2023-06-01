@@ -1,5 +1,6 @@
 .idea/
 */.DS_Store
+*/credentials.properties
 
 */H*/ELP.md
 */target/

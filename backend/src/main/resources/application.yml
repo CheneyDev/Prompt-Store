@@ -1,0 +1,6 @@
+
+spring:
+  datasource:
+    url: ${mysql-url}
+    username: ${mysql-username}
+    password: ${mysql-password}}
