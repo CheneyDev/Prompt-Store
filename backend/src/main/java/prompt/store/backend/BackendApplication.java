@@ -1,4 +1,4 @@
-package dev.qqdd.prompt.store.backend;
+package prompt.store.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

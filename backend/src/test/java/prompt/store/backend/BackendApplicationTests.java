@@ -1,4 +1,4 @@
-package dev.qqdd.prompt.store.backend;
+package prompt.store.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
