@@ -10,7 +10,7 @@ import prompt.store.backend.mapper.AccountMapper;
 import prompt.store.backend.service.AuthorizeService;
 
 @Service
-public class AnthorizedServiceImpl implements AuthorizeService {
+public class AuthorizedServiceImpl implements AuthorizeService {
 
     @Resource
     AccountMapper accountMapper;
