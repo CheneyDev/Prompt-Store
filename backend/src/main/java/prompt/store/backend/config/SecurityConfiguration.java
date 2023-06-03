@@ -14,10 +14,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.AuthorizeService;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -33,18 +37,31 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginProcessingUrl("/api/auth/login")
-                .successHandler(this::onAuthenticationSuccess)
-                .failureHandler(this::onAuthenticationFailure)
-                .and()
+//                .formLogin()
+//                .loginProcessingUrl("/api/auth/login")
+//                .successHandler(this::onAuthenticationSuccess)
+//                .failureHandler(this::onAuthenticationFailure)
+//                .and()
                 .csrf()
                 .disable()
+                .cors()
+                .configurationSource(this::corsConfigurationSource)
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(this::onAuthenticationFailure)
                 .and()
                 .build();
     }
+
+    private CorsConfiguration corsConfigurationSource(HttpServletRequest httpServletRequest) {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        return configuration;
+    }
+
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
@@ -55,10 +72,10 @@ public class SecurityConfiguration {
                 .build();
     }
 
-@Bean
-public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         response.setCharacterEncoding("UTF-8");
