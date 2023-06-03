@@ -12,10 +12,12 @@
 
 ## 设计资源
 
-| 名称                                                         | 介绍       |
-| ------------------------------------------------------------ | ---------- |
-| [Open peeps](https://www.openpeeps.com/)                     | 默认头像库 |
-| [shadcn/ui - Login Page](https://ui.shadcn.com/examples/authentication)<br />[shadcn/ui - Music](https://ui.shadcn.com/examples/music)<br />[shadcn/iu - Cards](https://ui.shadcn.com/examples/cards) | 页面模板   |
+| 名称                                                         | 介绍           |
+| ------------------------------------------------------------ | -------------- |
+| [Open peeps](https://www.openpeeps.com/)                     | 默认头像库     |
+| [shadcn/ui - Login Page](https://ui.shadcn.com/examples/authentication)<br />[shadcn/ui - Music](https://ui.shadcn.com/examples/music)<br />[shadcn/iu - Cards](https://ui.shadcn.com/examples/cards) | 页面模板       |
+| [Art History Muse](https://www.planktonacademy.com/courses/history-muse-art-history-course-online) | 油画/美术馆    |
+| [rijksmuseum](https://www.rijksmuseum.nl/nl)                 | 荷兰国立博物馆 |
 
 
 
