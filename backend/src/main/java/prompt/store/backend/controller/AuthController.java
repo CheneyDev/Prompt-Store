@@ -32,7 +32,6 @@ public class AuthController {
                     )
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
             AuthorizeService authorizeService = (AuthorizeService) authentication.getPrincipal();
             return RestBean.success();
         } catch (Exception e) {
