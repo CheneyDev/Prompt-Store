@@ -14,10 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.AuthorizeService;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -28,17 +31,36 @@ public class SecurityConfiguration {
     @Resource
     AuthorizeService authorizeService;
 
+    @Resource
+    DataSource dataSource;
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/api/auth/login")
-                .successHandler(this::onAuthenticationSuccess)
+                .successHandler(
+                        (HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+                            response.setContentType("application/json;charset=utf-8");
+                            response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+                            response.setHeader("Access-Control-Allow-Credentials", "true");
+                            String auth=authentication.toString();
+                            System.out.println(response.getHeader("Set-Cookie"));
+                            response.getWriter().write(JSONObject.toJSONString(RestBean.success(auth)));
+                        }
+                )
                 .failureHandler(this::onAuthenticationFailure)
+                .and()
+                .rememberMe()
+                .rememberMeParameter("remember")
+                .tokenRepository(repository())
+                .tokenValiditySeconds(3600 * 24 * 7)
+                .userDetailsService(authorizeService)
                 .and()
                 .csrf()
                 .disable()
@@ -49,6 +71,15 @@ public class SecurityConfiguration {
                 .authenticationEntryPoint(this::onAuthenticationFailure)
                 .and()
                 .build();
+    }
+
+    @Bean
+    public PersistentTokenRepository repository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        jdbcTokenRepository.setCreateTableOnStartup(false);
+
+        return jdbcTokenRepository;
     }
 
     private CorsConfiguration corsConfigurationSource(HttpServletRequest httpServletRequest) {
@@ -76,6 +107,7 @@ public class SecurityConfiguration {
     }
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+
         response.setCharacterEncoding("UTF-8");
         if (request.getRequestURI().endsWith("/login"))
             response.getWriter().write(JSONObject.toJSONString(RestBean.success("登录成功！")));
