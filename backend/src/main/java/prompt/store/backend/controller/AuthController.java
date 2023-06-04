@@ -1,6 +1,8 @@
 package prompt.store.backend.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,29 +18,4 @@ import prompt.store.backend.service.AuthorizeService;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-
-    public AuthController(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
-    @PostMapping("/login")
-    public RestBean<Object> login(@RequestBody String body) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            JSONObject.parseObject(body).getString("username"),
-                            JSONObject.parseObject(body).getString("password")
-                    )
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            AuthorizeService authorizeService = (AuthorizeService) authentication.getPrincipal();
-            return RestBean.success();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return RestBean.failure(401, "登录失败！");
-        }
-
-
-    }
 }

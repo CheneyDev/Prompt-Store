@@ -15,8 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.AuthorizeService;
 
@@ -36,6 +34,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/api/auth/login")
+                .successHandler(this::onAuthenticationSuccess)
+                .failureHandler(this::onAuthenticationFailure)
                 .and()
                 .csrf()
                 .disable()

@@ -17,6 +17,7 @@ public class AuthorizedServiceImpl implements AuthorizeService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("username: " + username);
         if (username == null || username.isEmpty()) {
             throw new UsernameNotFoundException("用户名不能为空");
         }
