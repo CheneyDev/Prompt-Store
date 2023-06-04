@@ -30,17 +30,15 @@ public class SecurityConfiguration {
 
     @Resource
     AuthorizeService authorizeService;
-
     @Resource
     DataSource dataSource;
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/api/auth/login")
@@ -49,9 +47,7 @@ public class SecurityConfiguration {
                             response.setContentType("application/json;charset=utf-8");
                             response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
                             response.setHeader("Access-Control-Allow-Credentials", "true");
-                            String auth=authentication.toString();
-                            System.out.println(response.getHeader("Set-Cookie"));
-                            response.getWriter().write(JSONObject.toJSONString(RestBean.success(auth)));
+                            response.getWriter().write(JSONObject.toJSONString(RestBean.success(authentication)));
                         }
                 )
                 .failureHandler(this::onAuthenticationFailure)
