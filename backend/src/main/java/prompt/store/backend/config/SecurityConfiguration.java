@@ -48,6 +48,7 @@ public class SecurityConfiguration {
                             response.setContentType("application/json;charset=utf-8");
                             response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
                             response.setHeader("Access-Control-Allow-Credentials", "true");
+                            System.out.println(response.getHeader("Set-Cookie"));
                             response.getWriter().write(JSONObject.toJSONString(RestBean.success(authentication)));
                         }
                 )
