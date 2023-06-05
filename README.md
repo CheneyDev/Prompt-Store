@@ -10,6 +10,18 @@
 |                                                              |                                                              |
 |                                                              |                                                              |
 
+## Propmpt
+
+| name                                                         | desc            |
+| ------------------------------------------------------------ | --------------- |
+| [Stable Diffusion Prompt Book](https://cdn.openart.ai/assets/Stable Diffusion Prompt Book From OpenArt 10-28.pdf) | OpenArt PDF     |
+| [StableDiffusion Prompt Wiki](https://www.reddit.com/r/StableDiffusion/wiki/tutorials) | Reddit article  |
+| [/r/PromptSharing on Reddit](https://www.reddit.com/r/PromptSharing/) | Reddit topic    |
+| [Leaning Prompting](https://learnprompting.org/zh-Hans/docs/Images/resources) |                 |
+| [Prompt Builder](https://promptomania.com/stable-diffusion-prompt-builder/) | 风格化提示 分类 |
+
+
+
 ## 设计资源
 
 | 名称                                                         | 介绍           |
@@ -68,6 +80,12 @@
 ## 数据模型
 
 用户、商品、订单
+
+| id   | SKU   | name           | Cover  image                                                 | desc                | prompt                                                       | negative prompt | pixel dimensions | num outputs | step | guidance scale | seed | model                                                        | Scheduler |
+| ---- | ----- | -------------- | ------------------------------------------------------------ | ------------------- | ------------------------------------------------------------ | --------------- | ---------------- | ----------- | ---- | -------------- | ---- | ------------------------------------------------------------ | --------- |
+|      | #0001 | 迷幻的波普艺术 | ![img](./assets/README/hypnotic_illustration_of_a_all_knowing_turtle_hy_96381729_2x-768x768.jpg) | Psychedelic Pop art | Hypnotic illustration of a Halloween pumpkin, hypnotic psychedelic art by Dan Mumford, pop surrealism, dark glow neon paint, mystical, Behance |                 | 512X512          | 1           | 25   | 13             |      | [stability-ai](https://replicate.com/stability-ai)/stable-diffusion | DDIM      |
+
+
 
 ## 技术架构
 

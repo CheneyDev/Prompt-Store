@@ -7,6 +7,6 @@ import prompt.store.backend.entity.Account;
 @Mapper
 public interface AccountMapper {
 
-    @Select("SELECT * FROM UserAccount WHERE username = #{usernameOrEmail} OR email = #{usernameOrEmail}")
+    @Select("SELECT * FROM user_account WHERE username = #{usernameOrEmail} OR email = #{usernameOrEmail}")
     Account findAccountByUsernameOrEmail(String usernameOrEmail);
 }
