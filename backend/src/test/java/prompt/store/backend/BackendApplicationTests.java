@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import prompt.store.backend.entity.ProductPrompt;
+import prompt.store.backend.service.ProductModelService;
 import prompt.store.backend.service.ProductPromptService;
 
 @SpringBootTest
@@ -29,6 +30,18 @@ class BackendApplicationTests {
 		System.out.println(productPrompt.getCoverImageUrl());
 		System.out.println(productPrompt.getPrompt());
 		System.out.println(productPrompt.toString());
+	}
+
+	@Resource
+	ProductModelService productModelService;
+	@Test
+	void test3() {
+		System.out.println(productModelService.getProductModels());
+	}
+
+	@Test
+	void test4() {
+		System.out.println(productModelService.getProductModelNames());
 	}
 
 }

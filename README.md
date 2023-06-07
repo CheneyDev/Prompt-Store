@@ -19,6 +19,10 @@
 | [/r/PromptSharing on Reddit](https://www.reddit.com/r/PromptSharing/) | Reddit topic    |
 | [Leaning Prompting](https://learnprompting.org/zh-Hans/docs/Images/resources) |                 |
 | [Prompt Builder](https://promptomania.com/stable-diffusion-prompt-builder/) | 风格化提示 分类 |
+| https://publicprompts.art/                                   | Prompt 来源     |
+| https://playgroundai.com/                                    | Prompt 来源     |
+| https://promptbase.com/                                      | 参考售卖内容    |
+|                                                              |                 |
 
 
 
