@@ -11,7 +11,10 @@ import java.util.List;
 @Mapper
 public interface ProductModelMapper {
 
-    @Select("SELECT model_name FROM product_models")
+    @Select("SELECT m.model_name\n" +
+            "FROM product_models m\n" +
+            "LEFT JOIN product_prompt p ON m.model_name = p.model AND p.sku = '#0001'\n" +
+            "WHERE p.model IS NULL;")
     @Result(property = "modelName", column = "model_name")
     List<String> getProductModelNames();
 
