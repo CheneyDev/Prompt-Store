@@ -10,7 +10,7 @@
 |                                                              |                                                              |
 |                                                              |                                                              |
 
-## Propmpt
+## Prompt Collection
 
 | name                                                         | desc            |
 | ------------------------------------------------------------ | --------------- |
@@ -21,14 +21,24 @@
 | [Prompt Builder](https://promptomania.com/stable-diffusion-prompt-builder/) | 风格化提示 分类 |
 | https://publicprompts.art/                                   | Prompt 来源     |
 | https://playgroundai.com/                                    | Prompt 来源     |
+| https://lexica.art/                                          | Prompt 来源     |
 | https://promptbase.com/                                      | 参考售卖内容    |
-|                                                              |                 |
+| Danbooru 标签超市https://tags.novelai.dev/                   | 风格化提示 分类 |
+
+## Prompts
+
+| Model                                                        | Prompt                                                       | Negative Prompt | pixel | steps | Scale | Sampler           | Seed |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | --------------- | ----- | ----- | ----- | ----------------- | ---- |
+| [cjwbw/analog-diffusion](https://replicate.com/cjwbw/analog-diffusion) | peasant and dragon combat, wood cutting style , viking era, bevel with rune | blur haze       | 512   | 20    | 7     | K_EULER_ANCESTRAL | -1   |
+
+
 
 ## Model
 
-| Name                        | Image                                                        | Desc    | Link                                                         |
-| --------------------------- | ------------------------------------------------------------ | ------- | ------------------------------------------------------------ |
-| Chinese traditional pattern | ![00002-302871561.png](./assets/README/00002-302871561.jpeg)![00001-3421169598.png](./assets/README/00001-3421169598.jpeg) | LYCORIS | https://civitai.com/models/29858/chinese-traditional-pattern |
+| Name                               | Image                                                        | Desc    | Link                                                         |
+| ---------------------------------- | ------------------------------------------------------------ | ------- | ------------------------------------------------------------ |
+| Chinese traditional pattern        | ![00002-302871561.png](./assets/README/00002-302871561.jpeg)![00001-3421169598.png](./assets/README/00001-3421169598.jpeg) | LYCORIS | https://civitai.com/models/29858/chinese-traditional-pattern |
+| Ukiyo-e FuYue Style Background-Mix | ![img](./assets/README/342492.jpeg)                          | LORA    | https://civitai.com/models/25222/ukiyo-e-fuyue-style-background-mix |
 
 
 

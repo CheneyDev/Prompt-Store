@@ -26,8 +26,13 @@ public class ProductController {
         return RestBean.success(productPrompt);
     }
 
-    @GetMapping("/getProductModelNames")
-    public RestBean<List<String>> getProductModelNames() {
-        return RestBean.success(productModelService.getProductModelNames());
+    @GetMapping("/getProductModelNamesBySku")
+    public RestBean<List<String>> getProductModelNames(@RequestParam("sku") String sku) {
+        return RestBean.success(productModelService.getProductModelNamesBySku(sku));
+    }
+
+    @GetMapping("/getSamplerLeftBySku")
+    public RestBean<List<String>> getSamplerLeft(@RequestParam("sku") String sku) {
+        return RestBean.success(productPromptService.getSamplerLeftBySku(sku));
     }
 }

@@ -13,10 +13,10 @@ public interface ProductModelMapper {
 
     @Select("SELECT m.model_name\n" +
             "FROM product_models m\n" +
-            "LEFT JOIN product_prompt p ON m.model_name = p.model AND p.sku = '#0001'\n" +
+            "LEFT JOIN product_prompt p ON m.model_name = p.model AND p.sku = #{sku}\n" +
             "WHERE p.model IS NULL;")
     @Result(property = "modelName", column = "model_name")
-    List<String> getProductModelNames();
+    List<String> getProductModelNamesBySku(String sku);
 
     @Select("SELECT * FROM product_models")
     @Results({

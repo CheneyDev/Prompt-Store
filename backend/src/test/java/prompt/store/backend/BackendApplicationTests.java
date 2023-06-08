@@ -44,4 +44,9 @@ class BackendApplicationTests {
 		System.out.println(productModelService.getProductModelNames());
 	}
 
+
+	@Test
+	void test5() {
+		System.out.println(productPromptService.getSamplerLeftBySku("#0001"));
+	}
 }

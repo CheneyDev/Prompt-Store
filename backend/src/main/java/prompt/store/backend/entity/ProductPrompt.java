@@ -4,14 +4,15 @@ import lombok.Data;
 
 @Data
 public class ProductPrompt {
-    private int productId;
+    private int id;
     private String sku;
     private String productName;
     private String coverImageUrl;
     private String description;
     private String prompt;
     private String negativePrompt;
-    private PixelDimensions pixelDimensions;
+    private int width;
+    private int height;
     private int numOutputs;
     private int steps;
     private float guidanceScale;
@@ -22,10 +23,6 @@ public class ProductPrompt {
     private float maxScale;
     private int maxOutputs;
 
-    public enum PixelDimensions {
-        DIM_512,
-        DIM_768
-    }
 
     public enum Sampler {
         DDIM,

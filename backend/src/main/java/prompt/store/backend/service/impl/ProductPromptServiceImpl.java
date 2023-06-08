@@ -6,6 +6,8 @@ import prompt.store.backend.entity.ProductPrompt;
 import prompt.store.backend.mapper.ProductPromptMapper;
 import prompt.store.backend.service.ProductPromptService;
 
+import java.util.List;
+
 @Service
 public class ProductPromptServiceImpl implements ProductPromptService {
 
@@ -14,5 +16,10 @@ public class ProductPromptServiceImpl implements ProductPromptService {
     @Override
     public ProductPrompt getProductPromptBySku(String sku) {
         return productPromptMapper.getProductPromptBySku(sku);
+    }
+
+    @Override
+    public List<String> getSamplerLeftBySku(String sku) {
+        return productPromptMapper.getSamplerLeftBySku(sku);
     }
 }
