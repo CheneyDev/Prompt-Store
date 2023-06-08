@@ -24,6 +24,14 @@
 | https://promptbase.com/                                      | 参考售卖内容    |
 |                                                              |                 |
 
+## Model
+
+| Name                        | Image                                                        | Desc    | Link                                                         |
+| --------------------------- | ------------------------------------------------------------ | ------- | ------------------------------------------------------------ |
+| Chinese traditional pattern | ![00002-302871561.png](./assets/README/00002-302871561.jpeg)![00001-3421169598.png](./assets/README/00001-3421169598.jpeg) | LYCORIS | https://civitai.com/models/29858/chinese-traditional-pattern |
+
+
+
 
 
 ## 设计资源
