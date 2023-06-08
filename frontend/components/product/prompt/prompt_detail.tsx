@@ -153,7 +153,7 @@ export default function PromptDetail() {
     validateSteps(steps);
     validateScale(guidanceScale);
     validateSeed(seed);
-  }, [prompt,steps, guidanceScale, seed]);
+  }, [prompt, steps, guidanceScale, seed]);
 
   const validatePrompt = (prompt: string) => {
     if (prompt == "") {
@@ -207,6 +207,12 @@ export default function PromptDetail() {
     validateSeed(seed);
   };
 
+  const [value, setValue] = useState(40);
+
+  const handleSliderChange = (event:any) => {
+    setValue(event.target.value);
+  };
+
   return (
     <>
       <section>
@@ -217,7 +223,6 @@ export default function PromptDetail() {
                 src={coverImageUrl}
                 className="aspect-square w-full rounded-xl object-cover"
               />
-{/* test */}
               {/* <div className="grid grid-cols-2 gap-4 lg:mt-4">
                 <img
                   src={coverImageUrl}
@@ -234,9 +239,14 @@ export default function PromptDetail() {
                   </CardHeader>
                   <CardContent className="grid gap-6">
                     <div className="grid gap-2">
-                      <Label htmlFor="description">Prompt&nbsp;{promptError && (
-                        <span className="text-sm text-red-500">{promptError}</span>
-                      )}</Label>
+                      <Label htmlFor="description">
+                        Prompt&nbsp;
+                        {promptError && (
+                          <span className="text-sm text-red-500">
+                            {promptError}
+                          </span>
+                        )}
+                      </Label>
                       <Textarea
                         id="description"
                         value={prompt}
@@ -265,6 +275,20 @@ export default function PromptDetail() {
                           </SelectContent>
                         </Select>
                       </div>
+
+                      <div className="p-4">
+                        <input
+                          type="range"
+                          min={0}
+                          max={100}
+                          value={value}
+                          className="range"
+                          onChange={handleSliderChange}
+                        />
+                        <input type="range" min={0} max="100" value="40" className="range range-accent" />
+                        <p>当前值：{value}</p>
+                      </div>
+
                       <div className="grid gap-2">
                         <Label htmlFor="sampler">Sampler</Label>
                         <Select defaultValue="default">
@@ -285,9 +309,14 @@ export default function PromptDetail() {
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                       <div className="grid gap-2">
-                        <Label htmlFor="steps">Steps&nbsp;{stepsError && (
-                          <span className="text-sm text-red-500">{stepsError}</span>
-                        )}</Label>
+                        <Label htmlFor="steps">
+                          Steps&nbsp;
+                          {stepsError && (
+                            <span className="text-sm text-red-500">
+                              {stepsError}
+                            </span>
+                          )}
+                        </Label>
                         <Input
                           id="steps"
                           value={steps}
@@ -295,9 +324,14 @@ export default function PromptDetail() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="scale">Scale&nbsp;{scaleError && (
-                          <span className="text-sm text-red-500">{scaleError}</span>
-                        )}</Label>
+                        <Label htmlFor="scale">
+                          Scale&nbsp;
+                          {scaleError && (
+                            <span className="text-sm text-red-500">
+                              {scaleError}
+                            </span>
+                          )}
+                        </Label>
                         <Input
                           id="scale"
                           value={guidanceScale}
@@ -305,9 +339,14 @@ export default function PromptDetail() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="seed">Seed&nbsp;{seedError && (
-                          <span className="text-sm text-red-500">{seedError}</span>
-                        )}</Label>
+                        <Label htmlFor="seed">
+                          Seed&nbsp;
+                          {seedError && (
+                            <span className="text-sm text-red-500">
+                              {seedError}
+                            </span>
+                          )}
+                        </Label>
                         <Input
                           id="seed"
                           value={seed}
