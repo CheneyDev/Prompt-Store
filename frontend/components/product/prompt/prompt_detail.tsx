@@ -27,9 +27,8 @@ let modelNames: any[] = [];
 let modelIds: any[] = [];
 let resolutionList: any[] = [];
 
-
 export default function PromptDetail() {
-  const [samplerList,setSamplerList]=useState([]);
+  const [samplerList, setSamplerList] = useState([]);
 
   const [id, setId] = useState("");
   const [sku, setSku] = useState("");
@@ -110,8 +109,8 @@ export default function PromptDetail() {
     }
   };
 
-  const fetchSamplerList = async (modelId:any) => {
-    console.log("modelID:",modelId);
+  const fetchSamplerList = async (modelId: any) => {
+    console.log("modelID:", modelId);
     const encodedModelId = encodeURIComponent(modelId);
     try {
       const response = await axios.get(
@@ -149,7 +148,7 @@ export default function PromptDetail() {
       console.error("Error fetching product models:", error);
     }
   };
-  const fetchSupportedResolutionsByModelID= async () => {
+  const fetchSupportedResolutionsByModelID = async () => {
     const encodedModelID = encodeURIComponent(modelId);
     try {
       const response = await axios.get(
@@ -157,11 +156,10 @@ export default function PromptDetail() {
         {
           withCredentials: true,
         }
-
       );
       const res = response.data;
       if (res) {
-        resolutionList=res.message;
+        resolutionList = res.message;
       } else {
         return null;
       }
@@ -177,8 +175,6 @@ export default function PromptDetail() {
 
   useEffect(() => {
     validatePrompt(prompt);
-    validateSteps(steps);
-    validateScale(guidanceScale);
     validateSeed(seed);
   }, [prompt, steps, guidanceScale, seed]);
 
@@ -187,22 +183,6 @@ export default function PromptDetail() {
       setPromptError("不能为空");
     } else {
       setPromptError("");
-    }
-  };
-
-  const validateSteps = (steps: number) => {
-    if (isNaN(steps) || String(steps) == "") {
-      setStepsError("不能为空");
-    } else {
-      setStepsError("");
-    }
-  };
-
-  const validateScale = (guidanceScale: number) => {
-    if (isNaN(guidanceScale) || String(guidanceScale) == "") {
-      setScaleError("不能为空");
-    } else {
-      setScaleError("");
     }
   };
 
@@ -225,38 +205,21 @@ export default function PromptDetail() {
 
   const handleModelChange = (event: any) => {
     const value = event.target.value;
-    if (value !== "default") {
-      setModel(event.target.value);
-    }
+    setModel(event.target.value);
     fetchSupportedResolutionsByModelID();
   };
 
   const handleSamplerChange = (event: any) => {
-    if (event.target.value !== "default") {
-      setSampler(event.target.value);
-    }
+    setSampler(event.target.value);
   };
 
-  const handleWidthChange = (event: any) => {
-    if (event.target.value !== "default") {
-      setWidth(event.target.value);
-    }
-  };
-
-  const handleHeightChange = (event: any) => {
-    if (event.target.value !== "default") {
-      setHeight(event.target.value);
-    }
+  const handleResolutionChange = (event: any) => {
+    setWidth(event.target.value);
+    setHeight(event.target.value);
   };
 
   const handleStepsChange = (event: any) => {
     setSteps(event.target.value);
-    validateSteps(steps);
-  };
-
-  const handleScaleChange = (event: any) => {
-    setGuidanceScale(event.target.value);
-    validateScale(guidanceScale);
   };
 
   const handleSeedChange = (event: any) => {
@@ -264,15 +227,9 @@ export default function PromptDetail() {
     validateSeed(seed);
   };
 
-  const handleSliderChange = (event: any) => {
-    setSteps(event.target.value);
-  };
-
   const handleGuidanceScaleChange = (event: any) => {
     setGuidanceScale(event.target.value);
   };
-
-
 
   return (
     <>
@@ -301,7 +258,7 @@ export default function PromptDetail() {
                   <CardContent className="grid gap-6">
                     <div className="grid gap-2 grid-cols-2">
                       <div className="grid gap-2">
-                        <Label htmlFor="description">
+                        <Label htmlFor="prompt">
                           Prompt&nbsp;
                           {promptError && (
                             <span className="text-sm text-red-500">
@@ -309,21 +266,23 @@ export default function PromptDetail() {
                             </span>
                           )}
                         </Label>
-                        <Textarea
-                          id="description"
-                          className="h-36"
+                        <textarea
+                          id="prompt"
                           value={prompt}
                           onChange={handlePromptChange}
-                        />
+                          className="textarea textarea-bordered textarea-md leading-normal h-36"
+                          placeholder="Input here"
+                        ></textarea>
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="description">Negative Prompt</Label>
-                        <Textarea
-                          id="description"
-                          className="h-36"
+                        <textarea
+                          id="prompt"
                           value={negativePrompt || ""}
                           onChange={handleNegativePromptChange}
-                        />
+                          className="textarea textarea-bordered textarea-md h-36"
+                          placeholder="Input here"
+                        ></textarea>
                       </div>
                     </div>
 
@@ -335,28 +294,14 @@ export default function PromptDetail() {
                           className="select select-accent w-full max-w-xs"
                         >
                           {modelNames &&
-                            modelNames.map((modelName, index) => (
-                              modelName === model ?<option selected>{modelName}</option> : <option>{modelName}</option>
-                            ))}
+                            modelNames.map((modelName, index) =>
+                              modelName === model ? (
+                                <option selected>{modelName}</option>
+                              ) : (
+                                <option>{modelName}</option>
+                              )
+                            )}
                         </select>
-
-                        {/* <Select
-                          defaultValue="default"
-                          onValueChange={handleModelChange}
-                        >
-                          <SelectTrigger id="model">
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="default">{model}</SelectItem>
-                            {modelNames &&
-                              modelNames.map((modelName, index) => (
-                                <SelectItem value={modelName}>
-                                  {modelName}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select> */}
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="sampler">Sampler</Label>
@@ -365,9 +310,13 @@ export default function PromptDetail() {
                           className="select select-accent w-full max-w-xs"
                         >
                           {samplerList &&
-                            samplerList.map((samplerName, index) => (
-                              samplerName === sampler ?<option selected>{samplerName}</option> : <option>{samplerName}</option>
-                            ))}
+                            samplerList.map((samplerName, index) =>
+                              samplerName === sampler ? (
+                                <option selected>{samplerName}</option>
+                              ) : (
+                                <option>{samplerName}</option>
+                              )
+                            )}
                         </select>
                       </div>
                     </div>
@@ -375,25 +324,33 @@ export default function PromptDetail() {
                       <div className="grid gap-2">
                         <Label htmlFor="width">Width</Label>
                         <select
-                          // onChange={handleSamplerChange}
+                          onChange={handleResolutionChange}
                           className="select select-accent w-full max-w-xs"
                         >
                           {resolutionList &&
-                            resolutionList.map((resolutions, index) => (
-                              resolutions === width ?<option selected>{resolutions}</option> : <option>{resolutions}</option>
-                            ))}
+                            resolutionList.map((resolutions, index) =>
+                              resolutions === width ? (
+                                <option selected>{resolutions}</option>
+                              ) : (
+                                <option>{resolutions}</option>
+                              )
+                            )}
                         </select>
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="height">Height</Label>
                         <select
-                          // onChange={handleSamplerChange}
+                          onChange={handleResolutionChange}
                           className="select select-accent w-full max-w-xs"
                         >
                           {resolutionList &&
-                            resolutionList.map((resolutions, index) => (
-                              resolutions === height ?<option selected>{resolutions}</option> : <option>{resolutions}</option>
-                            ))}
+                            resolutionList.map((resolutions, index) =>
+                              resolutions === height ? (
+                                <option selected>{resolutions}</option>
+                              ) : (
+                                <option>{resolutions}</option>
+                              )
+                            )}
                         </select>
                       </div>
                     </div>
@@ -427,7 +384,7 @@ export default function PromptDetail() {
                         />
                       </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="grid gap-2">
                         <Label htmlFor="seed">
                           Seed&nbsp;
@@ -437,10 +394,12 @@ export default function PromptDetail() {
                             </span>
                           )}
                         </Label>
-                        <Input
+                        <input
+                          type="text"
                           id="seed"
                           value={seed}
                           onChange={handleSeedChange}
+                          className="input input-bordered w-full max-w-xs"
                         />
                       </div>
                     </div>
@@ -449,7 +408,7 @@ export default function PromptDetail() {
 
                   <div className="grid gap-2 my-4">
                     <h1 className="text-4xl">
-                      <span className="text-xl">¥</span>&nbsp;{guidanceScale}
+                      <span className="text-xl">¥</span>&nbsp;0.15
                     </h1>
                   </div>
                   <CardFooter className="justify-end space-x-2">
