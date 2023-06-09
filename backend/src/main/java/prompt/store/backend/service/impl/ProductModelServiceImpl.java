@@ -15,7 +15,7 @@ public class ProductModelServiceImpl implements ProductModelService {
     private ProductModelMapper productModelMapper;
 
     @Override
-    public List<String> getProductModelNamesBySku(String sku) {
+    public List<ProductModel> getProductModelNamesBySku(String sku) {
         return productModelMapper.getProductModelNamesBySku(sku);
     }
 

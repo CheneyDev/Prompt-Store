@@ -19,7 +19,7 @@ public class ProductPromptServiceImpl implements ProductPromptService {
     }
 
     @Override
-    public List<String> getSamplerLeftBySku(String sku) {
-        return productPromptMapper.getSamplerLeftBySku(sku);
+    public List<String> getSamplerByModelId(String modelId) {
+        return productPromptMapper.getSamplerByModelId(modelId);
     }
 }

@@ -11,12 +11,13 @@ import java.util.List;
 @Mapper
 public interface ProductModelMapper {
 
-    @Select("SELECT m.model_name\n" +
+    @Select("SELECT m.id,m.model_name\n" +
             "FROM product_models m\n" +
             "LEFT JOIN product_prompt p ON m.model_name = p.model AND p.sku = #{sku}\n" +
             "WHERE p.model IS NULL;")
     @Result(property = "modelName", column = "model_name")
-    List<String> getProductModelNamesBySku(String sku);
+    @Result(property = "id", column = "id")
+    List<ProductModel> getProductModelNamesBySku(String sku);
 
     @Select("SELECT resolution\n" +
             "FROM supported_resolution\n" +

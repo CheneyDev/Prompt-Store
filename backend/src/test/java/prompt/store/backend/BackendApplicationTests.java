@@ -41,7 +41,7 @@ class BackendApplicationTests {
 
 	@Test
 	void test4() {
-		System.out.println(productModelService.getProductModelNames());
+		System.out.println(productModelService.getProductModelNamesBySku("#0001"));
 	}
 
 

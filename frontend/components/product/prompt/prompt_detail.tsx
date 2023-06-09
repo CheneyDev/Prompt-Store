@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, use, useEffect, useState } from "react";
+import React, { ChangeEventHandler, useEffect, useState } from "react";
 import axios from "axios";
 import {
   Card,
@@ -19,15 +19,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { Component, Heart, Scale } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const encodedSku = encodeURIComponent("#0001");
 let modelNames: any[] = [];
-let samplerList: any[] = [];
+let modelIds: any[] = [];
+let resolutionList: any[] = [];
+
 
 export default function PromptDetail() {
+  const [samplerList,setSamplerList]=useState([]);
+
   const [id, setId] = useState("");
   const [sku, setSku] = useState("");
   const [productName, setProductName] = useState("");
@@ -52,8 +55,9 @@ export default function PromptDetail() {
     checkLogin();
     fetchProductPrompt();
     fetchProductModel();
-    fetchSamplerList();
-  }, []);
+    fetchSupportedResolutionsLeftByModelID();
+    fetchSamplerList(modelId);
+  }, [modelId]);
 
   const checkLogin = async () => {
     const response = await axios.post(
@@ -64,7 +68,6 @@ export default function PromptDetail() {
       }
     );
     if (response.data.success) {
-      console.log(response.data.message);
     } else {
       return null;
     }
@@ -107,17 +110,19 @@ export default function PromptDetail() {
     }
   };
 
-  const fetchSamplerList = async () => {
+  const fetchSamplerList = async (modelId:any) => {
+    console.log("modelID:",modelId);
+    const encodedModelId = encodeURIComponent(modelId);
     try {
       const response = await axios.get(
-        `http://localhost:8080/getSamplerLeftBySku?sku=${encodedSku}`,
+        `http://localhost:8080/getSamplerByModelId?modelId=${encodedModelId}`,
         {
           withCredentials: true,
         }
       );
       const res = response.data;
       if (res) {
-        samplerList = res.message;
+        setSamplerList(res.message);
       } else {
         return null;
       }
@@ -129,14 +134,14 @@ export default function PromptDetail() {
   const fetchProductModel = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/getProductModelNamesBySku?sku=${encodedSku}`,
+        `http://localhost:8080/getProductModels`,
         {
           withCredentials: true,
         }
       );
       const productModel = response.data;
       if (productModel) {
-        modelNames = productModel.message;
+        modelNames = productModel.message.map((item: any) => item.modelName);
       } else {
         return null;
       }
@@ -144,11 +149,9 @@ export default function PromptDetail() {
       console.error("Error fetching product models:", error);
     }
   };
-
   const fetchSupportedResolutionsLeftByModelID= async () => {
     const encodedModelID = encodeURIComponent(modelId);
     const encodedDefaultResolution = encodeURIComponent(width);
-    console.log(encodedModelID, encodedDefaultResolution);
     try {
       const response = await axios.get(
         `http://localhost:8080/getSupportedResolutionsLeftByModelID?modelID=${encodedModelID}&defaultResolution=${encodedDefaultResolution}`,
@@ -159,9 +162,8 @@ export default function PromptDetail() {
       );
       const res = response.data;
       if (res) {
-        console.log(res.message);
-        // setWidth(res.message.width);
-        // setHeight(res.message.height);
+        resolutionList=res.message;
+        resolutionList.forEach((item) => console.log(item));
       } else {
         return null;
       }
@@ -229,6 +231,7 @@ export default function PromptDetail() {
     if (value !== "default") {
       setModel(event.target.value);
     }
+    fetchSupportedResolutionsLeftByModelID();
   };
 
   const handleSamplerChange = (event: any) => {
@@ -271,6 +274,8 @@ export default function PromptDetail() {
   const handleGuidanceScaleChange = (event: any) => {
     setGuidanceScale(event.target.value);
   };
+
+
 
   return (
     <>
@@ -332,10 +337,9 @@ export default function PromptDetail() {
                           onChange={handleModelChange}
                           className="select select-accent w-full max-w-xs"
                         >
-                          <option selected>{model}</option>
                           {modelNames &&
                             modelNames.map((modelName, index) => (
-                              <option>{modelName}</option>
+                              modelName === model ?<option selected>{modelName}</option> : <option>{modelName}</option>
                             ))}
                         </select>
 
@@ -363,10 +367,9 @@ export default function PromptDetail() {
                           onChange={handleSamplerChange}
                           className="select select-accent w-full max-w-xs"
                         >
-                          <option selected>{sampler}</option>
                           {samplerList &&
                             samplerList.map((samplerName, index) => (
-                              <option>{samplerName}</option>
+                              samplerName === sampler ?<option selected>{samplerName}</option> : <option>{samplerName}</option>
                             ))}
                         </select>
                         {/* <Select
@@ -391,25 +394,16 @@ export default function PromptDetail() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="grid gap-2">
                         <Label htmlFor="width">Width</Label>
-                        <Select
-                          defaultValue="default"
-                          onValueChange={handleWidthChange}
+                        <select
+                          // onChange={handleSamplerChange}
+                          className="select select-accent w-full max-w-xs"
                         >
-                          <SelectTrigger id="width">
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="default">{width}</SelectItem>
-                            <SelectItem value="768">768</SelectItem>
-
-                            {/* {modelNames &&
-                              modelNames.map((modelName, index) => (
-                                <SelectItem value={modelName}>
-                                  {modelName}
-                                </SelectItem>
-                              ))} */}
-                          </SelectContent>
-                        </Select>
+                          <option selected>{width}</option>
+                          {resolutionList &&
+                            resolutionList.map((resolution, index) => (
+                              <option>{resolution}</option>
+                            ))}
+                        </select>
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="height">Height</Label>
@@ -423,13 +417,6 @@ export default function PromptDetail() {
                           <SelectContent>
                             <SelectItem value="default">{height}</SelectItem>
                             <SelectItem value="768">768</SelectItem>
-
-                            {/* {samplerList &&
-                              samplerList.map((samplerName, index) => (
-                                <SelectItem value={samplerName}>
-                                  {samplerName}
-                                </SelectItem>
-                              ))} */}
                           </SelectContent>
                         </Select>
                       </div>

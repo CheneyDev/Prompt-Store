@@ -34,11 +34,7 @@ public interface ProductPromptMapper {
     ProductPrompt getProductPromptBySku(String sku);
 
     @Select("SELECT sampler\n" +
-            "FROM sampler\n" +
-            "WHERE sampler NOT IN (\n" +
-            "    SELECT sampler\n" +
-            "    FROM product_prompt\n" +
-            "    WHERE sku = #{sku}\n" +
-            ");\n")
-    List<String> getSamplerLeftBySku(String sku);
+            "FROM supported_sampler\n" +
+            "WHERE model_id = #{modelId};\n")
+    List<String> getSamplerByModelId(String modelId);
 }

@@ -4,6 +4,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import prompt.store.backend.entity.ProductModel;
 import prompt.store.backend.entity.ProductPrompt;
 import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.ProductModelService;
@@ -26,14 +27,19 @@ public class ProductController {
         return RestBean.success(productPrompt);
     }
 
+    @GetMapping("/getProductModels")
+    public RestBean<List<ProductModel>> getProductModels() {
+        return RestBean.success(productModelService.getProductModels());
+    }
+
     @GetMapping("/getProductModelNamesBySku")
-    public RestBean<List<String>> getProductModelNames(@RequestParam("sku") String sku) {
+    public RestBean<List<ProductModel>> getProductModelNames(@RequestParam("sku") String sku) {
         return RestBean.success(productModelService.getProductModelNamesBySku(sku));
     }
 
-    @GetMapping("/getSamplerLeftBySku")
-    public RestBean<List<String>> getSamplerLeft(@RequestParam("sku") String sku) {
-        return RestBean.success(productPromptService.getSamplerLeftBySku(sku));
+    @GetMapping("/getSamplerByModelId")
+    public RestBean<List<String>> getSamplerLeft(@RequestParam("modelId") String modelId) {
+        return RestBean.success(productPromptService.getSamplerByModelId(modelId));
     }
 
     @GetMapping("/getSupportedResolutionsLeftByModelID")
