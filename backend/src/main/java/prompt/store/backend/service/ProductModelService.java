@@ -8,7 +8,7 @@ public interface ProductModelService {
 
     List<ProductModel> getProductModelNamesBySku(String sku);
 
-    List<String>  getSupportedResolutionsLeftByModelID(String modelID, String defaultResolution);
+    List<String>  getSupportedResolutionsByModelID(String modelID);
     List<ProductModel> getProductModels();
 
 }

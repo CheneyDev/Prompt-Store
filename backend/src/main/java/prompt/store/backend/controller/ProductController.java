@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/getSupportedResolutionsLeftByModelID")
-    public RestBean<List<String>> getSupportedResolutionsLeftByModelID(@RequestParam("modelID") String modelID, @RequestParam("defaultResolution") String defaultResolution) {
-        return RestBean.success(productModelService.getSupportedResolutionsLeftByModelID(modelID, defaultResolution));
+    public RestBean<List<String>> getSupportedResolutionsByModelID(@RequestParam("modelID") String modelID) {
+        return RestBean.success(productModelService.getSupportedResolutionsByModelID(modelID));
     }
 }

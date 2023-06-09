@@ -21,8 +21,8 @@ public interface ProductModelMapper {
 
     @Select("SELECT resolution\n" +
             "FROM supported_resolution\n" +
-            "WHERE model_id = #{modelID} AND resolution <> #{defaultResolution};")
-    List<String> getSupportedResolutionsLeftByModelID(String modelID, String defaultResolution);
+            "WHERE model_id = #{modelID};")
+    List<String> getSupportedResolutionsByModelID(String modelID);
 
     @Select("SELECT * FROM product_models")
     @Results({
