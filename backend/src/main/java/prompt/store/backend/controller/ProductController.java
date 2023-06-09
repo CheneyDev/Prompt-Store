@@ -1,9 +1,8 @@
 package prompt.store.backend.controller;
 
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import prompt.store.backend.entity.Generate;
 import prompt.store.backend.entity.ProductModel;
 import prompt.store.backend.entity.ProductPrompt;
 import prompt.store.backend.entity.RestBean;
@@ -45,5 +44,12 @@ public class ProductController {
     @GetMapping("/getSupportedResolutionsByModelID")
     public RestBean<List<String>> getSupportedResolutionsByModelID(@RequestParam("modelID") String modelID) {
         return RestBean.success(productModelService.getSupportedResolutionsByModelID(modelID));
+    }
+
+    @PostMapping("/generate")
+    public RestBean<String> generate(@RequestBody Generate generateEntity){
+          System.out.println(generateEntity);
+
+        return RestBean.success("success");
     }
 }

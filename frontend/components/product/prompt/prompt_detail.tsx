@@ -231,6 +231,53 @@ export default function PromptDetail() {
     setGuidanceScale(event.target.value);
   };
 
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    if (promptError || seedError) {
+      return;
+    }
+    const encodedPrompt = encodeURIComponent(prompt);
+    const encodedNegativePrompt = encodeURIComponent(String(negativePrompt));
+    const encodedModel = encodeURIComponent(model);
+    const encodedSampler = encodeURIComponent(sampler);
+    const encodedWidth = encodeURIComponent(width);
+    const encodedHeight = encodeURIComponent(height);
+    const encodedSteps = encodeURIComponent(steps);
+    const encodedGuidanceScale = encodeURIComponent(guidanceScale);
+    const encodedSeed = encodeURIComponent(seed);
+    const encodedNumOutputs = encodeURIComponent(numOutputs);
+      
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/generate`,
+        {
+          prompt: encodedPrompt,
+          negativePrompt: encodedNegativePrompt,
+          model: encodedModel,
+          sampler: encodedSampler,
+          width: encodedWidth,
+          height: encodedHeight,
+          steps: encodedSteps,
+          guidanceScale: encodedGuidanceScale,
+          seed: encodedSeed,
+          numOutputs: encodedNumOutputs,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      const res = response.data;
+      if (res) {
+        // setGeneratedImage(res.message);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching generated image:", error);
+    }
+  };
+
+
   return (
     <>
       <section>
@@ -416,7 +463,7 @@ export default function PromptDetail() {
                       <Heart size={16} />
                       &nbsp;&nbsp;加入心愿单
                     </Button>
-                    <Button>
+                    <Button onClick={handleSubmit}>
                       <Component size={16} />
                       &nbsp;&nbsp;立即制作
                     </Button>
