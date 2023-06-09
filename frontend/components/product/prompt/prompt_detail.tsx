@@ -55,7 +55,7 @@ export default function PromptDetail() {
     checkLogin();
     fetchProductPrompt();
     fetchProductModel();
-    fetchSupportedResolutionsLeftByModelID();
+    fetchSupportedResolutionsByModelID();
     fetchSamplerList(modelId);
   }, [modelId]);
 
@@ -149,12 +149,11 @@ export default function PromptDetail() {
       console.error("Error fetching product models:", error);
     }
   };
-  const fetchSupportedResolutionsLeftByModelID= async () => {
+  const fetchSupportedResolutionsByModelID= async () => {
     const encodedModelID = encodeURIComponent(modelId);
-    const encodedDefaultResolution = encodeURIComponent(width);
     try {
       const response = await axios.get(
-        `http://localhost:8080/getSupportedResolutionsLeftByModelID?modelID=${encodedModelID}&defaultResolution=${encodedDefaultResolution}`,
+        `http://localhost:8080/getSupportedResolutionsByModelID?modelID=${encodedModelID}`,
         {
           withCredentials: true,
         }
@@ -163,7 +162,6 @@ export default function PromptDetail() {
       const res = response.data;
       if (res) {
         resolutionList=res.message;
-        resolutionList.forEach((item) => console.log(item));
       } else {
         return null;
       }
@@ -182,7 +180,6 @@ export default function PromptDetail() {
     validateSteps(steps);
     validateScale(guidanceScale);
     validateSeed(seed);
-    fetchSupportedResolutionsLeftByModelID();
   }, [prompt, steps, guidanceScale, seed]);
 
   const validatePrompt = (prompt: string) => {
@@ -231,7 +228,7 @@ export default function PromptDetail() {
     if (value !== "default") {
       setModel(event.target.value);
     }
-    fetchSupportedResolutionsLeftByModelID();
+    fetchSupportedResolutionsByModelID();
   };
 
   const handleSamplerChange = (event: any) => {
@@ -372,23 +369,6 @@ export default function PromptDetail() {
                               samplerName === sampler ?<option selected>{samplerName}</option> : <option>{samplerName}</option>
                             ))}
                         </select>
-                        {/* <Select
-                          defaultValue="default"
-                          onValueChange={handleSamplerChange}
-                        >
-                          <SelectTrigger id="sampler">
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="default">{sampler}</SelectItem>
-                            {samplerList &&
-                              samplerList.map((samplerName, index) => (
-                                <SelectItem value={samplerName}>
-                                  {samplerName}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select> */}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -398,27 +378,23 @@ export default function PromptDetail() {
                           // onChange={handleSamplerChange}
                           className="select select-accent w-full max-w-xs"
                         >
-                          <option selected>{width}</option>
                           {resolutionList &&
-                            resolutionList.map((resolution, index) => (
-                              <option>{resolution}</option>
+                            resolutionList.map((resolutions, index) => (
+                              resolutions === width ?<option selected>{resolutions}</option> : <option>{resolutions}</option>
                             ))}
                         </select>
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="height">Height</Label>
-                        <Select
-                          defaultValue="default"
-                          onValueChange={handleHeightChange}
+                        <select
+                          // onChange={handleSamplerChange}
+                          className="select select-accent w-full max-w-xs"
                         >
-                          <SelectTrigger id="height">
-                            <SelectValue placeholder="Select" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="default">{height}</SelectItem>
-                            <SelectItem value="768">768</SelectItem>
-                          </SelectContent>
-                        </Select>
+                          {resolutionList &&
+                            resolutionList.map((resolutions, index) => (
+                              resolutions === height ?<option selected>{resolutions}</option> : <option>{resolutions}</option>
+                            ))}
+                        </select>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -452,36 +428,6 @@ export default function PromptDetail() {
                       </div>
                     </div>
                     <div className="grid grid-cols-3 gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="steps">
-                          Steps&nbsp;
-                          {stepsError && (
-                            <span className="text-sm text-red-500">
-                              {stepsError}
-                            </span>
-                          )}
-                        </Label>
-                        <Input
-                          id="steps"
-                          value={steps}
-                          onChange={handleStepsChange}
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="scale">
-                          Scale&nbsp;
-                          {scaleError && (
-                            <span className="text-sm text-red-500">
-                              {scaleError}
-                            </span>
-                          )}
-                        </Label>
-                        <Input
-                          id="scale"
-                          value={guidanceScale}
-                          onChange={handleScaleChange}
-                        />
-                      </div>
                       <div className="grid gap-2">
                         <Label htmlFor="seed">
                           Seed&nbsp;
