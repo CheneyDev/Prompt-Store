@@ -18,6 +18,11 @@ public interface ProductModelMapper {
     @Result(property = "modelName", column = "model_name")
     List<String> getProductModelNamesBySku(String sku);
 
+    @Select("SELECT resolution\n" +
+            "FROM supported_resolution\n" +
+            "WHERE model_id = #{modelID} AND resolution <> #{defaultResolution};")
+    List<String> getSupportedResolutionsLeftByModelID(String modelID, String defaultResolution);
+
     @Select("SELECT * FROM product_models")
     @Results({
             @Result(property = "id", column = "id"),

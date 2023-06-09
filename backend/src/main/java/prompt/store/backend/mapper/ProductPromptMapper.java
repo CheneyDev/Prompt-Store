@@ -25,6 +25,7 @@ public interface ProductPromptMapper {
             @Result(property = "guidanceScale", column = "guidance_scale"),
             @Result(property = "seed", column = "seed"),
             @Result(property = "model", column = "model"),
+            @Result(property = "modelId", column = "model_id"),
             @Result(property = "sampler", column = "sampler"),
             @Result(property = "maxSteps", column = "max_steps"),
             @Result(property = "maxScale", column = "max_scale"),

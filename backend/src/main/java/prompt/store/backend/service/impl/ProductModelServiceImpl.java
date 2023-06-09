@@ -20,6 +20,11 @@ public class ProductModelServiceImpl implements ProductModelService {
     }
 
     @Override
+    public List<String> getSupportedResolutionsLeftByModelID(String modelID, String defaultResolution) {
+        return productModelMapper.getSupportedResolutionsLeftByModelID(modelID, defaultResolution);
+    }
+
+    @Override
     public List<ProductModel> getProductModels() {
         return productModelMapper.getProductModels();
     }

@@ -35,4 +35,9 @@ public class ProductController {
     public RestBean<List<String>> getSamplerLeft(@RequestParam("sku") String sku) {
         return RestBean.success(productPromptService.getSamplerLeftBySku(sku));
     }
+
+    @GetMapping("/getSupportedResolutionsLeftByModelID")
+    public RestBean<List<String>> getSupportedResolutionsLeftByModelID(@RequestParam("modelID") String modelID, @RequestParam("defaultResolution") String defaultResolution) {
+        return RestBean.success(productModelService.getSupportedResolutionsLeftByModelID(modelID, defaultResolution));
+    }
 }

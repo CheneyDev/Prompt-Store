@@ -18,6 +18,7 @@ public class ProductPrompt {
     private float guidanceScale;
     private int seed;
     private String model;
+    private int modelId;
     private Sampler sampler;
     private int maxSteps;
     private float maxScale;

@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Component, Heart } from "lucide-react";
+import { Component, Heart, Scale } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 const encodedSku = encodeURIComponent("#0001");
@@ -42,6 +42,7 @@ export default function PromptDetail() {
   const [guidanceScale, setGuidanceScale] = useState(0.0);
   const [seed, setSeed] = useState(0);
   const [model, setModel] = useState("");
+  const [modelId, setModelId] = useState("");
   const [sampler, setSampler] = useState("");
   const [maxScale, setMaxScale] = useState(0.0);
   const [maxOutputs, setMaxOutputs] = useState(0);
@@ -93,6 +94,7 @@ export default function PromptDetail() {
         setGuidanceScale(productPrompt.message.guidanceScale);
         setSeed(productPrompt.message.seed);
         setModel(productPrompt.message.model);
+        setModelId(productPrompt.message.modelId);
         setSampler(productPrompt.message.sampler);
         setMaxScale(productPrompt.message.maxScale);
         setMaxOutputs(productPrompt.message.maxOutputs);
@@ -143,6 +145,31 @@ export default function PromptDetail() {
     }
   };
 
+  const fetchSupportedResolutionsLeftByModelID= async () => {
+    const encodedModelID = encodeURIComponent(modelId);
+    const encodedDefaultResolution = encodeURIComponent(width);
+    console.log(encodedModelID, encodedDefaultResolution);
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/getSupportedResolutionsLeftByModelID?modelID=${encodedModelID}&defaultResolution=${encodedDefaultResolution}`,
+        {
+          withCredentials: true,
+        }
+
+      );
+      const res = response.data;
+      if (res) {
+        console.log(res.message);
+        // setWidth(res.message.width);
+        // setHeight(res.message.height);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching supported resolutions:", error);
+    }
+  };
+
   const [promptError, setPromptError] = useState("");
   const [stepsError, setStepsError] = useState("");
   const [scaleError, setScaleError] = useState("");
@@ -153,6 +180,7 @@ export default function PromptDetail() {
     validateSteps(steps);
     validateScale(guidanceScale);
     validateSeed(seed);
+    fetchSupportedResolutionsLeftByModelID();
   }, [prompt, steps, guidanceScale, seed]);
 
   const validatePrompt = (prompt: string) => {
@@ -192,6 +220,35 @@ export default function PromptDetail() {
     validatePrompt(prompt);
   };
 
+  const handleNegativePromptChange = (event: any) => {
+    setNegativePrompt(event.target.value);
+  };
+
+  const handleModelChange = (event: any) => {
+    const value = event.target.value;
+    if (value !== "default") {
+      setModel(event.target.value);
+    }
+  };
+
+  const handleSamplerChange = (event: any) => {
+    if (event.target.value !== "default") {
+      setSampler(event.target.value);
+    }
+  };
+
+  const handleWidthChange = (event: any) => {
+    if (event.target.value !== "default") {
+      setWidth(event.target.value);
+    }
+  };
+
+  const handleHeightChange = (event: any) => {
+    if (event.target.value !== "default") {
+      setHeight(event.target.value);
+    }
+  };
+
   const handleStepsChange = (event: any) => {
     setSteps(event.target.value);
     validateSteps(steps);
@@ -207,10 +264,12 @@ export default function PromptDetail() {
     validateSeed(seed);
   };
 
-  const [value, setValue] = useState(40);
+  const handleSliderChange = (event: any) => {
+    setSteps(event.target.value);
+  };
 
-  const handleSliderChange = (event:any) => {
-    setValue(event.target.value);
+  const handleGuidanceScaleChange = (event: any) => {
+    setGuidanceScale(event.target.value);
   };
 
   return (
@@ -238,29 +297,52 @@ export default function PromptDetail() {
                     <CardDescription>{description}</CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-6">
-                    <div className="grid gap-2">
-                      <Label htmlFor="description">
-                        Prompt&nbsp;
-                        {promptError && (
-                          <span className="text-sm text-red-500">
-                            {promptError}
-                          </span>
-                        )}
-                      </Label>
-                      <Textarea
-                        id="description"
-                        value={prompt}
-                        onChange={handlePromptChange}
-                      />
+                    <div className="grid gap-2 grid-cols-2">
+                      <div className="grid gap-2">
+                        <Label htmlFor="description">
+                          Prompt&nbsp;
+                          {promptError && (
+                            <span className="text-sm text-red-500">
+                              {promptError}
+                            </span>
+                          )}
+                        </Label>
+                        <Textarea
+                          id="description"
+                          className="h-36"
+                          value={prompt}
+                          onChange={handlePromptChange}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="description">Negative Prompt</Label>
+                        <Textarea
+                          id="description"
+                          className="h-36"
+                          value={negativePrompt || ""}
+                          onChange={handleNegativePromptChange}
+                        />
+                      </div>
                     </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="description">Negative Prompt</Label>
-                      <Textarea id="description" value={negativePrompt || ""} />
-                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                       <div className="grid gap-2">
                         <Label htmlFor="model">Model</Label>
-                        <Select defaultValue="default">
+                        <select
+                          onChange={handleModelChange}
+                          className="select select-accent w-full max-w-xs"
+                        >
+                          <option selected>{model}</option>
+                          {modelNames &&
+                            modelNames.map((modelName, index) => (
+                              <option>{modelName}</option>
+                            ))}
+                        </select>
+
+                        {/* <Select
+                          defaultValue="default"
+                          onValueChange={handleModelChange}
+                        >
                           <SelectTrigger id="model">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
@@ -273,25 +355,24 @@ export default function PromptDetail() {
                                 </SelectItem>
                               ))}
                           </SelectContent>
-                        </Select>
+                        </Select> */}
                       </div>
-
-                      <div className="p-4">
-                        <input
-                          type="range"
-                          min={0}
-                          max={100}
-                          value={value}
-                          className="range"
-                          onChange={handleSliderChange}
-                        />
-                        <input type="range" min={0} max="100" value="40" className="range range-accent" />
-                        <p>当前值：{value}</p>
-                      </div>
-
                       <div className="grid gap-2">
                         <Label htmlFor="sampler">Sampler</Label>
-                        <Select defaultValue="default">
+                        <select
+                          onChange={handleSamplerChange}
+                          className="select select-accent w-full max-w-xs"
+                        >
+                          <option selected>{sampler}</option>
+                          {samplerList &&
+                            samplerList.map((samplerName, index) => (
+                              <option>{samplerName}</option>
+                            ))}
+                        </select>
+                        {/* <Select
+                          defaultValue="default"
+                          onValueChange={handleSamplerChange}
+                        >
                           <SelectTrigger id="sampler">
                             <SelectValue placeholder="Select" />
                           </SelectTrigger>
@@ -304,7 +385,83 @@ export default function PromptDetail() {
                                 </SelectItem>
                               ))}
                           </SelectContent>
+                        </Select> */}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="width">Width</Label>
+                        <Select
+                          defaultValue="default"
+                          onValueChange={handleWidthChange}
+                        >
+                          <SelectTrigger id="width">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="default">{width}</SelectItem>
+                            <SelectItem value="768">768</SelectItem>
+
+                            {/* {modelNames &&
+                              modelNames.map((modelName, index) => (
+                                <SelectItem value={modelName}>
+                                  {modelName}
+                                </SelectItem>
+                              ))} */}
+                          </SelectContent>
                         </Select>
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="height">Height</Label>
+                        <Select
+                          defaultValue="default"
+                          onValueChange={handleHeightChange}
+                        >
+                          <SelectTrigger id="height">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="default">{height}</SelectItem>
+                            <SelectItem value="768">768</SelectItem>
+
+                            {/* {samplerList &&
+                              samplerList.map((samplerName, index) => (
+                                <SelectItem value={samplerName}>
+                                  {samplerName}
+                                </SelectItem>
+                              ))} */}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="guidanceScale">
+                          Guidance Scale <span>：{guidanceScale}</span>
+                        </Label>
+                        <input
+                          id="guidanceScale"
+                          type="range"
+                          min="1"
+                          max={maxScale}
+                          value={guidanceScale}
+                          className="range range-xs"
+                          onChange={handleGuidanceScaleChange}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="steps">
+                          Steps <span>：{steps}</span>
+                        </Label>
+                        <input
+                          id="steps"
+                          type="range"
+                          min="1"
+                          max={maxSteps}
+                          value={steps}
+                          className="range range-xs"
+                          onChange={handleStepsChange}
+                        />
                       </div>
                     </div>
                     <div className="grid grid-cols-3 gap-4">
@@ -355,10 +512,13 @@ export default function PromptDetail() {
                       </div>
                     </div>
                   </CardContent>
-                  <Separator className="mt-5 mb-2" />
-                  <h1 className="text-4xl">
-                    <span className="text-xl">¥</span>&nbsp;{guidanceScale}
-                  </h1>
+                  <Separator className="my-5" />
+
+                  <div className="grid gap-2 my-4">
+                    <h1 className="text-4xl">
+                      <span className="text-xl">¥</span>&nbsp;{guidanceScale}
+                    </h1>
+                  </div>
                   <CardFooter className="justify-end space-x-2">
                     <Button variant="outline">
                       <Heart size={16} />
