@@ -42,7 +42,7 @@ public class ProductController {
         return RestBean.success(productPromptService.getSamplerByModelId(modelId));
     }
 
-    @GetMapping("/getSupportedResolutionsLeftByModelID")
+    @GetMapping("/getSupportedResolutionsByModelID")
     public RestBean<List<String>> getSupportedResolutionsByModelID(@RequestParam("modelID") String modelID) {
         return RestBean.success(productModelService.getSupportedResolutionsByModelID(modelID));
     }
