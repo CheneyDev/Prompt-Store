@@ -43,6 +43,9 @@ export default function PromptDetail() {
 
   const [isGenerated, setIsGenerated] = useState(false);
 
+
+
+
   const [id, setId] = useState("");
   const [sku, setSku] = useState("");
   const [productName, setProductName] = useState("");
@@ -245,10 +248,6 @@ export default function PromptDetail() {
   };
 
   const handleSubmit = async (event: any) => {
-    // event.preventDefault();
-    // if (promptError || seedError) {
-    //   return;
-    // }
     const encodedPrompt = encodeURIComponent(prompt);
     const encodedNegativePrompt = encodeURIComponent(String(negativePrompt));
     const encodedModel = encodeURIComponent(model);
@@ -289,6 +288,13 @@ export default function PromptDetail() {
     } catch (error) {
       console.error("Error fetching generated image:", error);
     }
+  };
+
+  const handleCloseDialog = () => {
+    setTimeout(() => {
+      setIsGenerated(false);
+    }, 1000);
+    
   };
 
   return (
@@ -488,7 +494,7 @@ export default function PromptDetail() {
                       <form method="dialog" className="modal-box p-12">
                         {isGenerated ? <p>ssss</p> : <Generating />}
                         <div className="modal-action">
-                          <button className="btn">关闭</button>
+                          <button className="btn" onClick={handleCloseDialog}>关闭</button>
                         </div>
                       </form>
                     </dialog>

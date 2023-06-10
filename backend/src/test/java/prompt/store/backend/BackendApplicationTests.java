@@ -1,5 +1,6 @@
 package prompt.store.backend;
 
+import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import prompt.store.backend.entity.ProductPrompt;
 import prompt.store.backend.service.ProductModelService;
 import prompt.store.backend.service.ProductPromptService;
+import prompt.store.backend.utils.ReplicateApi;
 
 @SpringBootTest
 class BackendApplicationTests {
@@ -21,32 +23,16 @@ class BackendApplicationTests {
 		System.out.println(encoder.encode("@123456"));
 	}
 
-	@Resource
-	ProductPromptService productPromptService;
-	@Test
-	void test2() {
-		ProductPrompt productPrompt =productPromptService.getProductPromptBySku("#0001");
-		System.out.println(productPrompt.getProductName());
-		System.out.println(productPrompt.getCoverImageUrl());
-		System.out.println(productPrompt.getPrompt());
-		System.out.println(productPrompt.toString());
-	}
+
 
 	@Resource
-	ProductModelService productModelService;
+	ReplicateApi replicateApi;
 	@Test
-	void test3() {
-		System.out.println(productModelService.getProductModels());
+	void test6() {
+//		String res= replicateApi.generateImage("monkey");
+//		JSONObject jsonObject = JSONObject.parseObject(res);
+//		String id=jsonObject.getString("id");
+		System.out.println(replicateApi.getPredictionStatus("tuznbgbbyq5k2wjthu4s7fhbve"));
 	}
 
-	@Test
-	void test4() {
-		System.out.println(productModelService.getProductModelNamesBySku("#0001"));
-	}
-
-
-	@Test
-	void test5() {
-		System.out.println(productPromptService.getSamplerLeftBySku("#0001"));
-	}
 }
