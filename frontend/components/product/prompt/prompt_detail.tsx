@@ -21,6 +21,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Component, Heart, Scale } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import SwapComponent from "./ui/SwapEmoji";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import SwapEmoji from "./ui/SwapEmoji";
+import Generating from "./ui/generating-dialog";
 
 const encodedSku = encodeURIComponent("#0001");
 let modelNames: any[] = [];
@@ -29,6 +40,8 @@ let resolutionList: any[] = [];
 
 export default function PromptDetail() {
   const [samplerList, setSamplerList] = useState([]);
+
+  const [isGenerated, setIsGenerated] = useState(false);
 
   const [id, setId] = useState("");
   const [sku, setSku] = useState("");
@@ -232,10 +245,10 @@ export default function PromptDetail() {
   };
 
   const handleSubmit = async (event: any) => {
-    event.preventDefault();
-    if (promptError || seedError) {
-      return;
-    }
+    // event.preventDefault();
+    // if (promptError || seedError) {
+    //   return;
+    // }
     const encodedPrompt = encodeURIComponent(prompt);
     const encodedNegativePrompt = encodeURIComponent(String(negativePrompt));
     const encodedModel = encodeURIComponent(model);
@@ -246,7 +259,7 @@ export default function PromptDetail() {
     const encodedGuidanceScale = encodeURIComponent(guidanceScale);
     const encodedSeed = encodeURIComponent(seed);
     const encodedNumOutputs = encodeURIComponent(numOutputs);
-      
+
     try {
       const response = await axios.post(
         `http://localhost:8080/generate`,
@@ -268,6 +281,7 @@ export default function PromptDetail() {
       );
       const res = response.data;
       if (res) {
+        setIsGenerated(true);
         // setGeneratedImage(res.message);
       } else {
         return null;
@@ -276,7 +290,6 @@ export default function PromptDetail() {
       console.error("Error fetching generated image:", error);
     }
   };
-
 
   return (
     <>
@@ -455,7 +468,7 @@ export default function PromptDetail() {
 
                   <div className="grid gap-2 my-4">
                     <h1 className="text-4xl">
-                      <span className="text-xl">¥</span>&nbsp;0.15
+                      <span className="text-xl">¥</span>&nbsp;99999.89
                     </h1>
                   </div>
                   <CardFooter className="justify-end space-x-2">
@@ -463,10 +476,22 @@ export default function PromptDetail() {
                       <Heart size={16} />
                       &nbsp;&nbsp;加入心愿单
                     </Button>
-                    <Button onClick={handleSubmit}>
+
+                    <Button onClick={() => {window.my_modal_5.showModal();handleSubmit(event);}}>
                       <Component size={16} />
                       &nbsp;&nbsp;立即制作
                     </Button>
+                    <dialog
+                      id="my_modal_5"
+                      className="modal modal-bottom sm:modal-middle"
+                    >
+                      <form method="dialog" className="modal-box p-12">
+                        {isGenerated ? <p>ssss</p> : <Generating />}
+                        <div className="modal-action">
+                          <button className="btn">关闭</button>
+                        </div>
+                      </form>
+                    </dialog>
                   </CardFooter>
                 </Card>
               </div>

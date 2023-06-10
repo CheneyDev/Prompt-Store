@@ -47,9 +47,13 @@ public class ProductController {
     }
 
     @PostMapping("/generate")
-    public RestBean<String> generate(@RequestBody Generate generateEntity){
-          System.out.println(generateEntity);
-
+    public RestBean<String> generate(@RequestBody Generate generateEntity) {
+        System.out.println(generateEntity);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return RestBean.success("success");
     }
 }
