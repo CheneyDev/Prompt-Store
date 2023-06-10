@@ -1,4 +1,4 @@
-import SwapEmoji from "./SwapEmoji";
+import SwapEmoji from "./swap-emoji";
 
 export default function Generating() {
 

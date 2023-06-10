@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Component, Heart, Scale } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import SwapComponent from "./ui/SwapEmoji";
+import SwapComponent from "./ui/swap-emoji";
 import {
   Dialog,
   DialogContent,
@@ -30,7 +30,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import SwapEmoji from "./ui/SwapEmoji";
+import SwapEmoji from "./ui/swap-emoji";
 import Generating from "./ui/generating-dialog";
 
 const encodedSku = encodeURIComponent("#0001");
