@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Component, Heart, Scale } from "lucide-react";
+import { Component, Heart, Scale, X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import SwapComponent from "./ui/swap-emoji";
 import {
@@ -32,6 +32,10 @@ import {
 } from "@/components/ui/dialog";
 import SwapEmoji from "./ui/swap-emoji";
 import Generating from "./ui/generating-dialog";
+
+import Generated from "./ui/generated-dialog";
+
+
 
 const encodedSku = encodeURIComponent("#0001");
 let modelNames: any[] = [];
@@ -295,11 +299,7 @@ export default function PromptDetail() {
     }
   };
 
-  const handleCloseDialog = () => {
-    setTimeout(() => {
-      setIsGenerated(false);
-    }, 1000);
-  };
+
 
   return (
     <>
@@ -501,25 +501,13 @@ export default function PromptDetail() {
                       className="modal modal-bottom sm:modal-middle"
                     >
                       <form method="dialog" className="modal-box p-12">
+                      
                         {isGenerated ? (
-                          <figure className="px-10 pt-10">
-                            <img
-                              id="generated-image"
-                              src={generatedResult}
-                              alt="Generated Image"
-                              className="rounded-xl"
-                            />
-                          </figure>
+                          <Generated generatedResult={generatedResult} setIsGenerated={setIsGenerated}/>
                         ) : (
-                          <Generating />
+                          <Generating  setIsGenerated={setIsGenerated}/>
+                          
                         )}
-                        {/* <img id="image-element" alt="Generated Image" /> */}
-
-                        <div className="modal-action">
-                          <button className="btn" onClick={handleCloseDialog}>
-                            关闭
-                          </button>
-                        </div>
                       </form>
                     </dialog>
                   </CardFooter>

@@ -53,23 +53,30 @@ public class ProductController {
 
     @PostMapping("/generate")
     public RestBean<String> generate(@RequestBody Generate generateEntity) {
-        System.out.println(generateEntity);
-        String predictionResponse = replicateApi.generateImage(generateEntity);
-        String predictionId= JSONObject.parseObject(predictionResponse).getString("id");
-        System.out.println(predictionId);
-        String predictionStatus;
-        do {
-            predictionStatus = replicateApi.getPredictionStatus(predictionId);
-            System.out.println(predictionStatus);
-            // 延时一段时间再次查询
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } while (!predictionStatus.contains("\"status\":\"succeeded\""));
-        String outputImageUrl = replicateApi.extractOutputImageUrl(predictionStatus);
-        String base64Image = replicateApi.downloadAndConvertToBase64(outputImageUrl);
+//        System.out.println(generateEntity);
+//        String predictionResponse = replicateApi.generateImage(generateEntity);
+//        String predictionId= JSONObject.parseObject(predictionResponse).getString("id");
+//        System.out.println(predictionId);
+//        String predictionStatus;
+//        do {
+//            predictionStatus = replicateApi.getPredictionStatus(predictionId);
+//            System.out.println(predictionStatus);
+//            // 延时一段时间再次查询
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        } while (!predictionStatus.contains("\"status\":\"succeeded\""));
+//        String outputImageUrl = replicateApi.extractOutputImageUrl(predictionStatus);
+//        String base64Image = replicateApi.downloadAndConvertToBase64(outputImageUrl);
+        String base64Image = replicateApi.downloadAndConvertToBase64("https://replicate.delivery/pbxt/XAYedy6WKDWkACx2zELnePY1rDEoXLq1zVtBpg6EW8JqlNFRA/out-0.png");
+        //休眠5秒
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return RestBean.success(base64Image);
 
 
