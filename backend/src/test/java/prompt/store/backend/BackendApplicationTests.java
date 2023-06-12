@@ -2,6 +2,7 @@ package prompt.store.backend;
 
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
+import org.apache.http.entity.StringEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,6 +34,13 @@ class BackendApplicationTests {
 //		JSONObject jsonObject = JSONObject.parseObject(res);
 //		String id=jsonObject.getString("id");
 		System.out.println(replicateApi.getPredictionStatus("tuznbgbbyq5k2wjthu4s7fhbve"));
+	}
+
+	@Test
+	void test7() {
+		String prompt="dsds";
+		String requestBody = "{\"version\": \"1f7f51e8b2e43ade14fb7d6d62385854477e078ac870778aafecf70c0a6de006\", \"input\": {\"prompt\": \"" + prompt + "\"}}";
+		System.out.println(requestBody);
 	}
 
 }

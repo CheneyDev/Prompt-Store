@@ -27,9 +27,11 @@
 
 ## Prompts
 
-| Model                                                        | Prompt                                                       | Negative Prompt | pixel | steps | Scale | Sampler           | Seed |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | --------------- | ----- | ----- | ----- | ----------------- | ---- |
-| [cjwbw/analog-diffusion](https://replicate.com/cjwbw/analog-diffusion) | peasant and dragon combat, wood cutting style , viking era, bevel with rune | blur haze       | 512   | 20    | 7     | K_EULER_ANCESTRAL | -1   |
+| Model                                                        | Example                                                      | Prompt                                                       | Negative Prompt | pixel | steps | Scale | Sampler           | Seed |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | --------------- | ----- | ----- | ----- | ----------------- | ---- |
+| [cjwbw/analog-diffusion](https://replicate.com/cjwbw/analog-diffusion) |                                                              | peasant and dragon combat, wood cutting style , viking era, bevel with rune | blur haze       | 512   | 20    | 7     | K_EULER_ANCESTRAL | -1   |
+|                                                              | ![img](./assets/README/690b7b48-044c-4dcb-ab31-f8203d5d1acb.webp)<br />https://krea-prod-v1-generations.s3.us-east-1.amazonaws.com/images/690b7b48-044c-4dcb-ab31-f8203d5d1acb.webp | seaside tail train rural japan, a collage painting, in the style of wes anderson, lola dupre, david hockney, isolated on negative white space background dark monochrome fluorescent spraypaint accents volumetric octane render, not double decker |                 |       |       |       |                   |      |
+|                                                              | ![img](./assets/README/57b7bbbd-f388-4e28-ac0b-7e40f1807799.webp)<br />https://krea-prod-v1-generations.s3.us-east-1.amazonaws.com/images/57b7bbbd-f388-4e28-ac0b-7e40f1807799.webp | Japan crafts explorations, a poster design for a contemporary graphic design exhibition, by Rene Magritte, Andy Warhol, Alex Yanes, Tadanori Yokoo, Yoshio Awazu |                 |       |       |       |                   |      |
 
 
 
@@ -39,6 +41,7 @@
 | ---------------------------------- | ------------------------------------------------------------ | ------- | ------------------------------------------------------------ |
 | Chinese traditional pattern        | ![00002-302871561.png](./assets/README/00002-302871561.jpeg)![00001-3421169598.png](./assets/README/00001-3421169598.jpeg) | LYCORIS | https://civitai.com/models/29858/chinese-traditional-pattern |
 | Ukiyo-e FuYue Style Background-Mix | ![img](./assets/README/342492.jpeg)                          | LORA    | https://civitai.com/models/25222/ukiyo-e-fuyue-style-background-mix |
+|                                    |                                                              |         | https://replicate.com/ai-forever/kandinsky-2                 |
 
 
 
