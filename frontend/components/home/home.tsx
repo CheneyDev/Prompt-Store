@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { AlbumArtwork } from "@/components/home/album-artwork"
-import { Menu } from "@/components/home/menu"
 import { PodcastEmptyPlaceholder } from "@/components/home/podcast-empty-placeholder"
 import { Sidebar } from "@/components/home/sidebar"
 import { listenNowAlbums, madeForYouAlbums } from "@/data/albums"
@@ -15,6 +14,7 @@ import { PlusCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Session } from "inspector"
+import Navbar from "@/components/home/navbar"
 
 export const metadata: Metadata = {
   title: "Home | Prompt Store",
@@ -41,12 +41,12 @@ export default function HomePage() {
         />
       </div>
       <div className="hidden md:block">
-        <Menu />
+        <Navbar />
         <div className="border-t">
           <div className="bg-background">
-            <div className="grid lg:grid-cols-5">
-              <Sidebar playlists={playlists} className="hidden lg:block" />
-              <div className="col-span-3 lg:col-span-4 lg:border-l">
+            {/* <div className="grid lg:grid-cols-5"> */}
+              {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}
+              {/* <div className="col-span-3 lg:col-span-4 lg:border-l"> */}
                 <div className="h-full px-4 py-6 lg:px-8">
                   <Tabs defaultValue="music" className="h-full space-y-6">
                     <div className="space-between flex items-center">
@@ -144,10 +144,10 @@ export default function HomePage() {
                     </TabsContent>
                   </Tabs>
                 </div>
-              </div>
-            </div>
+              {/* </div> */}
+            {/* </div> */}
           </div>
-        </div>
+        N</div>
       </div>
     </>
   )
