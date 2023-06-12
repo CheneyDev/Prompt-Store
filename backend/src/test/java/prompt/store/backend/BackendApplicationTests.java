@@ -33,7 +33,7 @@ class BackendApplicationTests {
 //		String res= replicateApi.generateImage("monkey");
 //		JSONObject jsonObject = JSONObject.parseObject(res);
 //		String id=jsonObject.getString("id");
-		System.out.println(replicateApi.getPredictionStatus("tuznbgbbyq5k2wjthu4s7fhbve"));
+		System.out.println(replicateApi.getPredictionStatus("uswymqbbvmddccz5rtejj4crge"));
 	}
 
 	@Test

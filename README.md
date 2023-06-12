@@ -35,7 +35,7 @@
 |                                                              | ![img](./assets/README/57b7bbbd-f388-4e28-ac0b-7e40f1807799-20230612140256859.webp) | Japan crafts explorations, a poster design for a contemporary graphic design exhibition, by Rene Magritte, Andy Warhol, Alex Yanes, Tadanori Yokoo, Yoshio Awazu |                 |       |       |       |                   |      |
 |                                                              | ![iamg](./assets/README/dc81fa24-ded9-4ba2-be67-2b69dacf9740-20230612140424335.webp) | The Monkey in a General's Uniform riding a charging ram into battle |                 |       |       |       |                   |      |
 |                                                              | ![img](https://rare-gallery.com/thumbs/1051032-abstract-LSD-bright-trippy-color-flower-psychedelic-art.png) | abstract, LSD, bright, trippy, color, flower, psychedelic art |                 |       |       |       |                   |      |
-|                                                              |                                                              | Beautiful abstraction of liquid paints in slow blending flow mixing together gently,blue |                 |       |       |       |                   |      |
+|                                                              | ![img](./assets/README/f9c1a007-fcdf-4ea2-9f95-3e91c2bddc17.webp) | teenage mutant ninja turtles meet the beastie boys, painted by van gogh |                 |       |       |       |                   |      |
 
 
 

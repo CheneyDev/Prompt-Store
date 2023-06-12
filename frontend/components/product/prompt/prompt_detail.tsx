@@ -43,9 +43,6 @@ export default function PromptDetail() {
 
   const [isGenerated, setIsGenerated] = useState(false);
 
-
-
-
   const [id, setId] = useState("");
   const [sku, setSku] = useState("");
   const [productName, setProductName] = useState("");
@@ -247,6 +244,7 @@ export default function PromptDetail() {
     setGuidanceScale(event.target.value);
   };
 
+  const [generatedResult, setGeneratedResult] = useState("");
   const handleSubmit = async (event: any) => {
     const encodedPrompt = encodeURIComponent(prompt);
     const encodedNegativePrompt = encodeURIComponent(String(negativePrompt));
@@ -281,7 +279,14 @@ export default function PromptDetail() {
       const res = response.data;
       if (res) {
         setIsGenerated(true);
-        // setGeneratedImage(res.message);
+        // const imgElement = document.getElementById("image-element"); // 假设图像元素的 ID 为 'image-element'
+        // window.onload = () => {
+        //   const imgElement = document.getElementById("generated-image") as HTMLImageElement;
+        //   if (imgElement) {
+        //     imgElement.src = "data:image/png;base64," + res.message;
+        //   }
+        // };
+        setGeneratedResult("data:image/png;base64," + res.message);
       } else {
         return null;
       }
@@ -294,7 +299,6 @@ export default function PromptDetail() {
     setTimeout(() => {
       setIsGenerated(false);
     }, 1000);
-    
   };
 
   return (
@@ -483,7 +487,12 @@ export default function PromptDetail() {
                       &nbsp;&nbsp;加入心愿单
                     </Button>
 
-                    <Button onClick={() => {window.my_modal_5.showModal();handleSubmit(event);}}>
+                    <Button
+                      onClick={() => {
+                        window.my_modal_5.showModal();
+                        handleSubmit(event);
+                      }}
+                    >
                       <Component size={16} />
                       &nbsp;&nbsp;立即制作
                     </Button>
@@ -492,9 +501,24 @@ export default function PromptDetail() {
                       className="modal modal-bottom sm:modal-middle"
                     >
                       <form method="dialog" className="modal-box p-12">
-                        {isGenerated ? <p>ssss</p> : <Generating />}
+                        {isGenerated ? (
+                          <figure className="px-10 pt-10">
+                            <img
+                              id="generated-image"
+                              src={generatedResult}
+                              alt="Generated Image"
+                              className="rounded-xl"
+                            />
+                          </figure>
+                        ) : (
+                          <Generating />
+                        )}
+                        {/* <img id="image-element" alt="Generated Image" /> */}
+
                         <div className="modal-action">
-                          <button className="btn" onClick={handleCloseDialog}>关闭</button>
+                          <button className="btn" onClick={handleCloseDialog}>
+                            关闭
+                          </button>
                         </div>
                       </form>
                     </dialog>

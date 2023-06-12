@@ -1,5 +1,10 @@
 package prompt.store.backend.utils;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -10,6 +15,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import prompt.store.backend.entity.Generate;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 
 @Component
@@ -17,10 +26,20 @@ public class ReplicateApi {
     @Value("${replicate.api.token}")
     private String replicateApiToken;
 
-    public String generateImage(String prompt) {
+    public String generateImage(Generate generate) {
         HttpClient httpClient = HttpClients.createDefault();
         String apiUrl = "https://api.replicate.com/v1/predictions";
         String jsonResponse = "";
+
+        String prompt = URLDecoder.decode(generate.getPrompt(), StandardCharsets.UTF_8);
+        String negativePrompt = URLDecoder.decode(generate.getNegativePrompt(), StandardCharsets.UTF_8);
+        String model = URLDecoder.decode(generate.getModel(), StandardCharsets.UTF_8);
+        String sampler = URLDecoder.decode(generate.getSampler(), StandardCharsets.UTF_8);
+        String width = URLDecoder.decode(generate.getWidth(), StandardCharsets.UTF_8);
+        String height = URLDecoder.decode(generate.getHeight(), StandardCharsets.UTF_8);
+        String steps = URLDecoder.decode(generate.getSteps(), StandardCharsets.UTF_8);
+        String guidanceScale = URLDecoder.decode(generate.getGuidanceScale(), StandardCharsets.UTF_8);
+        String seed = URLDecoder.decode(generate.getSeed(), StandardCharsets.UTF_8);
 
         try {
             // 构建POST请求
@@ -29,7 +48,35 @@ public class ReplicateApi {
             httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 
             // 构建请求体
-            String requestBody = "{\"version\": \"1f7f51e8b2e43ade14fb7d6d62385854477e078ac870778aafecf70c0a6de006\", \"input\": {\"prompt\": \"" + prompt + "\"}}";
+            StringBuilder requestBodyBuilder = new StringBuilder();
+            requestBodyBuilder.append("{\"version\": \"1f7f51e8b2e43ade14fb7d6d62385854477e078ac870778aafecf70c0a6de006\", \"input\": {\"prompt\": \"")
+                    .append(prompt)
+                    .append("\"");
+
+            if (negativePrompt != null && !negativePrompt.isEmpty() && !negativePrompt.equals("null")) {
+                requestBodyBuilder.append(", \"negative_prompt\": \"").append(negativePrompt).append("\"");
+            }
+            if (sampler != null && !sampler.isEmpty() && !sampler.equals("null")) {
+                requestBodyBuilder.append(", \"sampler\": \"").append(sampler).append("\"");
+            }
+            if (width != null && !width.isEmpty() && !width.equals("null")) {
+                requestBodyBuilder.append(", \"width\": ").append(width);
+            }
+            if (height != null && !height.isEmpty() && !height.equals("null")) {
+                requestBodyBuilder.append(", \"height\": ").append(height);
+            }
+            if (steps != null && !steps.isEmpty() && !steps.equals("null")) {
+                requestBodyBuilder.append(", \"num_inference_steps\": ").append(steps);
+            }
+            if (guidanceScale != null && !guidanceScale.isEmpty() && !guidanceScale.equals("null")) {
+                requestBodyBuilder.append(", \"guidance_scale\": ").append(guidanceScale);
+            }
+            if (seed != null && !seed.isEmpty() && !seed.equals("null")) {
+                requestBodyBuilder.append(", \"seed\": ").append(seed);
+            }
+
+            requestBodyBuilder.append("}}");
+            String requestBody = requestBodyBuilder.toString();
             httpPost.setEntity(new StringEntity(requestBody));
 
             // 发送请求
@@ -38,8 +85,11 @@ public class ReplicateApi {
             // 获取响应内容
             jsonResponse = EntityUtils.toString(response.getEntity());
 
+
             // 处理响应内容，可以根据需要进行解析
             // ...
+            return jsonResponse;
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,5 +124,33 @@ public class ReplicateApi {
         }
 
         return jsonResponse;
+    }
+
+    public String extractOutputImageUrl(String predictionStatus) {
+        JSONObject jsonObject = JSONObject.parseObject(predictionStatus);
+        JSONArray outputArray = jsonObject.getJSONArray("output");
+        if (outputArray != null && outputArray.size() > 0) {
+            return outputArray.getString(0);
+        }
+        return null;
+    }
+
+    public String downloadAndConvertToBase64(String imageUrl) {
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(imageUrl);
+        try {
+            HttpResponse response = httpClient.execute(httpGet);
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                // 下载图片
+                byte[] imageBytes = IOUtils.toByteArray(entity.getContent());
+
+                // 将图片转换为Base64字符串
+                return Base64.encodeBase64String(imageBytes);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
