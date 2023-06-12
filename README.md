@@ -7,6 +7,8 @@
 | [Google Search: next js spring boot](https://www.google.com/search?q=next+js+springboot&newwindow=1&ei=Pf52ZLyWJeSK0PEPt_6wgAY&ved=0ahUKEwj8qJ6Hi5__AhVkBTQIHTc_DGAQ4dUDCBA&uact=5&oq=next+js+springboot&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIHCAAQDRCABDIHCAAQDRCABDIGCAAQHhANMggIABAIEB4QDTIICAAQigUQhgMyCAgAEIoFEIYDMggIABCKBRCGAzIICAAQigUQhgM6CggAEEcQ1gQQsAM6EAguEIoFEMcBENEDELADEEM6CggAEIoFELADEEM6DQgAEIoFELEDEIMBEEM6BwgAEIoFEEM6CAgAEIoFEJECOgUIABCABDoGCAAQFhAeSgQIQRgAUOgEWIwkYKIpaAFwAXgAgAHbBYgBhSOSAQsyLTMuNy4wLjEuMZgBAKABAcABAcgBCg&sclient=gws-wiz-serp) |                                                              |
 | [Youtube: Full Stack Spring Boot + Next.js Tutorial](https://www.youtube.com/watch?v=Z_4Tqmv8Oa4) | 这里作者有一个文档网站似乎很有帮助<br />[Full Stack Book - backend](https://www.fullstackbook.com/backend/tutorials/springboot-todo/)<br />[Full Stack Book - frontend](https://www.fullstackbook.com/frontend/tutorials/nextjs-todo/) |
 | [Youtube: Part 1 : FullStack Application Spring Boot NextJs](https://www.youtube.com/watch?v=_aHGjkOyVso) | Book Store                                                   |
+|                                                              |                                                              |
+|                                                              |                                                              |
 
 ## Prompt Collection
 
@@ -22,6 +24,7 @@
 | https://lexica.art/                                          | Prompt 来源     |
 | https://promptbase.com/                                      | 参考售卖内容    |
 | Danbooru 标签超市https://tags.novelai.dev/                   | 风格化提示 分类 |
+| [wallpaper site](https://rare-gallery.com/1051032-abstract-lsd-bright-trippy-color-flower-psychedelic-art.html) | 抽象图片        |
 
 ## Prompts
 
@@ -31,7 +34,8 @@
 |                                                              | ![img](./assets/README/690b7b48-044c-4dcb-ab31-f8203d5d1acb-20230612140323623.webp) | seaside tail train rural japan, a collage painting, in the style of wes anderson, lola dupre, david hockney, isolated on negative white space background dark monochrome fluorescent spraypaint accents volumetric octane render, not double decker |                 |       |       |       |                   |      |
 |                                                              | ![img](./assets/README/57b7bbbd-f388-4e28-ac0b-7e40f1807799-20230612140256859.webp) | Japan crafts explorations, a poster design for a contemporary graphic design exhibition, by Rene Magritte, Andy Warhol, Alex Yanes, Tadanori Yokoo, Yoshio Awazu |                 |       |       |       |                   |      |
 |                                                              | ![iamg](./assets/README/dc81fa24-ded9-4ba2-be67-2b69dacf9740-20230612140424335.webp) | The Monkey in a General's Uniform riding a charging ram into battle |                 |       |       |       |                   |      |
-|                                                              | ![abstract, LSD, bright, trippy, color, flower, psychedelic art](https://rare-gallery.com/uploads/posts/1051032-abstract-LSD-bright-trippy-color-flower-psychedelic-art.png)<br />https://rare-gallery.com/thumbs/1051032-abstract-LSD-bright-trippy-color-flower-psychedelic-art.png | abstract, LSD, bright, trippy, color, flower, psychedelic art |                 |       |       |       |                   |      |
+|                                                              | ![img](https://rare-gallery.com/thumbs/1051032-abstract-LSD-bright-trippy-color-flower-psychedelic-art.png) | abstract, LSD, bright, trippy, color, flower, psychedelic art |                 |       |       |       |                   |      |
+|                                                              |                                                              | Beautiful abstraction of liquid paints in slow blending flow mixing together gently,blue |                 |       |       |       |                   |      |
 
 
 
