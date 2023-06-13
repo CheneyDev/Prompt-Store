@@ -27,9 +27,10 @@ public interface ProductModelMapper {
     @Select("SELECT * FROM product_models")
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "mainImagePath", column = "main_image_path"),
             @Result(property = "modelName", column = "model_name"),
             @Result(property = "modelDetailsUrl", column = "model_details_url"),
-            @Result(property = "modelApiUrl", column = "model_api_url"),
+            @Result(property = "modelApiId", column = "model_api_id"),
             @Result(property = "defaultPrompt", column = "default_prompt"),
             @Result(property = "defaultNegativePrompt", column = "default_negative_prompt"),
             @Result(property = "defaultResolution", column = "default_resolution"),
@@ -45,5 +46,8 @@ public interface ProductModelMapper {
             @Result(property = "seed", column = "seed")
     })
     List<ProductModel> getProductModels();
+
+    @Select("SELECT model_api_id FROM product_models WHERE model_name=#{modelName};")
+    String getModelApiIdByModelName(String modelName);
 
 }

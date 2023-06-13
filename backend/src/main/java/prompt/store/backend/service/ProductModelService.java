@@ -11,4 +11,6 @@ public interface ProductModelService {
     List<String>  getSupportedResolutionsByModelID(String modelID);
     List<ProductModel> getProductModels();
 
+    String getModelApiIdByModelName(String modelName);
+
 }

@@ -7,9 +7,10 @@ import java.util.List;
 @Data
 public class ProductModel {
     private int id;
+    private String mainImagePath;
     private String modelName;
     private String modelDetailsUrl;
-    private String modelApiUrl;
+    private String modelApiId;
     private String defaultPrompt;
     private String defaultNegativePrompt;
     private String defaultResolution;
@@ -23,4 +24,10 @@ public class ProductModel {
     private float defaultScale;
     private float maxScale;
     private int seed;
+
+    private String mainImageURL;
+
+    public void setMainImageURL(String objectStorageUrl) {
+        this.mainImageURL = objectStorageUrl + this.mainImagePath;
+    }
 }

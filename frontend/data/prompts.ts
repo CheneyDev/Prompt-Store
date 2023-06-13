@@ -1,4 +1,5 @@
 import axios from "axios";
+import { use, useState } from "react";
 
 export interface Prompt {
   id: number;
@@ -10,14 +11,18 @@ export interface Prompt {
 
 export const fetchPrompts = async (): Promise<Prompt[]> => {
   try {
+
     const response = await axios.get("http://localhost:8080/getPromptList",{
         withCredentials: true,
     });
-    const { data } = response.status;
+    const res = response.data;
+    let data: any[] = [];
+    data = res.message;
     console.log("data", data);
 
+
     const prompts: Prompt[] = data.map((item: any) => ({
-      id: item.id,
+      id: item.sku,
       sku: item.sku,
       productName: item.productName,
       description: item.description,

@@ -32,11 +32,16 @@ export function AlbumArtwork({
   className,
   ...props
 }: AlbumArtworkProps) {
+
+const handleClick = () => {
+  return window.location.href = `product/prompt/detail?sku=${album.id}`;
+}
+
   return (
     <div className={cn("space-y-3", className)} {...props}>
       <ContextMenu>
         <ContextMenuTrigger>
-          <div className="overflow-hidden rounded-md">
+          <div onClick={handleClick} className="overflow-hidden rounded-md">
             <Image
               src={album.mainImageURL}
               alt={album.productName}

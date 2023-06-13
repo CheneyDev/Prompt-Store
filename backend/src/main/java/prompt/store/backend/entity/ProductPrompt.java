@@ -39,7 +39,5 @@ public class ProductPrompt {
 
     public void setMainImageUrl(String objectStorageUrl) {
         this.mainImageURL = objectStorageUrl + this.mainImagePath;
-        System.out.println(objectStorageUrl);
-        System.out.println("sasaa"+this.mainImageURL);
     }
 }

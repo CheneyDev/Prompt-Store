@@ -34,21 +34,25 @@ import SwapEmoji from "./ui/swap-emoji";
 import Generating from "./ui/generating-dialog";
 
 import Generated from "./ui/generated-dialog";
+import { useRouter } from "next/router";
 
-
-
-const encodedSku = encodeURIComponent("sku0002");
 let modelNames: any[] = [];
 let modelIds: any[] = [];
 let resolutionList: any[] = [];
 
 export default function PromptDetail() {
+  let sku="";
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+     sku = urlParams.get('sku');
+  }, []);
+
   const [samplerList, setSamplerList] = useState([]);
 
   const [isGenerated, setIsGenerated] = useState(false);
 
   const [id, setId] = useState("");
-  const [sku, setSku] = useState("");
+  // const [sku, setSku] = useState("");
   const [productName, setProductName] = useState("");
   const [mainImageURL, setMainImageURL] = useState("");
   const [description, setDescription] = useState("");
@@ -92,7 +96,7 @@ export default function PromptDetail() {
   const fetchProductPrompt = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/getPromptDetail?sku=${encodedSku}`,
+        `http://localhost:8080/getPromptDetail?sku=${sku}`,
         {
           withCredentials: true,
         }
@@ -100,7 +104,7 @@ export default function PromptDetail() {
       const productPrompt = response.data;
       if (productPrompt) {
         setId(productPrompt.message.id);
-        setSku(productPrompt.message.sku);
+        // setSku(productPrompt.message.sku);
         setMainImageURL(productPrompt.message.mainImageURL);
         setProductName(productPrompt.message.productName);
         setDescription(productPrompt.message.description);
@@ -285,13 +289,6 @@ export default function PromptDetail() {
       const res = response.data;
       if (res) {
         setIsGenerated(true);
-        // const imgElement = document.getElementById("image-element"); // 假设图像元素的 ID 为 'image-element'
-        // window.onload = () => {
-        //   const imgElement = document.getElementById("generated-image") as HTMLImageElement;
-        //   if (imgElement) {
-        //     imgElement.src = "data:image/png;base64," + res.message;
-        //   }
-        // };
         setGeneratedResult("data:image/png;base64," + res.message);
       } else {
         return null;
@@ -300,8 +297,6 @@ export default function PromptDetail() {
       console.error("Error fetching generated image:", error);
     }
   };
-
-
 
   return (
     <>
@@ -503,12 +498,13 @@ export default function PromptDetail() {
                       className="modal modal-bottom sm:modal-middle"
                     >
                       <form method="dialog" className="modal-box p-12">
-                      
                         {isGenerated ? (
-                          <Generated generatedResult={generatedResult} setIsGenerated={setIsGenerated}/>
+                          <Generated
+                            generatedResult={generatedResult}
+                            setIsGenerated={setIsGenerated}
+                          />
                         ) : (
-                          <Generating  setIsGenerated={setIsGenerated}/>
-                          
+                          <Generating setIsGenerated={setIsGenerated} />
                         )}
                       </form>
                     </dialog>

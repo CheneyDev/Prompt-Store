@@ -2,6 +2,7 @@ package prompt.store.backend.utils;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import jakarta.annotation.Resource;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -16,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import prompt.store.backend.entity.Generate;
+import prompt.store.backend.service.ProductModelService;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +27,9 @@ import java.nio.charset.StandardCharsets;
 public class ReplicateApi {
     @Value("${replicate.api.token}")
     private String replicateApiToken;
+
+    @Resource
+    ProductModelService productModelService;
 
     public String generateImage(Generate generate) {
         HttpClient httpClient = HttpClients.createDefault();
@@ -47,11 +52,12 @@ public class ReplicateApi {
             httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Token " + replicateApiToken);
             httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 
+
+            String version=productModelService.getModelApiIdByModelName(model);
+
             // 构建请求体
             StringBuilder requestBodyBuilder = new StringBuilder();
-            requestBodyBuilder.append("{\"version\": \"1f7f51e8b2e43ade14fb7d6d62385854477e078ac870778aafecf70c0a6de006\", \"input\": {\"prompt\": \"")
-                    .append(prompt)
-                    .append("\"");
+            requestBodyBuilder.append("{\"version\": \"").append(version).append("\", \"input\": {\"prompt\": \"").append(prompt).append("\"");
 
             if (negativePrompt != null && !negativePrompt.isEmpty() && !negativePrompt.equals("null")) {
                 requestBodyBuilder.append(", \"negative_prompt\": \"").append(negativePrompt).append("\"");
