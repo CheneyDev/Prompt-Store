@@ -25,10 +25,15 @@ public class ProductController {
     ReplicateApi replicateApi;
     private ProductPrompt productPrompt;
 
-    @GetMapping("/getProductPrompt")
-    public RestBean<ProductPrompt> getProductPrompt(@RequestParam("sku") String sku) {
+    @GetMapping("/getPromptDetail")
+    public RestBean<ProductPrompt> getPromptDetail(@RequestParam("sku") String sku) {
         ProductPrompt productPrompt = productPromptService.getProductPromptBySku(sku);
         return RestBean.success(productPrompt);
+    }
+
+    @GetMapping("/getPromptList")
+    public RestBean<List<ProductPrompt>> getPromptList() {
+        return RestBean.success(productPromptService.getPromptList());
     }
 
     @GetMapping("/getProductModels")

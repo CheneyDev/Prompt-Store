@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AlbumArtwork } from "@/components/home/album-artwork"
 import { PodcastEmptyPlaceholder } from "@/components/home/podcast-empty-placeholder"
 import { Sidebar } from "@/components/home/sidebar"
-import { listenNowAlbums, madeForYouAlbums } from "@/data/albums"
 import { playlists } from "@/data/playlists"
 import Image from "next/image"
 import { PlusCircle } from "lucide-react"
@@ -15,6 +14,8 @@ import { PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Session } from "inspector"
 import Navbar from "@/components/home/navbar"
+import { useEffect, useState } from "react"
+import { Prompt, fetchPrompts } from "@/data/prompts"
 
 export const metadata: Metadata = {
   title: "Home | Prompt Store",
@@ -22,6 +23,18 @@ export const metadata: Metadata = {
 }
 
 export default function HomePage() {
+
+  const [prompts, setPrompts] = useState<Prompt[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedPrompts = await fetchPrompts();
+      setPrompts(fetchedPrompts);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="md:hidden">
@@ -49,7 +62,7 @@ export default function HomePage() {
               {/* <div className="col-span-3 lg:col-span-4 lg:border-l"> */}
                 <div className="h-full px-4 py-6 lg:px-8">
                   <Tabs defaultValue="music" className="h-full space-y-6">
-                    <div className="space-between flex items-center">
+                    {/* <div className="space-between flex items-center">
                       <TabsList>
                         <TabsTrigger value="music" className="relative">
                           Music
@@ -65,7 +78,7 @@ export default function HomePage() {
                           Add music
                         </Button>
                       </div>
-                    </div>
+                    </div> */}
                     <TabsContent
                       value="music"
                       className="border-none p-0 outline-none"
@@ -73,7 +86,7 @@ export default function HomePage() {
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <h2 className="text-2xl font-semibold tracking-tight">
-                            Listen Now
+                            Prompts
                           </h2>
                           <p className="text-sm text-muted-foreground">
                             Top picks for you. Updated daily.
@@ -84,10 +97,10 @@ export default function HomePage() {
                       <div className="relative">
                         <ScrollArea>
                           <div className="flex space-x-4 pb-4">
-                            {listenNowAlbums.map((album) => (
+                            {prompts.map((prompt) => (
                               <AlbumArtwork
-                                key={album.name}
-                                album={album}
+                                key={prompt.id}
+                                album={prompt}
                                 className="w-[250px]"
                                 aspectRatio="portrait"
                                 width={250}
@@ -110,10 +123,10 @@ export default function HomePage() {
                       <div className="relative">
                         <ScrollArea>
                           <div className="flex space-x-4 pb-4">
-                            {madeForYouAlbums.map((album) => (
+                            {prompts.map((prompt) => (
                               <AlbumArtwork
-                                key={album.name}
-                                album={album}
+                                key={prompt.id}
+                                album={prompt}
                                 className="w-[150px]"
                                 aspectRatio="square"
                                 width={150}
@@ -147,7 +160,7 @@ export default function HomePage() {
               {/* </div> */}
             {/* </div> */}
           </div>
-        N</div>
+        </div>
       </div>
     </>
   )

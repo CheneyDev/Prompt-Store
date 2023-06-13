@@ -37,7 +37,7 @@ import Generated from "./ui/generated-dialog";
 
 
 
-const encodedSku = encodeURIComponent("#0001");
+const encodedSku = encodeURIComponent("sku0002");
 let modelNames: any[] = [];
 let modelIds: any[] = [];
 let resolutionList: any[] = [];
@@ -50,7 +50,7 @@ export default function PromptDetail() {
   const [id, setId] = useState("");
   const [sku, setSku] = useState("");
   const [productName, setProductName] = useState("");
-  const [coverImageUrl, setCoverImageUrl] = useState("");
+  const [mainImageURL, setMainImageURL] = useState("");
   const [description, setDescription] = useState("");
   const [prompt, setPrompt] = useState("");
   const [negativePrompt, setNegativePrompt] = useState(null);
@@ -92,7 +92,7 @@ export default function PromptDetail() {
   const fetchProductPrompt = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/getProductPrompt?sku=${encodedSku}`,
+        `http://localhost:8080/getPromptDetail?sku=${encodedSku}`,
         {
           withCredentials: true,
         }
@@ -101,7 +101,7 @@ export default function PromptDetail() {
       if (productPrompt) {
         setId(productPrompt.message.id);
         setSku(productPrompt.message.sku);
-        setCoverImageUrl(productPrompt.message.coverImageUrl);
+        setMainImageURL(productPrompt.message.mainImageURL);
         setProductName(productPrompt.message.productName);
         setDescription(productPrompt.message.description);
         setPrompt(productPrompt.message.prompt);
@@ -118,6 +118,8 @@ export default function PromptDetail() {
         setMaxScale(productPrompt.message.maxScale);
         setMaxOutputs(productPrompt.message.maxOutputs);
         setMaxSteps(productPrompt.message.maxSteps);
+
+        console.log(response.data);
       } else {
         return window.location.replace("auth/login");
       }
@@ -308,7 +310,7 @@ export default function PromptDetail() {
           <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2">
             <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
               <img
-                src={coverImageUrl}
+                src={mainImageURL}
                 className="aspect-square w-full rounded-xl object-cover"
               />
               {/* <div className="grid grid-cols-2 gap-4 lg:mt-4">

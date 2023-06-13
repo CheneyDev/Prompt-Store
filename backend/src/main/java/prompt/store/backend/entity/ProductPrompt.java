@@ -4,10 +4,11 @@ import lombok.Data;
 
 @Data
 public class ProductPrompt {
+
     private int id;
     private String sku;
     private String productName;
-    private String coverImageUrl;
+    private String mainImagePath;
     private String description;
     private String prompt;
     private String negativePrompt;
@@ -24,6 +25,8 @@ public class ProductPrompt {
     private float maxScale;
     private int maxOutputs;
 
+    private String mainImageURL;
+
 
     public enum Sampler {
         DDIM,
@@ -34,4 +37,9 @@ public class ProductPrompt {
         KLMS
     }
 
+    public void setMainImageUrl(String objectStorageUrl) {
+        this.mainImageURL = objectStorageUrl + this.mainImagePath;
+        System.out.println(objectStorageUrl);
+        System.out.println("sasaa"+this.mainImageURL);
+    }
 }

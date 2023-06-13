@@ -7,5 +7,7 @@ import java.util.List;
 public interface ProductPromptService {
     ProductPrompt getProductPromptBySku(String sku);
 
+    List<ProductPrompt> getPromptList();
+
     List<String> getSamplerByModelId(String modelId);
 }
