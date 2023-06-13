@@ -50,4 +50,5 @@ public interface ProductModelMapper {
     @Select("SELECT model_api_id FROM product_models WHERE model_name=#{modelName};")
     String getModelApiIdByModelName(String modelName);
 
+
 }
