@@ -125,6 +125,15 @@
 | 前端  |                |      |
 | CI/CD |                |      |
 
+# Responses
+
+```
+{"id":"hf7exxxxxxxxxraxury","version":"dbxxxxxxxxxxxxxxxxx082a930b0c49861f96d1e5bf","input":{"guidance_scale":7,"height":512,"num_inference_steps":116,"prompt":"teenage mutant ninja turtles meet the beastie boys, painted by van gogh","sampler":"K_EULER","seed":-1,"width":512},"logs":"Using seed: -1\ninput_shape: torch.Size([1, 77])\n  0%|          | 0/116 [00:00\u003c?, ?it/s]\n  2%|▏         | 2/116 [00:00\u003c00:06, 18.37it/s]\n  3%|▎         | 4/116 [00:00\u003c00:06, 17.54it/s]\n  6%|▌         | 7/116 [00:00\u003c00:05, 19.43it/s]\n  9%|▊         | 10/116 [00:00\u003c00:05, 20.26it/s]\n 11%|█         | 13/116 [00:00\u003c00:04, 20.65it/s]\n 14%|█▍        | 16/116 [00:00\u003c00:04, 20.87it/s]\n 16%|█▋        | 19/116 [00:00\u003c00:04, 21.03it/s]\n 19%|█▉        | 22/116 [00:01\u003c00:04, 21.16it/s]\n 22%|██▏       | 25/116 [00:01\u003c00:04, 21.27it/s]\n 24%|██▍       | 28/116 [00:01\u003c00:04, 21.35it/s]\n 27%|██▋       | 31/116 [00:01\u003c00:03, 21.40it/s]\n 29%|██▉       | 34/116 [00:01\u003c00:03, 21.40it/s]\n 32%|███▏      | 37/116 [00:01\u003c00:03, 21.43it/s]\n 34%|███▍      | 40/116 [00:01\u003c00:03, 21.41it/s]\n 37%|███▋      | 43/116 [00:02\u003c00:03, 21.42it/s]\n 40%|███▉      | 46/116 [00:02\u003c00:03, 21.46it/s]\n 42%|████▏     | 49/116 [00:02\u003c00:03, 21.48it/s]\n 45%|████▍     | 52/116 [00:02\u003c00:02, 21.49it/s]\n 47%|████▋     | 55/116 [00:02\u003c00:02, 21.48it/s]\n 50%|█████     | 58/116 [00:02\u003c00:02, 21.50it/s]\n 53%|█████▎    | 61/116 [00:02\u003c00:02, 21.51it/s]\n 55%|█████▌    | 64/116 [00:03\u003c00:02, 21.53it/s]\n 58%|█████▊    | 67/116 [00:03\u003c00:02, 21.52it/s]\n 60%|██████    | 70/116 [00:03\u003c00:02, 21.54it/s]\n 63%|██████▎   | 73/116 [00:03\u003c00:01, 21.54it/s]\n 66%|██████▌   | 76/116 [00:03\u003c00:01, 21.52it/s]\n 68%|██████▊   | 79/116 [00:03\u003c00:01, 21.51it/s]\n 71%|███████   | 82/116 [00:03\u003c00:01, 21.52it/s]\n 73%|███████▎  | 85/116 [00:04\u003c00:01, 21.49it/s]\n 76%|███████▌  | 88/116 [00:04\u003c00:01, 21.49it/s]\n 78%|███████▊  | 91/116 [00:04\u003c00:01, 21.48it/s]\n 81%|████████  | 94/116 [00:04\u003c00:01, 21.47it/s]\n 84%|████████▎ | 97/116 [00:04\u003c00:00, 21.44it/s]\n 86%|████████▌ | 100/116 [00:04\u003c00:00, 21.43it/s]\n 89%|████████▉ | 103/116 [00:04\u003c00:00, 21.39it/s]\n 91%|█████████▏| 106/116 [00:04\u003c00:00, 21.38it/s]\n 94%|█████████▍| 109/116 [00:05\u003c00:00, 21.39it/s]\n 97%|█████████▋| 112/116 [00:05\u003c00:00, 21.41it/s]\n 99%|█████████▉| 115/116 [00:05\u003c00:00, 21.39it/s]\n100%|██████████| 116/116 [00:05\u003c00:00, 21.29it/s]\n","output":["https://replicate.delivery/pbxt/uQoqQWkhFxxxxxxxxxx3aHxFRA/out-0.png"],"error":null,"status":"succeeded","created_at":"2023-06-14T06:36:05.18155Z","started_at":"2023-06-14T06:36:05.19598Z","completed_at":"2023-06-14T06:36:11.596211Z","metrics":{"predict_time":6.400231},"urls":{"cancel":"https://api.replicate.com/v1/predictions/hf7em5jbkkxxxxury/cancel","get":"https://api.replicate.com/v1/predictions/hf7em5jxxxxxxxxxxxxxxxxy"}}
+
+```
+
+
+
 ## API 设计
 
 RESTful API
@@ -143,3 +152,12 @@ RESTful API
 
 登录，首页，详情页，支付，订单
 
+### To Do
+
+Operating without foreign key constraints
+
+https://planetscale.com/docs/learn/operating-without-foreign-key-constraints#on-delete-cascade
+
+Serverless mail service (CloudFlare Workers)
+
+https://resend.com/

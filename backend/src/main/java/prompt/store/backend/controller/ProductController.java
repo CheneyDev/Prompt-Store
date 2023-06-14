@@ -1,26 +1,41 @@
 package prompt.store.backend.controller;
 
-import com.alibaba.fastjson2.JSONObject;
+import com.amazonaws.services.s3.AmazonS3;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import prompt.store.backend.entity.Generate;
 import prompt.store.backend.entity.ProductModel;
 import prompt.store.backend.entity.ProductPrompt;
 import prompt.store.backend.entity.RestBean;
+import prompt.store.backend.service.OrderService;
 import prompt.store.backend.service.ProductModelService;
 import prompt.store.backend.service.ProductPromptService;
+import prompt.store.backend.utils.ObjectStorageUtil;
 import prompt.store.backend.utils.ReplicateApi;
+import prompt.store.backend.utils.ResultImageUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProductController {
 
+    @Value("${cloudflare.r2.bucket}")
+    public String bucketName;
     @Resource
     ProductPromptService productPromptService;
     @Resource
     ProductModelService productModelService;
-
+    @Resource
+    OrderService orderService;
+    @Resource
+    ObjectStorageUtil objectStorageUtil;
+    @Resource
+    ResultImageUtil resultImageUtil;
     @Resource
     ReplicateApi replicateApi;
     private ProductPrompt productPrompt;
@@ -59,22 +74,24 @@ public class ProductController {
     @PostMapping("/generate")
     public RestBean<String> generate(@RequestBody Generate generateEntity) {
         System.out.println(generateEntity);
-        String predictionResponse = replicateApi.generateImage(generateEntity);
-        String predictionId= JSONObject.parseObject(predictionResponse).getString("id");
-        System.out.println(predictionId);
-        String predictionStatus;
-        do {
-            predictionStatus = replicateApi.getPredictionStatus(predictionId);
-            System.out.println(predictionStatus);
-            // 延时一段时间再次查询
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } while (!predictionStatus.contains("\"status\":\"succeeded\""));
-        String outputImageUrl = replicateApi.extractOutputImageUrl(predictionStatus);
-        String base64Image = replicateApi.downloadAndConvertToBase64(outputImageUrl);
+        String base64Image = productPromptService.onGenerating(generateEntity);
+        File resultImage;
+        try {
+            resultImage = resultImageUtil.createTempFile(base64Image);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String orderId=orderService.generateOrderId();
+        String resultImagePath=orderService.generateRsultImageNameAndPath(orderId);
+
+        orderService.generateOrder(orderId,resultImagePath,generateEntity);
+
+        AmazonS3 s3Client = objectStorageUtil.initS3Client();
+        objectStorageUtil.uploadFile(s3Client, bucketName, resultImagePath, resultImage);
+        resultImageUtil.deleteTempFile(resultImage);
+
+
+
 //        String base64Image = replicateApi.downloadAndConvertToBase64("https://replicate.delivery/pbxt/XAYedy6WKDWkACx2zELnePY1rDEoXLq1zVtBpg6EW8JqlNFRA/out-0.png");
 //        //休眠5秒
 //        try {
@@ -82,7 +99,11 @@ public class ProductController {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-        return RestBean.success(base64Image);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("orderId", orderId);
+        response.put("base64Image", base64Image);
+        return RestBean.success(response.toString());
 
 
     }

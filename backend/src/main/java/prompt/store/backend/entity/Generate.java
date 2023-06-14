@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Generate {
+    private String username;
     private String prompt;
     private String negativePrompt;
     private String model;

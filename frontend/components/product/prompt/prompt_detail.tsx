@@ -41,10 +41,10 @@ let modelIds: any[] = [];
 let resolutionList: any[] = [];
 
 export default function PromptDetail() {
-  let sku="";
+  let sku = "";
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-     sku = urlParams.get('sku');
+    sku = urlParams.get("sku");
   }, []);
 
   const [samplerList, setSamplerList] = useState([]);
@@ -52,7 +52,9 @@ export default function PromptDetail() {
   const [isGenerated, setIsGenerated] = useState(false);
 
   const [id, setId] = useState("");
-  // const [sku, setSku] = useState("");
+
+  const [username, setUserName] = useState("");
+
   const [productName, setProductName] = useState("");
   const [mainImageURL, setMainImageURL] = useState("");
   const [description, setDescription] = useState("");
@@ -88,6 +90,7 @@ export default function PromptDetail() {
       }
     );
     if (response.data.success) {
+      setUserName(response.data.message);
     } else {
       return null;
     }
@@ -256,6 +259,7 @@ export default function PromptDetail() {
 
   const [generatedResult, setGeneratedResult] = useState("");
   const handleSubmit = async (event: any) => {
+    const encodedUserName = encodeURIComponent(username);
     const encodedPrompt = encodeURIComponent(prompt);
     const encodedNegativePrompt = encodeURIComponent(String(negativePrompt));
     const encodedModel = encodeURIComponent(model);
@@ -271,6 +275,7 @@ export default function PromptDetail() {
       const response = await axios.post(
         `http://localhost:8080/generate`,
         {
+          username: encodedUserName,
           prompt: encodedPrompt,
           negativePrompt: encodedNegativePrompt,
           model: encodedModel,
@@ -288,8 +293,11 @@ export default function PromptDetail() {
       );
       const res = response.data;
       if (res) {
+        const match = res.message.match(/\{orderId=(.*), base64Image=(.*)\}/);
+        const orderId = match[1];
+        const base64Image = match[2];
         setIsGenerated(true);
-        setGeneratedResult("data:image/png;base64," + res.message);
+        setGeneratedResult("data:image/png;base64," + base64Image);
       } else {
         return null;
       }
