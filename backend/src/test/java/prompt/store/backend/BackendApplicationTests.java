@@ -25,7 +25,7 @@ class BackendApplicationTests {
         String currentDirectory = System.getProperty("user.dir");
         System.out.println("Current Directory: " + currentDirectory);
         AmazonS3 s3Client = objectStorageUtil.initS3Client();
-        objectStorageUtil.uploadFile(s3Client, "prompt-store-bucket", "sddfdsfdfe-main.jpg", file);
+        objectStorageUtil.uploadFile(s3Client, "prompt-store-bucket", "sddjjjfdsfdfe-main.jpg", file);
     }
 
 }

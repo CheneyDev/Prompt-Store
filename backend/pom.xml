@@ -90,6 +90,7 @@
 			<version>1.12.486</version>
 		</dependency>
 
+
 		<!-- 测试依赖 -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
