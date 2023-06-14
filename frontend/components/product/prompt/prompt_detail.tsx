@@ -311,9 +311,9 @@ export default function PromptDetail() {
   return (
     <>
       <section>
-        <div className="relative mx-auto max-w-screen-xl px-4 py-8">
+        <div className="py-8 px-6">
           <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2">
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
+            <div className="px-5 grid grid-cols-2 gap-4 md:grid-cols-1">
               <img
                 src={mainImageURL}
                 className="aspect-square w-full rounded-xl object-cover"
@@ -325,7 +325,6 @@ export default function PromptDetail() {
                 />
               </div> */}
             </div>
-            <div>
               <div className="px-5">
                 <Card>
                   <CardHeader>
@@ -522,7 +521,6 @@ export default function PromptDetail() {
                   </CardFooter>
                 </Card>
               </div>
-            </div>
           </div>
         </div>
       </section>

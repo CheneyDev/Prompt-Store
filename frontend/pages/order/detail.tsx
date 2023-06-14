@@ -1,3 +1,4 @@
+import Navbar from "@/components/navbar";
 import OrderDetailHead from "@/components/order/detail/order-detail-head";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -45,7 +46,9 @@ export default function OrderDetail() {
 
   return (
     <>
-      <div className="h-screen w-screen py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
+    <div className="h-screen w-screen ">
+    <Navbar/>
+      <div className="py-8 px-6">
         <OrderDetailHead orderIdParam={orderIdParam} orderDate={order.orderDate}/>
 
         <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
@@ -246,7 +249,7 @@ export default function OrderDetail() {
       </div>
     </div> */}
         </div>
-      </div>
+      </div></div>
     </>
   );
 }

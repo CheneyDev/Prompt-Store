@@ -35,7 +35,7 @@ export default function OrderDetailHead({
         <h1 className="text-3xl dark:text-white lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">
           {formattedOrderId}
         </h1>
-        <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">
+        <p className="text-base dark:text-gray-300 font-medium leading-9 text-gray-600">
           {formattedOrderDate}
         </p>
       </div>

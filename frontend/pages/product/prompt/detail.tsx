@@ -1,3 +1,4 @@
+import Navbar from "@/components/navbar";
 import PromptDetail from "@/components/product/prompt/prompt_detail";
 import axios from "axios";
 import Head from "next/head";
@@ -18,10 +19,10 @@ export default function PromptDetailPage() {
           console.log(response.data.message);
         } else {
           console.log(response.data.message);
-          return window.location.href = "/auth/login";
+          return (window.location.href = "/auth/login");
         }
       } catch (error) {
-        return window.location.href = "/auth/login";
+        return (window.location.href = "/auth/login");
       }
     }
     handleLogin();
@@ -33,7 +34,10 @@ export default function PromptDetailPage() {
         <meta name="description" content="Prompt Store" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <PromptDetail />
+      <div className="h-screen w-screen ">
+        <Navbar />
+        <PromptDetail />
+      </div>
     </>
   );
 }
