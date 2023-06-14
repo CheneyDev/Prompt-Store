@@ -24,6 +24,21 @@ public interface OrderMapper {
     })
     List<Order> getOrderListByCustomerId(String customerId);
 
+    @Select("SELECT * FROM `order` WHERE order_id = #{orderId}")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "customer_name", property = "customerName"),
+            @Result(column = "order_date", property = "orderDate"),
+            @Result(column = "product_name", property = "productName"),
+            @Result(column = "quantity", property = "quantity"),
+            @Result(column = "unit_price", property = "unitPrice"),
+            @Result(column = "total_price", property = "totalPrice"),
+            @Result(column = "order_prompt", property = "orderPrompt"),
+            @Result(column = "result_path", property = "resultPath")
+    })
+    Order getOrderByOrderId(String orderId);
+
     @Insert("INSERT INTO `order` (order_id, customer_name, order_date, product_name, quantity, unit_price, total_price, result_path) " +
             "VALUES (#{order.orderId}, #{order.customerName}, #{order.orderDate}, #{order.productName}, #{order.quantity}, #{order.unitPrice}, " +
             "#{order.totalPrice}, #{order.resultPath})")

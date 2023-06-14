@@ -73,35 +73,35 @@ public class ProductController {
 
     @PostMapping("/generate")
     public RestBean<String> generate(@RequestBody Generate generateEntity) {
-        System.out.println(generateEntity);
-        String base64Image = productPromptService.onGenerating(generateEntity);
-        File resultImage;
-        try {
-            resultImage = resultImageUtil.createTempFile(base64Image);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        String orderId=orderService.generateOrderId();
-        String resultImagePath=orderService.generateRsultImageNameAndPath(orderId);
-
-        orderService.generateOrder(orderId,resultImagePath,generateEntity);
-
-        AmazonS3 s3Client = objectStorageUtil.initS3Client();
-        objectStorageUtil.uploadFile(s3Client, bucketName, resultImagePath, resultImage);
-        resultImageUtil.deleteTempFile(resultImage);
-
-
-
-//        String base64Image = replicateApi.downloadAndConvertToBase64("https://replicate.delivery/pbxt/XAYedy6WKDWkACx2zELnePY1rDEoXLq1zVtBpg6EW8JqlNFRA/out-0.png");
-//        //休眠5秒
+//        System.out.println(generateEntity);
+//        String base64Image = productPromptService.onGenerating(generateEntity);
+//        File resultImage;
 //        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
+//            resultImage = resultImageUtil.createTempFile(base64Image);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
 //        }
+//        String orderId=orderService.generateOrderId();
+//        String resultImagePath=orderService.generateRsultImageNameAndPath(orderId);
+//
+//        orderService.generateOrder(orderId,resultImagePath,generateEntity);
+//
+//        AmazonS3 s3Client = objectStorageUtil.initS3Client();
+//        objectStorageUtil.uploadFile(s3Client, bucketName, resultImagePath, resultImage);
+//        resultImageUtil.deleteTempFile(resultImage);
+
+
+
+        String base64Image = replicateApi.downloadAndConvertToBase64("https://replicate.delivery/pbxt/NrvTeMDDGWRJEajwc7el9NfjEBx2k7MUtwGje78f1lHvEtuIC/out-0.png");
+        //休眠5秒
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Map<String, String> response = new HashMap<>();
-        response.put("orderId", orderId);
+        response.put("orderId", "order1686732450263");
         response.put("base64Image", base64Image);
         return RestBean.success(response.toString());
 

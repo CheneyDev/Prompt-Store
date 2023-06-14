@@ -1,8 +1,7 @@
 package prompt.store.backend.entity;
 
 import lombok.Data;
-
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Data
 public class Order {
@@ -10,7 +9,7 @@ public class Order {
     private int id;
     private String orderId;
     private String customerName;
-    private Date orderDate;
+    private Timestamp orderDate;
     private String productName;
     private int quantity;
     private float unitPrice;

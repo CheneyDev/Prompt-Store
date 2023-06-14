@@ -9,6 +9,8 @@ public interface OrderService {
 
     List<Order> getOrderListByCustomerId(String customerId);
 
+    Order getOrderById(String orderId);
+
     String generateOrderId();
 
     String generateRsultImageNameAndPath(String orderId);

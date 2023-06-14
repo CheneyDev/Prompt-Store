@@ -39,12 +39,13 @@ import { useRouter } from "next/router";
 let modelNames: any[] = [];
 let modelIds: any[] = [];
 let resolutionList: any[] = [];
+let orderId="";
 
 export default function PromptDetail() {
-  let sku = "";
+  let sku:string = "";
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    sku = urlParams.get("sku");
+    sku = urlParams.get("sku")||"";
   }, []);
 
   const [samplerList, setSamplerList] = useState([]);
@@ -294,7 +295,8 @@ export default function PromptDetail() {
       const res = response.data;
       if (res) {
         const match = res.message.match(/\{orderId=(.*), base64Image=(.*)\}/);
-        const orderId = match[1];
+        orderId = match[1];
+        console.log("orderId:", orderId);
         const base64Image = match[2];
         setIsGenerated(true);
         setGeneratedResult("data:image/png;base64," + base64Image);
@@ -509,7 +511,8 @@ export default function PromptDetail() {
                         {isGenerated ? (
                           <Generated
                             generatedResult={generatedResult}
-                            setIsGenerated={setIsGenerated}
+                            setIsGenerated={setIsGenerated} 
+                            orderId={orderId}
                           />
                         ) : (
                           <Generating setIsGenerated={setIsGenerated} />

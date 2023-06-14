@@ -1,6 +1,7 @@
 package prompt.store.backend.service.impl;
 
 import jakarta.annotation.Resource;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import prompt.store.backend.entity.Generate;
@@ -12,6 +13,8 @@ import prompt.store.backend.service.OrderService;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -34,6 +37,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order getOrderById(String orderId) {
+        return orderMapper.getOrderByOrderId(orderId);
+    }
+
+    @Override
     public String generateOrderId() {
         return "order"+System.currentTimeMillis();
     }
@@ -51,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderId(orderId);
         order.setCustomerName(URLDecoder.decode(generate.getUsername(), StandardCharsets.UTF_8));
-        order.setOrderDate(new java.sql.Date(System.currentTimeMillis()));
+        order.setOrderDate((Timestamp) DateTime.now().toDate());
         order.setProductName(URLDecoder.decode(generate.getModel(), StandardCharsets.UTF_8));
         order.setQuantity(1);
         order.setUnitPrice(0.0F);

@@ -3,9 +3,11 @@ import { Download, FileText, X } from "lucide-react";
 export default function Generated({
   generatedResult,
   setIsGenerated,
+  orderId,
 }: {
   generatedResult: any;
   setIsGenerated: any;
+  orderId: any;
 }) {
   const handleCloseDialog = () => {
     setTimeout(() => {
@@ -22,11 +24,9 @@ export default function Generated({
   };
 
   const handleOrder = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(orderId);
     event.preventDefault();
-    const link = document.createElement("a");
-    link.href = "https://www.baidu.com";
-    link.target = "_blank";
-    link.click();
+    window.open(`http://localhost:3000/order/detail?orderId=${orderId}`);
   };
 
   return (
