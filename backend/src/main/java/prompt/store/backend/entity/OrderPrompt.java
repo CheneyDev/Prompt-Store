@@ -6,9 +6,7 @@ import lombok.Data;
 public class OrderPrompt {
     private int id;
     private String orderId;
-    private String productName;
     private String mainImagePath;
-    private String description;
     private String prompt;
     private String negativePrompt;
     private int width;
@@ -20,9 +18,6 @@ public class OrderPrompt {
     private String model;
     private int modelId;
     private ProductPrompt.Sampler sampler;
-    private int maxSteps;
-    private float maxScale;
-    private int maxOutputs;
 
     private String mainImageURL;
 
@@ -37,6 +32,6 @@ public class OrderPrompt {
     }
 
     public void setMainImageUrl(String objectStorageUrl) {
-        this.mainImageURL = objectStorageUrl + this.mainImagePath;
+        this.mainImageURL = objectStorageUrl +"/"+ this.mainImagePath;
     }
 }

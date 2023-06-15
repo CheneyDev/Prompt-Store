@@ -49,4 +49,21 @@ public interface OrderMapper {
     void insertOrderPrompt(@Param("orderPrompt") OrderPrompt orderPrompt);
 
 
+    @Select("SELECT * FROM order_prompt WHERE order_id = #{orderId}")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "orderId", column = "order_id"),
+            @Result(property = "mainImagePath", column = "main_image_path"),
+            @Result(property = "prompt", column = "prompt"),
+            @Result(property = "negativePrompt", column = "negative_prompt"),
+            @Result(property = "width", column = "width"),
+            @Result(property = "height", column = "height"),
+            @Result(property = "steps", column = "steps"),
+            @Result(property = "guidanceScale", column = "guidance_scale"),
+            @Result(property = "seed", column = "seed"),
+            @Result(property = "model", column = "model"),
+            @Result(property = "sampler", column = "sampler")
+    })
+    OrderPrompt getOrderPromptByOrderId(String orderId);
+
 }

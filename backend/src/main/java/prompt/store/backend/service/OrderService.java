@@ -2,6 +2,7 @@ package prompt.store.backend.service;
 
 import prompt.store.backend.entity.Generate;
 import prompt.store.backend.entity.Order;
+import prompt.store.backend.entity.OrderPrompt;
 
 import java.util.List;
 
@@ -17,4 +18,5 @@ public interface OrderService {
 
     void generateOrder(String orderId, String resultImagePath, Generate generateEntity);
 
+    OrderPrompt getOrderPromptByOrderId(String orderId);
 }

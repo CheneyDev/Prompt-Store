@@ -15,6 +15,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -59,11 +60,11 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderId(orderId);
         order.setCustomerName(URLDecoder.decode(generate.getUsername(), StandardCharsets.UTF_8));
-        order.setOrderDate((Timestamp) DateTime.now().toDate());
+        order.setOrderDate(new Timestamp(new Date().getTime()));
         order.setProductName(URLDecoder.decode(generate.getModel(), StandardCharsets.UTF_8));
         order.setQuantity(1);
-        order.setUnitPrice(0.0F);
-        order.setTotalPrice(0.0F);
+        order.setUnitPrice(2.0F);
+        order.setTotalPrice(2.0F);
 
         order.setResultPath(resultImagePath);
 
@@ -92,5 +93,12 @@ public class OrderServiceImpl implements OrderService {
 
         orderMapper.insertOrder(order);
         orderMapper.insertOrderPrompt(orderPrompt);
+    }
+
+    @Override
+    public OrderPrompt getOrderPromptByOrderId(String orderId) {
+        OrderPrompt orderPrompt = orderMapper.getOrderPromptByOrderId(orderId);
+        orderPrompt.setMainImageUrl(objectStorageUrl);
+        return orderPrompt;
     }
 }
