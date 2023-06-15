@@ -44,7 +44,7 @@ export default function Navbar() {
           <div className="dropdown dropdown-end ml-3">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                <img src="https://prompt-store-bucket.qqdd.dev/resources/default_avatar.png" />
               </div>
             </label>
             <ul
