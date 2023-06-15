@@ -9,21 +9,6 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-    @Select("SELECT * FROM `order` WHERE customer_id = #{customerId}")
-    @Results({
-            @Result(column = "id", property = "id"),
-            @Result(column = "order_id", property = "orderId"),
-            @Result(column = "customer_name", property = "customerName"),
-            @Result(column = "order_date", property = "orderDate"),
-            @Result(column = "product_name", property = "productName"),
-            @Result(column = "quantity", property = "quantity"),
-            @Result(column = "unit_price", property = "unitPrice"),
-            @Result(column = "total_price", property = "totalPrice"),
-            @Result(column = "order_prompt", property = "orderPrompt"),
-            @Result(column = "result_path", property = "resultPath")
-    })
-    List<Order> getOrderListByCustomerId(String customerId);
-
     @Select("SELECT * FROM `order` WHERE order_id = #{orderId}")
     @Results({
             @Result(column = "id", property = "id"),
@@ -65,5 +50,20 @@ public interface OrderMapper {
             @Result(property = "sampler", column = "sampler")
     })
     OrderPrompt getOrderPromptByOrderId(String orderId);
+
+    @Select("SELECT * FROM `order` WHERE customer_name=#{username};")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "customer_name", property = "customerName"),
+            @Result(column = "order_date", property = "orderDate"),
+            @Result(column = "product_name", property = "productName"),
+            @Result(column = "quantity", property = "quantity"),
+            @Result(column = "unit_price", property = "unitPrice"),
+            @Result(column = "total_price", property = "totalPrice"),
+            @Result(column = "order_prompt", property = "orderPrompt"),
+            @Result(column = "result_path", property = "resultPath")
+    })
+    List<Order> getOrderListByUsername(String username);
 
 }

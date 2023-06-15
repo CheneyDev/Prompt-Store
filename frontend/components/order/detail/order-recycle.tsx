@@ -16,7 +16,7 @@ export default function OrderRecycle() {
               <p className="text-lg leading-7 dark:text-white font-semibold text-gray-800">
                 你，也能出一份力。
                 <br />
-                <span className="font-normal">人工智能模型在调用 GPU 运算时会消耗许多能源⚡️，如果你把生成结果分享到画廊，将会帮助他人更快找到心仪的 Prompt 从而减少运算次数。</span>
+                <span className="font-normal">人工智能模型在调用 GPU 进行运算时会消耗许多能源⚡️，如果你把生成结果分享到画廊，将会帮助别人更快找到心仪的 Prompt 从而减少运算次数。</span>
               </p>
             </div>
           </div>

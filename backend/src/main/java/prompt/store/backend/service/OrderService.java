@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface OrderService {
 
-    List<Order> getOrderListByCustomerId(String customerId);
-
     Order getOrderById(String orderId);
 
     String generateOrderId();
@@ -19,4 +17,6 @@ public interface OrderService {
     void generateOrder(String orderId, String resultImagePath, Generate generateEntity);
 
     OrderPrompt getOrderPromptByOrderId(String orderId);
+
+    List<Order> getOrderListByUsername(String customerId);
 }

@@ -11,6 +11,8 @@ import prompt.store.backend.entity.OrderPrompt;
 import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.OrderService;
 
+import java.util.List;
+
 @Controller
 @RestController
 public class OrderController {
@@ -32,6 +34,12 @@ public class OrderController {
     public RestBean<OrderPrompt> getOrderPromptByOrderId(@RequestParam("orderID") String orderID) {
         OrderPrompt orderPrompt = orderService.getOrderPromptByOrderId(orderID);
         return RestBean.success(orderPrompt);
+    }
+
+    @GetMapping("/getOrderListByUsername")
+    public RestBean<List<Order>> getOrderListByUsername(@RequestParam("username") String username) {
+        List<Order> orderList= orderService.getOrderListByUsername(username);
+        return RestBean.success(orderList);
     }
 
 }

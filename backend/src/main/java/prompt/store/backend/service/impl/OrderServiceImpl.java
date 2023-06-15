@@ -29,15 +29,6 @@ public class OrderServiceImpl implements OrderService {
     private String objectStorageUrl;
 
     @Override
-    public List<Order> getOrderListByCustomerId(String customerId) {
-        List<Order> orderList = orderMapper.getOrderListByCustomerId(customerId);
-        orderList.forEach(order -> {
-            order.setResultURL(objectStorageUrl);
-        });
-        return orderList;
-    }
-
-    @Override
     public Order getOrderById(String orderId) {
         return orderMapper.getOrderByOrderId(orderId);
     }
@@ -100,5 +91,14 @@ public class OrderServiceImpl implements OrderService {
         OrderPrompt orderPrompt = orderMapper.getOrderPromptByOrderId(orderId);
         orderPrompt.setMainImageUrl(objectStorageUrl);
         return orderPrompt;
+    }
+
+    @Override
+    public List<Order> getOrderListByUsername(String customerId) {
+        List<Order> orderList=orderMapper.getOrderListByUsername(customerId);
+        orderList.forEach(order -> {
+            order.setResultURL(objectStorageUrl);
+        });
+        return orderList;
     }
 }

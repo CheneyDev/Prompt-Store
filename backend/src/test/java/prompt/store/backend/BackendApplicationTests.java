@@ -31,11 +31,11 @@ class BackendApplicationTests {
 
     @Resource
     OrderService orderService;
-    @Test
-    void testOrderService() {
-        System.out.println(orderService.getOrderListByCustomerId("1"));
-    }
 
+    @Test
+    void testGetOrderListByCustomerId() {
+        System.out.println(orderService.getOrderListByUsername("admin"));
+    }
 
 
 

@@ -1,14 +1,16 @@
 import { Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
     <>
       <div className="navbar bg-base-100 border-b border-inherit">
         <div className="navbar-start">
-          <a className="btn btn-ghost normal-case text-xl">
+          
+          <Link href="/" className="btn btn-ghost normal-case text-xl">
             <Sparkles size={20} />
             Prompt Store
-          </a>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
