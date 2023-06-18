@@ -16,8 +16,11 @@ import {
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { UserAuthForm } from "@/components/auth/user-login-form";
+import { UserLoginForm } from "@/components/auth/user-login-form";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { RegistrationForm } from "@/components/auth/user-registration-form";
 
 export const metadata: Metadata = {
   title: "登录 | Prompt Store",
@@ -25,6 +28,15 @@ export const metadata: Metadata = {
 };
 
 export default function AuthenticationPage() {
+
+  const router = useRouter();
+  const [isLoginForm, setIsLoginForm] = useState(false);
+
+  const handleToggleForm = () => {
+    setIsLoginForm(!isLoginForm);
+  };
+  
+
   return (
     <>
       <Head>
@@ -73,7 +85,11 @@ export default function AuthenticationPage() {
           </div>
           <div className="lg:p-8">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-              <UserAuthForm />
+            {isLoginForm ? (
+                <UserLoginForm />
+              ) : (
+                <RegistrationForm />
+              )}
             </div>
           </div>
         </div>
