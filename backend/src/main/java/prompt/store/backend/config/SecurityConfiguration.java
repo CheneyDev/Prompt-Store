@@ -54,6 +54,18 @@ public class SecurityConfiguration {
                 )
                 .failureHandler(this::onAuthenticationFailure)
                 .and()
+                //退出
+                .logout()
+                .logoutUrl("/api/auth/logout")
+                .logoutSuccessHandler(
+                        (HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+                            response.setContentType("application/json;charset=utf-8");
+                            response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+                            response.setHeader("Access-Control-Allow-Credentials", "true");
+                            response.getWriter().write(JSONObject.toJSONString(RestBean.success("注销成功")));
+                        }
+                )
+                .and()
                 .rememberMe()
                 .rememberMeParameter("remember")
                 .tokenRepository(repository())
@@ -117,4 +129,5 @@ public class SecurityConfiguration {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(JSONObject.toJSONString(RestBean.failure(401, exception.getMessage())));
     }
+
 }

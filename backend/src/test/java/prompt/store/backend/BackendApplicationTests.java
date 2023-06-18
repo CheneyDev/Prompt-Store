@@ -1,13 +1,13 @@
 package prompt.store.backend;
 
-import com.amazonaws.services.s3.AmazonS3;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import prompt.store.backend.service.OrderService;
-import prompt.store.backend.utils.ObjectStorageUtil;
+import prompt.store.backend.service.AuthorizeService;
+import prompt.store.backend.utils.ResendApiUtil;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 @SpringBootTest
 class BackendApplicationTests {
@@ -16,8 +16,8 @@ class BackendApplicationTests {
     void contextLoads() {
     }
 
-    @Resource
-    ObjectStorageUtil objectStorageUtil;
+//    @Resource
+//    ObjectStorageUtil objectStorageUtil;
 
 //    @Test
 //    void testObjectStorage() {
@@ -29,14 +29,15 @@ class BackendApplicationTests {
 //        objectStorageUtil.uploadFile(s3Client, "prompt-store-bucket", "sddjjjfdsfdfe-main.jpg", file);
 //    }
 
-    @Resource
-    OrderService orderService;
+//    @Resource
+//    OrderService orderService;
+//
+//    @Test
+//    void testGetOrderListByCustomerId() {
+//        System.out.println(orderService.getOrderListByUsername("admin"));
+//    }
+//
 
-    @Test
-    void testGetOrderListByCustomerId() {
-        System.out.println(orderService.getOrderListByUsername("admin"));
-    }
 
-
-
+    //测试 AuthorizedService sendVerifyEmail
 }
