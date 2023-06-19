@@ -5,12 +5,34 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/ui/icons";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { ToastDescription } from "../ui/toast";
+import { toast } from "../ui/use-toast";
+import { ToastAction } from "@/components/ui/toast"
 
 interface RegistrationFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function RegistrationForm({ className, ...props }: RegistrationFormProps) {
+export function RegistrationForm({
+  className,
+  ...props
+}: RegistrationFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [registrationError, setRegistrationError] = React.useState<string>("");
+
+  const router = useRouter();
+  const [isLoginForm, setIsLoginForm] = useState(false);
+
+  const [isCodeButtonDisabled, setIsCodeButtonDisabled] = useState(false);
+  const [countdown, setCountdown] = useState(60);
+
+  const [showToast, setShowToast] = useState(false);
+
+  const handleToggleForm = () => {
+    setIsLoginForm(!isLoginForm);
+    const newPath = isLoginForm ? "/auth/signup" : "/auth/login";
+    router.push(newPath);
+  };
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -50,13 +72,54 @@ export function RegistrationForm({ className, ...props }: RegistrationFormProps)
     setIsLoading(false);
   }
 
+  const handleGetCode = async () => {
+    setIsCodeButtonDisabled(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register",
+        {
+        //   username,
+        //   email,
+        //   password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        return window.location.replace("/");
+      } else {
+        setRegistrationError(response.data.message);
+        console.log(response.data.message);
+        
+        toast({
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: "There was a problem with your request.",
+            action: <ToastAction altText="Try again">Try again</ToastAction>,
+          })
+
+        setTimeout(() => {
+          setShowToast(false); // 5秒后隐藏提示组件
+        }, 5000);
+      }
+    } catch (error) {
+      setRegistrationError("注册失败，请稍后再试。");
+      setShowToast(true); // 显示提示组件
+      setTimeout(() => {
+        setShowToast(false); // 5秒后隐藏提示组件
+      }, 5000);
+    }
+  };
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">注册账户</h1>
-        <p className="text-sm text-muted-foreground">
-          请填写以下信息进行注册
-        </p>
+        <p className="text-sm text-muted-foreground">请填写以下信息进行注册</p>
       </div>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
@@ -102,6 +165,28 @@ export function RegistrationForm({ className, ...props }: RegistrationFormProps)
               disabled={isLoading}
             />
           </div>
+          <div className="grid gap-1 grid-cols-3 my-1">
+            <Label className="sr-only" htmlFor="password">
+              密码
+            </Label>
+            <Input
+              id="verify-code"
+              placeholder="验证码"
+              type="text"
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect="off"
+              disabled={isLoading}
+              className="grid col-span-2"
+            />
+            <Button
+              disabled={isCodeButtonDisabled}
+              className="col-span-1 ml-1"
+              onClick={handleGetCode}
+            >
+              {isCodeButtonDisabled ? `${countdown}秒` : "获取验证码"}
+            </Button>
+          </div>
 
           <Button disabled={isLoading} className="my-2">
             {isLoading && (
@@ -121,7 +206,8 @@ export function RegistrationForm({ className, ...props }: RegistrationFormProps)
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={true}>
+      
+      <Button onClick={handleToggleForm} variant="outline" type="button">
         登录
       </Button>
     </div>

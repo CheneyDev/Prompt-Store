@@ -16,26 +16,22 @@ import {
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { UserLoginForm } from "@/components/auth/user-login-form";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { RegistrationForm } from "@/components/auth/user-registration-form";
 
 export const metadata: Metadata = {
-  title: "登录 | Prompt Store",
+  title: "注册 | Prompt Store",
   description: "Prompt Store",
 };
 
-export default function LoginPage() {
-
-
-  
+export default function SignUpPage() {
 
   return (
     <>
       <Head>
-        <title>登录 | Prompt Store</title>
+        <title>注册 | Prompt Store</title>
         <meta name="description" content="Prompt Store" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
@@ -62,7 +58,7 @@ export default function LoginPage() {
               className="absolute inset-0 bg-cover"
               style={{
                 backgroundImage:
-                  "url(https://prompt-store-bucket.qqdd.dev/resources/pages/auth/login.webp)",
+                  "url(https://prompt-store-bucket.qqdd.dev/resources/pages/auth/signup.jpg)",
               }}
             />
             <div className="relative z-20 flex items-center text-lg font-medium">
@@ -80,7 +76,7 @@ export default function LoginPage() {
           </div>
           <div className="lg:p-8">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-                <UserLoginForm />
+                <RegistrationForm />
             </div>
           </div>
         </div>

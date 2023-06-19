@@ -12,12 +12,24 @@ import axios from "axios";
 import { Checkbox } from "../ui/checkbox";
 import { headers } from "next/dist/client/components/headers";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [loginError, setLoginError] = React.useState<string>("");
+
+
+  const router = useRouter();
+  const [isLoginForm, setIsLoginForm] = useState(true);
+
+  const handleToggleForm = () => {
+    setIsLoginForm(!isLoginForm);
+    const newPath = isLoginForm ? "/auth/signup" : "/auth/login";
+    router.push(newPath);
+  };
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -56,6 +68,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
 
     setIsLoading(false);
   }
+
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
@@ -114,7 +127,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={true}>
+      <Button onClick={handleToggleForm} variant="outline" type="button">
         注册
       </Button>
       <p className="px-8 text-center text-sm text-muted-foreground">
