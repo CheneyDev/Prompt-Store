@@ -27,7 +27,6 @@ export const metadata: Metadata = {
 };
 
 export default function SignUpPage() {
-
   return (
     <>
       <Head>
@@ -53,7 +52,7 @@ export default function SignUpPage() {
           />
         </div>
         <div className="container relative hidden h-screen w-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-          <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
+          <div className="relative hidden h-full flex-col bg-muted text-white dark:border-r lg:flex">
             <div
               className="absolute inset-0 bg-cover"
               style={{
@@ -61,14 +60,20 @@ export default function SignUpPage() {
                   "url(https://prompt-store-bucket.qqdd.dev/resources/pages/auth/signup.jpg)",
               }}
             />
-            <div className="relative z-20 flex items-center text-lg font-medium">
+            <div className="relative z-20 flex items-center text-lg font-medium p-10">
               <Sparkles className="mr-2 h-6 w-6" />
               Prompt Store
             </div>
-            <div className="relative z-20 mt-auto">
+            <div
+              className="relative mt-auto mr-52 mb-4 p-6"
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.3)",
+                backdropFilter: "blur(4px)",
+              }}
+            >
               <blockquote className="space-y-2">
-                <p className="text-2xl leading-tight">
-                  释放创作激情，高效艺术创作指南！
+                <p className="text-5xl leading-tight">
+                  释放创作激情，<br></br>高效艺术创作指南！
                 </p>
                 {/* <footer className="text-sm">TJISE-Semester2-Homework #1</footer> */}
               </blockquote>
@@ -76,7 +81,7 @@ export default function SignUpPage() {
           </div>
           <div className="lg:p-8">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-                <RegistrationForm />
+              <RegistrationForm />
             </div>
           </div>
         </div>
