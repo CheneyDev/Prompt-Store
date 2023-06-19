@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import prompt.store.backend.entity.Account;
 import prompt.store.backend.mapper.AccountMapper;
@@ -13,6 +14,7 @@ import prompt.store.backend.utils.ResendApiUtil;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -24,6 +26,8 @@ public class AuthorizedServiceImpl implements AuthorizeService {
     RedisTemplate<String, String> redisTemplate;
     @Resource
     ResendApiUtil resendApiUtil;
+
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,24 +46,21 @@ public class AuthorizedServiceImpl implements AuthorizeService {
     }
 
     @Override
-    public String sendVerifyEmail(String email) {
+    public boolean sendVerifyEmail(String email) {
         //生成6位数的验证吗
         String verifyCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
         //将验证码存入redis
         redisTemplate.opsForValue().set(email, verifyCode, 5, TimeUnit.MINUTES);
-
-        //检查是否已经存在该邮箱
 //        if (redisTemplate.opsForValue().get(email) != null) {
-//            return "邮件已发送";
+//            return false;
 //        }
-//        通过ResendApiUtil发送邮件
         try {
             resendApiUtil.sendEmail("onboarding@resend.dev", email, "Prompt Store 验证码", "您的验证码是：" + verifyCode + "，有效期5分钟。");
         } catch (InterruptedException | IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
 
-        return null;
+        return true;
     }
 
     //验证邮箱验证码
@@ -72,6 +73,7 @@ public class AuthorizedServiceImpl implements AuthorizeService {
         return verifyCode.equals(code);
     }
 
+
     @Override
     public boolean verifyUsername(String username) {
         Account account = accountMapper.findAccountByUsernameOrEmail(username);
@@ -82,5 +84,16 @@ public class AuthorizedServiceImpl implements AuthorizeService {
     public boolean verifyEmail(String email) {
         Account account = accountMapper.findAccountByUsernameOrEmail(email);
         return account != null;
+    }
+
+    @Override
+    public boolean register(String username, String email, String password) {
+        //加密密码
+        String encodePassword = bCryptPasswordEncoder.encode(password);
+        //将用户信息存入数据库
+//        生成现在时间与 MySQL 中的 timestamp 类型对应的时间
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        accountMapper.insertAccount(username, email, encodePassword, String.valueOf(timestamp));
+        return true;
     }
 }

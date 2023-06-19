@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/ui/icons";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastAction, ToastDescription } from "../ui/toast";
 import { toast } from "../ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
@@ -35,33 +35,194 @@ export function RegistrationForm({
     router.push(newPath);
   };
 
+  
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [verifyCode, setVerifyCode] = useState("");
+
+  const [isUsernameError, setIsUsernameError] = useState(false);
+  const [usernameError, setUsernameError] = useState("");
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
+  const [isEmailError, setIsEmailError] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [isPasswordError, setIsPasswordError] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+
+  const validateUsername = async (username: string) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/api/auth/verifyUsername?username=${username}`
+      );
+      if (response.data.message === "true") {
+        setIsUsernameAvailable(false);
+        setUsernameError("用户名已经存在");
+      } else {
+        setIsUsernameAvailable(true);
+        setUsernameError("");
+      }
+    } catch (error) {
+      setIsUsernameAvailable(false);
+    }
+
+    const reg = /^[a-zA-Z0-9_-]{4,16}$/;
+    if (username.length === 0) {
+      setIsPasswordError(false);
+      setPasswordError("");
+    } else if (username.length < 4) {
+      setIsUsernameError(true);
+      setUsernameError("用户名长度不能小于4位数");
+    } else if (username.length > 16) {
+      setIsUsernameError(true);
+      setUsernameError("用户名长度不能大于16位数");
+    } else if (!reg.test(username)) {
+      setIsUsernameError(true);
+      setUsernameError("用户名只能是数字、字母、下划线");
+    } else if (username[0] >= "0" && username[0] <= "9") {
+      setIsUsernameError(true);
+      setUsernameError("用户名不能以数字开头");
+    } else if (isUsernameAvailable === false) {
+      setIsUsernameError(true);
+      setUsernameError("用户名已经存在");
+    } else {
+      setIsUsernameError(false);
+      setUsernameError("");
+    }
+  };
+
+  const validateEmail = (email: string) => {
+    //邮箱后缀可以只有一个字母，但是只能是字母
+    const reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/;
+    if (email.length === 0) {
+      setIsPasswordError(false);
+      setPasswordError("");
+    } else if (!reg.test(email)) {
+      setIsEmailError(true);
+      setEmailError("邮箱格式不正确");
+    } else {
+      setIsEmailError(false);
+      setEmailError("");
+    }
+  };
+
+  const validatePassword = (password: string) => {
+    const reg = /^[a-zA-Z0-9_~!@#$%^&*()_+`\-={}|\[\]:;'<>,.?/]{6,128}$/;
+    if (password.length === 0) {
+      setIsPasswordError(false);
+      setPasswordError("");
+    } else if (password.length < 6 && password.length !== 0) {
+      setIsPasswordError(true);
+      setPasswordError("密码长度不能小于6位数");
+    } else if (password.length > 128) {
+      setIsPasswordError(true);
+      setPasswordError("密码长度不能大于128位数");
+    } else if (!reg.test(password)) {
+      setIsPasswordError(true);
+      setPasswordError("密码只能是数字、字母、下划线");
+    } else {
+      setIsPasswordError(false);
+      setPasswordError("");
+    }
+  };
+
+  useEffect(() => {
+    validateUsername(username);
+    validatePassword(password);
+    validateEmail(email);
+  }, [
+    username,
+    email,
+    password,
+    isUsernameError,
+    isEmailError,
+    isPasswordError,
+  ]);
+
+  const handleUsernameChange = async (e: { target: { value: any } }) => {
+    setUsername(e.target.value);
+    validateUsername(username);
+  };
+
+  const handlePasswordChange = (e: { target: { value: any } }) => {
+    setPassword(e.target.value);
+    validatePassword(password);
+  };
+
+  const handleEmailChange = (e: { target: { value: any } }) => {
+    setEmail(e.target.value);
+    validateEmail(email);
+  };
+
+  const handleCodeChange = (e: { target: { value: any } }) => {
+    setVerifyCode(e.target.value);
+  };
+
+  const handleGetCode = async () => {
+    setIsCodeButtonDisabled(true);
+    console.log(username.length > 0);
+    if (
+      !isUsernameError &&
+      username.length > 0 &&
+      !isEmailError &&
+      email.length > 0 &&
+      !isPasswordError &&
+      password.length > 0
+    ) {
+      try {
+        const response = await axios.post(
+          `http://localhost:8080/api/auth/getVerifyCode?email=${email}`
+        );
+
+        if (response.data.message === "true") {
+          const timer = setInterval(() => {
+            setCountdown((preSecond) => {
+              if (preSecond <= 1) {
+                clearInterval(timer);
+                setIsCodeButtonDisabled(false);
+                return 60;
+              }
+              return preSecond - 1;
+            });
+          }, 1000);
+        } else {
+          setRegistrationError(response.data.message);
+          setIsCodeButtonDisabled(false);
+          console.log(response.data.message);
+          setShowAlter(true); // 显示提示组件
+          setTimeout(() => {
+            setShowAlter(false); // 5秒后隐藏提示组件
+          }, 5000);
+        }
+      } catch (error) {
+        setRegistrationError("注册失败，请稍后再试。");
+        setIsCodeButtonDisabled(false);
+        setShowAlter(true); // 显示提示组件
+        setTimeout(() => {
+          setShowAlter(false); // 5秒后隐藏提示组件
+        }, 5000);
+      }
+    }else
+    {
+        console.log("信息填写有误");
+        setIsCodeButtonDisabled(false);
+    }
+  };
+
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
     setRegistrationError("");
 
-    const form = event.target as HTMLFormElement;
-    const username = form.username.value;
-    const email = form.email.value;
-    const password = form.password.value;
+
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/register",
-        {
-          username,
-          email,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        `http://localhost:8080/api/auth/register?username=${username}&email=${email}&password=${password}&verifyCode=${verifyCode}`,
       );
 
       if (response.data.success) {
-        return window.location.replace("/");
+        console.log(response.data.message);
       } else {
         setRegistrationError(response.data.message);
         console.log(response.data.message);
@@ -72,150 +233,6 @@ export function RegistrationForm({
 
     setIsLoading(false);
   }
-
-  const handleGetCode = async () => {
-    setIsCodeButtonDisabled(true);
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/getVerifyCode"
-      );
-
-      if (false) {
-        const timer = setInterval(() => {
-          setCountdown((preSecond) => {
-            if (preSecond <= 1) {
-              clearInterval(timer);
-              setIsCodeButtonDisabled(false);
-              return 60;
-            }
-            return preSecond - 1;
-          });
-        }, 1000);
-      } else {
-        setRegistrationError(response.data.message);
-        setIsCodeButtonDisabled(false);
-        console.log(response.data.message);
-        setShowAlter(true); // 显示提示组件
-        setTimeout(() => {
-          setShowAlter(false); // 5秒后隐藏提示组件
-        }, 5000);
-      }
-    } catch (error) {
-      setRegistrationError("注册失败，请稍后再试。");
-      setIsCodeButtonDisabled(false);
-      setShowAlter(true); // 显示提示组件
-      setTimeout(() => {
-        setShowAlter(false); // 5秒后隐藏提示组件
-      }, 5000);
-    }
-  };
-
-//   校验用户名
-    const [isUsernameError, setIsUsernameError] = useState(false); // 用户名是否错误
-    const [usernameError, setUsernameError] = useState("");
-    const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
-
-    const handleUsernameChange = async (e: { target: { value: any } }) => {
-        
-
-        const username = e.target.value;
-
-
-        //向后端接口发送请求校验用户名是否已经存在,如果存在则提示用户存在为false
-        //如果不存在则提示用户不存在为true
-        try{
-            const response = await axios.post(
-                "http://localhost:8080/api/auth/checkUsername",
-                {
-                    username,
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
-            if (response.data.success) {
-                setIsUsernameAvailable(false);
-                setUsernameError("用户名已经存在");
-            }
-        }catch (error) {
-            setIsUsernameAvailable(false);
-        }
-
-
-        const reg = /^[a-zA-Z0-9_-]{4,16}$/;
-        //1. 用户名长度小于4位数
-        if (username.length < 4) {
-            setIsUsernameError(true);
-            setUsernameError("用户名长度不能小于4位数");
-        }
-        //2. 用户名长度大于16位数
-        else if (username.length > 16) {
-            setIsUsernameError(true);
-            setUsernameError("用户名长度不能大于16位数");
-        }
-        //3. 用户名只能是数字、字母、下划线
-        else if (!reg.test(username)) {
-            setIsUsernameError(true);
-            setUsernameError("用户名只能是数字、字母、下划线");
-        }
-        //4. 用户名不能以数字开头
-        else if (username[0] >= "0" && username[0] <= "9") {
-            setIsUsernameError(true);
-            setUsernameError("用户名不能以数字开头");
-        }
-        else if (isUsernameAvailable===false) {
-            setIsUsernameError(true);
-            setUsernameError("用户名已经存在");
-        }
-        else {
-            setIsUsernameError(false);
-            setUsernameError("");
-        }
-    };
-    
-
-  const [isEmailError, setIsEmailError] = useState(false); // 邮箱是否错误
-  const [emailError, setEmailError] = useState("");
-  const handleEmailChange = (e: { target: { value: any } }) => {
-    const email = e.target.value;
-    const reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/;
-    if (!reg.test(email)) {
-      setIsEmailError(true);
-      setEmailError("邮箱格式不正确");
-    } else {
-      setIsEmailError(false);
-      setEmailError("");
-    }
-  };
-
-  const [isPasswordError, setIsPasswordError] = useState(false); // 密码是否错误
-  const [passwordError, setPasswordError] = useState("");
-  const handlePasswordChange = (e: { target: { value: any } }) => {
-    const password = e.target.value;
-    const reg = /^[a-zA-Z0-9_~!@#$%^&*()_+`\-={}|\[\]:;'<>,.?/]{6,128}$/;
-    // 1. 密码长度小于6位数
-    if (password.length < 6) {
-      setIsPasswordError(true);
-      setPasswordError("密码长度不能小于6位数");
-    }
-    // 2. 密码长度大于128位数
-    else if (password.length > 128) {
-      setIsPasswordError(true);
-      setPasswordError("密码长度不能大于128位数");
-    }
-    // 3. 密码只能是数字、字母、下划线
-    else if (!reg.test(password)) {
-      setIsPasswordError(true);
-      setPasswordError("密码只能是数字、字母、下划线");
-    }
-    // 4. 密码格式正确
-    else {
-      setIsPasswordError(false);
-      setPasswordError("");
-    }
-  };
 
   return (
     <>
@@ -232,9 +249,12 @@ export function RegistrationForm({
               <Label className="sr-only" htmlFor="username">
                 用户名
               </Label>
-                {isUsernameError && (
-                    <div className="tooltip tooltip-open" data-tip={usernameError} />
-                )}
+              {isUsernameError && (
+                <div
+                  className="tooltip tooltip-open"
+                  data-tip={usernameError}
+                />
+              )}
               <Input
                 id="username"
                 placeholder="用户名"
@@ -243,7 +263,7 @@ export function RegistrationForm({
                 autoComplete="off"
                 autoCorrect="off"
                 disabled={isLoading}
-                onChange={handleUsernameChange}
+                onBlur={handleUsernameChange}
               />
             </div>
             <div className="grid gap-1 my-1">
@@ -254,7 +274,6 @@ export function RegistrationForm({
                 <div className="tooltip tooltip-open" data-tip={emailError} />
               )}
               <Input
-                onChange={handleEmailChange}
                 id="email"
                 placeholder="邮箱"
                 type="email"
@@ -262,6 +281,7 @@ export function RegistrationForm({
                 autoComplete="off"
                 autoCorrect="off"
                 disabled={isLoading}
+                onBlur={handleEmailChange}
               />
             </div>
             <div className="grid gap-1 my-1">
@@ -282,15 +302,15 @@ export function RegistrationForm({
                 autoComplete="off"
                 autoCorrect="off"
                 disabled={isLoading}
-                onChange={handlePasswordChange}
+                onBlur={handlePasswordChange}
               />
             </div>
             <div className="grid gap-1 grid-cols-3 my-1">
-              <Label className="sr-only" htmlFor="password">
-                密码
+              <Label className="sr-only" htmlFor="verifyCode">
+                验证码
               </Label>
               <Input
-                id="verify-code"
+                id="verifyCode"
                 placeholder="验证码"
                 type="text"
                 autoCapitalize="none"
@@ -298,6 +318,7 @@ export function RegistrationForm({
                 autoCorrect="off"
                 disabled={isLoading}
                 className="grid col-span-2"
+                onChange={handleCodeChange}
               />
               <Button
                 disabled={isCodeButtonDisabled}
@@ -308,7 +329,7 @@ export function RegistrationForm({
               </Button>
             </div>
 
-            <Button disabled={isLoading} className="my-2">
+            <Button disabled={isLoading} onClick={onSubmit} className="my-2">
               {isLoading && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}

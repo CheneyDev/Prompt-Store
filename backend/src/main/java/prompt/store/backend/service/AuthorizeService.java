@@ -6,11 +6,13 @@ import prompt.store.backend.entity.RestBean;
 public interface AuthorizeService extends UserDetailsService {
 
     //发送验证邮件
-    String sendVerifyEmail(String email);
+    boolean sendVerifyEmail(String email);
 
     boolean verifyEmailCode(String email, String code);
 
     boolean verifyUsername(String username);
     boolean verifyEmail(String email);
+
+    boolean register(String username, String email, String password);
 
 }
