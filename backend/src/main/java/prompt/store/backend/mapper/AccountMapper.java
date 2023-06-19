@@ -9,4 +9,10 @@ public interface AccountMapper {
 
     @Select("SELECT * FROM user_account WHERE username = #{usernameOrEmail} OR email = #{usernameOrEmail}")
     Account findAccountByUsernameOrEmail(String usernameOrEmail);
+
+    @Select("SELECT * FROM user_account WHERE username = #{username}")
+    Account findAccountByUsername(String username);
+
+    @Select("SELECT * FROM user_account WHERE email = #{email}")
+    Account findAccountByEmail(String email);
 }

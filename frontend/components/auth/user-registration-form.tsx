@@ -110,9 +110,115 @@ export function RegistrationForm({
     }
   };
 
+//   校验用户名
+    const [isUsernameError, setIsUsernameError] = useState(false); // 用户名是否错误
+    const [usernameError, setUsernameError] = useState("");
+    const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
+
+    const handleUsernameChange = async (e: { target: { value: any } }) => {
+        
+
+        const username = e.target.value;
+
+
+        //向后端接口发送请求校验用户名是否已经存在,如果存在则提示用户存在为false
+        //如果不存在则提示用户不存在为true
+        try{
+            const response = await axios.post(
+                "http://localhost:8080/api/auth/checkUsername",
+                {
+                    username,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (response.data.success) {
+                setIsUsernameAvailable(false);
+                setUsernameError("用户名已经存在");
+            }
+        }catch (error) {
+            setIsUsernameAvailable(false);
+        }
+
+
+        const reg = /^[a-zA-Z0-9_-]{4,16}$/;
+        //1. 用户名长度小于4位数
+        if (username.length < 4) {
+            setIsUsernameError(true);
+            setUsernameError("用户名长度不能小于4位数");
+        }
+        //2. 用户名长度大于16位数
+        else if (username.length > 16) {
+            setIsUsernameError(true);
+            setUsernameError("用户名长度不能大于16位数");
+        }
+        //3. 用户名只能是数字、字母、下划线
+        else if (!reg.test(username)) {
+            setIsUsernameError(true);
+            setUsernameError("用户名只能是数字、字母、下划线");
+        }
+        //4. 用户名不能以数字开头
+        else if (username[0] >= "0" && username[0] <= "9") {
+            setIsUsernameError(true);
+            setUsernameError("用户名不能以数字开头");
+        }
+        else if (isUsernameAvailable===false) {
+            setIsUsernameError(true);
+            setUsernameError("用户名已经存在");
+        }
+        else {
+            setIsUsernameError(false);
+            setUsernameError("");
+        }
+    };
+    
+
+  const [isEmailError, setIsEmailError] = useState(false); // 邮箱是否错误
+  const [emailError, setEmailError] = useState("");
+  const handleEmailChange = (e: { target: { value: any } }) => {
+    const email = e.target.value;
+    const reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+$/;
+    if (!reg.test(email)) {
+      setIsEmailError(true);
+      setEmailError("邮箱格式不正确");
+    } else {
+      setIsEmailError(false);
+      setEmailError("");
+    }
+  };
+
+  const [isPasswordError, setIsPasswordError] = useState(false); // 密码是否错误
+  const [passwordError, setPasswordError] = useState("");
+  const handlePasswordChange = (e: { target: { value: any } }) => {
+    const password = e.target.value;
+    const reg = /^[a-zA-Z0-9_~!@#$%^&*()_+`\-={}|\[\]:;'<>,.?/]{6,128}$/;
+    // 1. 密码长度小于6位数
+    if (password.length < 6) {
+      setIsPasswordError(true);
+      setPasswordError("密码长度不能小于6位数");
+    }
+    // 2. 密码长度大于128位数
+    else if (password.length > 128) {
+      setIsPasswordError(true);
+      setPasswordError("密码长度不能大于128位数");
+    }
+    // 3. 密码只能是数字、字母、下划线
+    else if (!reg.test(password)) {
+      setIsPasswordError(true);
+      setPasswordError("密码只能是数字、字母、下划线");
+    }
+    // 4. 密码格式正确
+    else {
+      setIsPasswordError(false);
+      setPasswordError("");
+    }
+  };
+
   return (
     <>
-      
       <div className={cn("grid gap-6", className)} {...props}>
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">注册账户</h1>
@@ -126,6 +232,9 @@ export function RegistrationForm({
               <Label className="sr-only" htmlFor="username">
                 用户名
               </Label>
+                {isUsernameError && (
+                    <div className="tooltip tooltip-open" data-tip={usernameError} />
+                )}
               <Input
                 id="username"
                 placeholder="用户名"
@@ -134,13 +243,18 @@ export function RegistrationForm({
                 autoComplete="off"
                 autoCorrect="off"
                 disabled={isLoading}
+                onChange={handleUsernameChange}
               />
             </div>
             <div className="grid gap-1 my-1">
               <Label className="sr-only" htmlFor="email">
                 邮箱
               </Label>
+              {isEmailError && (
+                <div className="tooltip tooltip-open" data-tip={emailError} />
+              )}
               <Input
+                onChange={handleEmailChange}
                 id="email"
                 placeholder="邮箱"
                 type="email"
@@ -154,6 +268,12 @@ export function RegistrationForm({
               <Label className="sr-only" htmlFor="password">
                 密码
               </Label>
+              {isPasswordError && (
+                <div
+                  className="tooltip tooltip-open"
+                  data-tip={passwordError}
+                />
+              )}
               <Input
                 id="password"
                 placeholder="密码"
@@ -162,6 +282,7 @@ export function RegistrationForm({
                 autoComplete="off"
                 autoCorrect="off"
                 disabled={isLoading}
+                onChange={handlePasswordChange}
               />
             </div>
             <div className="grid gap-1 grid-cols-3 my-1">

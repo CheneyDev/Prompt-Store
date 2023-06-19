@@ -10,4 +10,7 @@ public interface AuthorizeService extends UserDetailsService {
 
     boolean verifyEmailCode(String email, String code);
 
+    boolean verifyUsername(String username);
+    boolean verifyEmail(String email);
+
 }

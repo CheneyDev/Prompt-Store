@@ -484,7 +484,7 @@ export default function PromptDetail() {
 
                   <div className="grid gap-2 my-4">
                     <h1 className="text-4xl">
-                      <span className="text-xl">¥</span>&nbsp;99999.89
+                      <span className="text-xl">¥</span>&nbsp;9.89
                     </h1>
                   </div>
                   <CardFooter className="justify-end space-x-2">

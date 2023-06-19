@@ -20,7 +20,6 @@ public class AuthorizedServiceImpl implements AuthorizeService {
 
     @Resource
     AccountMapper accountMapper;
-
     @Resource
     RedisTemplate<String, String> redisTemplate;
     @Resource
@@ -31,7 +30,7 @@ public class AuthorizedServiceImpl implements AuthorizeService {
         if (username == null || username.isEmpty()) {
             throw new UsernameNotFoundException("用户名不能为空");
         }
-        Account account=accountMapper.findAccountByUsernameOrEmail(username);
+        Account account = accountMapper.findAccountByUsernameOrEmail(username);
         if (account == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
@@ -71,5 +70,17 @@ public class AuthorizedServiceImpl implements AuthorizeService {
             return false;
         }
         return verifyCode.equals(code);
+    }
+
+    @Override
+    public boolean verifyUsername(String username) {
+        Account account = accountMapper.findAccountByUsernameOrEmail(username);
+        return account != null;
+    }
+
+    @Override
+    public boolean verifyEmail(String email) {
+        Account account = accountMapper.findAccountByUsernameOrEmail(email);
+        return account != null;
     }
 }
