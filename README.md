@@ -2,13 +2,10 @@
 
 ## 参考资源
 
-| 名称                                                         | 备注                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Google Search: next js spring boot](https://www.google.com/search?q=next+js+springboot&newwindow=1&ei=Pf52ZLyWJeSK0PEPt_6wgAY&ved=0ahUKEwj8qJ6Hi5__AhVkBTQIHTc_DGAQ4dUDCBA&uact=5&oq=next+js+springboot&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIHCAAQDRCABDIHCAAQDRCABDIGCAAQHhANMggIABAIEB4QDTIICAAQigUQhgMyCAgAEIoFEIYDMggIABCKBRCGAzIICAAQigUQhgM6CggAEEcQ1gQQsAM6EAguEIoFEMcBENEDELADEEM6CggAEIoFELADEEM6DQgAEIoFELEDEIMBEEM6BwgAEIoFEEM6CAgAEIoFEJECOgUIABCABDoGCAAQFhAeSgQIQRgAUOgEWIwkYKIpaAFwAXgAgAHbBYgBhSOSAQsyLTMuNy4wLjEuMZgBAKABAcABAcgBCg&sclient=gws-wiz-serp) |                                                              |
-| [Youtube: Full Stack Spring Boot + Next.js Tutorial](https://www.youtube.com/watch?v=Z_4Tqmv8Oa4) | 这里作者有一个文档网站似乎很有帮助<br />[Full Stack Book - backend](https://www.fullstackbook.com/backend/tutorials/springboot-todo/)<br />[Full Stack Book - frontend](https://www.fullstackbook.com/frontend/tutorials/nextjs-todo/) |
-| [Youtube: Part 1 : FullStack Application Spring Boot NextJs](https://www.youtube.com/watch?v=_aHGjkOyVso) | Book Store                                                   |
-|                                                              |                                                              |
-|                                                              |                                                              |
+| 名称                                                         | 备注     |
+| ------------------------------------------------------------ | -------- |
+| https://www.jonstokes.com/p/getting-started-with-stable-diffusion | 参考资料 |
+|                                                              |          |
 
 ## Prompt Collection
 
@@ -22,6 +19,7 @@
 | https://publicprompts.art/                                   | Prompt 来源     |
 | https://playgroundai.com/                                    | Prompt 来源     |
 | https://lexica.art/                                          | Prompt 来源     |
+| https://freeflo.ai/                                          | Prompt 来源     |
 | https://promptbase.com/                                      | 参考售卖内容    |
 | Danbooru 标签超市https://tags.novelai.dev/                   | 风格化提示 分类 |
 | [wallpaper site](https://rare-gallery.com/1051032-abstract-lsd-bright-trippy-color-flower-psychedelic-art.html) | 抽象图片        |

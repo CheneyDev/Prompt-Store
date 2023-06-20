@@ -65,7 +65,7 @@ export default function SignUpPage() {
               Prompt Store
             </div>
             <div
-              className="relative mt-auto mr-52 mb-4 p-6"
+              className="relative mt-auto mr-44 mb-4 p-6"
               style={{
                 backgroundColor: "rgba(0, 0, 0, 0.3)",
                 backdropFilter: "blur(4px)",
