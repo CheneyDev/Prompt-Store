@@ -96,4 +96,13 @@ public class AuthorizedServiceImpl implements AuthorizeService {
         accountMapper.insertAccount(username, email, encodePassword, String.valueOf(timestamp));
         return true;
     }
+
+    @Override
+    public boolean resetPassword(String email, String password) {
+        //加密密码
+        String encodePassword = bCryptPasswordEncoder.encode(password);
+        //将用户信息存入数据库
+        accountMapper.updatePasswordByEmail(email, encodePassword);
+        return true;
+    }
 }

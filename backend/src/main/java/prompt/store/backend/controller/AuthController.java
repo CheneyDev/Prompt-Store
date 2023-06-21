@@ -2,10 +2,12 @@ package prompt.store.backend.controller;
 
 
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.AuthorizeService;
 
@@ -46,17 +48,24 @@ public class AuthController {
                                      @RequestParam("email") String email,
                                      @RequestParam("password") String password,
                                      @RequestParam("verifyCode") String verifyCode) {
-        System.out.println("wwww");
         boolean result = false;
-        System.out.println(username + email + password + verifyCode);
-        if (authorizeService.verifyEmailCode(email, verifyCode)) {
+        if (authorizeService.verifyEmailCode(email, verifyCode) && authorizeService.verifyUsername(username) && authorizeService.verifyEmail(email)) {
             result = authorizeService.register(username, email, password);
         }
         return RestBean.success(String.valueOf(result));
     }
 
-//    public RestBean<String> register() {
-//        return RestBean.success(username+password+email+verifyCode);
-//    }
+    @PostMapping("/resetPassword")
+    public RestBean<String> resetPassword(@RequestParam("email") String email,
+                                          @RequestParam("password") String password,
+                                          @RequestParam("verifyCode") String verifyCode) {
+        boolean result = false;
+        if (authorizeService.verifyEmailCode(email, verifyCode) && authorizeService.verifyEmail(email)) {
+            result = authorizeService.resetPassword(email, password);
+        }
+        System.out.println(result);
+        return RestBean.success(String.valueOf(result));
+    }
+
 
 }

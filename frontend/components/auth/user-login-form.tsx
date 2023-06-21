@@ -132,7 +132,7 @@ export function UserLoginForm({ className, ...props }: UserAuthFormProps) {
       </Button>
       <p className="px-8 text-center text-sm text-muted-foreground">
         <Link
-          href="/privacy"
+          href="/auth/reset-password"
           className="underline underline-offset-4 hover:text-primary"
         >
           忘记密码

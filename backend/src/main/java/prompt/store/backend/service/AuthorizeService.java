@@ -1,7 +1,6 @@
 package prompt.store.backend.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import prompt.store.backend.entity.RestBean;
 
 public interface AuthorizeService extends UserDetailsService {
 
@@ -14,5 +13,7 @@ public interface AuthorizeService extends UserDetailsService {
     boolean verifyEmail(String email);
 
     boolean register(String username, String email, String password);
+
+    boolean resetPassword(String email, String password);
 
 }

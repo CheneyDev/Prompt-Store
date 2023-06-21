@@ -148,7 +148,7 @@ RESTful API
 
 # Progress
 
-登录，首页，详情页，支付，订单
+支付，个人中心
 
 ### To Do
 

@@ -21,4 +21,8 @@ public interface AccountMapper {
     //添加用户
     @Insert("INSERT INTO user_account (username, email, password,created_at) VALUES (#{username}, #{email}, #{password},#{timestamp})")
     void insertAccount(@Param("username") String username, @Param("email") String email, @Param("password") String password, @Param("timestamp") String timestamp);
+
+    @Insert("UPDATE user_account SET password = #{password} WHERE email = #{email}")
+    void updatePasswordByEmail(@Param("email") String email, @Param("password") String password);
+
 }
