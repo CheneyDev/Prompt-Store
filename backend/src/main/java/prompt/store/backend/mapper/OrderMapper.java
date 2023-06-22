@@ -66,4 +66,10 @@ public interface OrderMapper {
     })
     List<Order> getOrderListByUsername(String username);
 
+    @Select("SELECT SUM(`total_price`) AS total_sum FROM `order`;")
+    String getOrdersTotalSum();
+
+    @Select("SELECT COUNT(*) AS record_count FROM `order`;")
+    int getOrdersTotalCount();
+
 }

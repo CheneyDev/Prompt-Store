@@ -14,4 +14,9 @@ public class Account {
     private String firstName;
     private String lastName;
     private LocalDateTime createAt;
+    private LocalDateTime createdAt;
+    private String onlineStatus;
+    private String accountStatus;
+    private LocalDateTime loginTimestamp;
+    private LocalDateTime lastActivityTimestamp;
 }

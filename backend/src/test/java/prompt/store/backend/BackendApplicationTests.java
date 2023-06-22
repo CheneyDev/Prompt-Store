@@ -3,41 +3,29 @@ package prompt.store.backend;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import prompt.store.backend.service.AuthorizeService;
-import prompt.store.backend.utils.ResendApiUtil;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import prompt.store.backend.service.AccountService;
+import prompt.store.backend.service.OrderService;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.sql.Timestamp;
 
 @SpringBootTest
 class BackendApplicationTests {
 
+    //密码加密
     @Test
     void contextLoads() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     }
 
-//    @Resource
-//    ObjectStorageUtil objectStorageUtil;
 
-//    @Test
-//    void testObjectStorage() {
-//        File file = new File("./sku0001-main.jpg");
-//        System.out.println(file.exists());
-//        String currentDirectory = System.getProperty("user.dir");
-//        System.out.println("Current Directory: " + currentDirectory);
-//        AmazonS3 s3Client = objectStorageUtil.initS3Client();
-//        objectStorageUtil.uploadFile(s3Client, "prompt-store-bucket", "sddjjjfdsfdfe-main.jpg", file);
-//    }
+    @Resource
+    OrderService orderService;
+    @Resource
+    AccountService accountService;
 
-//    @Resource
-//    OrderService orderService;
-//
-//    @Test
-//    void testGetOrderListByCustomerId() {
-//        System.out.println(orderService.getOrderListByUsername("admin"));
-//    }
-//
+    @Test
+    void Test5() {
 
-
-    //测试 AuthorizedService sendVerifyEmail
+    }
 }

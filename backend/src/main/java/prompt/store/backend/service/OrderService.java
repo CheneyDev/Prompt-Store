@@ -19,4 +19,8 @@ public interface OrderService {
     OrderPrompt getOrderPromptByOrderId(String orderId);
 
     List<Order> getOrderListByUsername(String customerId);
+
+    String getOrdersTotalSum();
+
+    int getOrdersTotalCount();
 }

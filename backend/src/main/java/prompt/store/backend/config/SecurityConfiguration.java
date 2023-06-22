@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import prompt.store.backend.entity.RestBean;
+import prompt.store.backend.service.AccountService;
 import prompt.store.backend.service.AuthorizeService;
 
 import javax.sql.DataSource;
@@ -33,6 +34,9 @@ public class SecurityConfiguration {
     @Resource
     DataSource dataSource;
 
+    @Resource
+    AccountService accountService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -45,10 +49,12 @@ public class SecurityConfiguration {
                 .loginProcessingUrl("/api/auth/login")
                 .successHandler(
                         (HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+                            accountService.updateLoginTimestampByUsername(authentication.getName());
+                            accountService.updateLastActivityTimestampByUsername(authentication.getName());
+                            accountService.updateOnlineStatusByUsername(authentication.getName(), "online");
                             response.setContentType("application/json;charset=utf-8");
                             response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
                             response.setHeader("Access-Control-Allow-Credentials", "true");
-                            System.out.println(response.getHeader("Set-Cookie"));
                             response.getWriter().write(JSONObject.toJSONString(RestBean.success(authentication)));
                         }
                 )
@@ -59,6 +65,8 @@ public class SecurityConfiguration {
                 .logoutUrl("/api/auth/logout")
                 .logoutSuccessHandler(
                         (HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
+                            accountService.updateOnlineStatusByUsername(authentication.getName(), "offline");
+                            accountService.updateLastActivityTimestampByUsername(authentication.getName());
                             response.setContentType("application/json;charset=utf-8");
                             response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
                             response.setHeader("Access-Control-Allow-Credentials", "true");

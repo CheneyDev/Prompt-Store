@@ -1,9 +1,6 @@
 package prompt.store.backend.mapper;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import prompt.store.backend.entity.Account;
 
 @Mapper
@@ -24,5 +21,27 @@ public interface AccountMapper {
 
     @Insert("UPDATE user_account SET password = #{password} WHERE email = #{email}")
     void updatePasswordByEmail(@Param("email") String email, @Param("password") String password);
+
+    @Select("SELECT COUNT(*) AS record_count FROM `user_account`;")
+    int getAccountsTotalCount();
+
+    @Update("UPDATE user_account SET login_timestamp = CURRENT_TIMESTAMP WHERE username = #{username};")
+    void updateLoginTimestampByUsername(String username);
+
+    @Update("UPDATE user_account SET last_activity_timestamp = CURRENT_TIMESTAMP WHERE username = #{username};")
+    void updateLastActivityTimestampByUsername(String username);
+
+    @Update("UPDATE `user_account` SET `online_status` = #{onlineStatus} WHERE `username` = #{username};")
+    void updateOnlineStatusByUsername(@Param("username") String username, @Param("onlineStatus") String onlineStatus);
+
+    @Select("SELECT COUNT(*) AS record_count FROM `user_account` WHERE `online_status` = 'online';")
+    int getOnlineAccountsTotalCount();
+
+    //获取login_timestamp
+    @Select("SELECT login_timestamp FROM user_account WHERE username = #{username}")
+    String getLoginTimestampByUsername(String username);
+
+    @Select("SELECT last_activity_timestamp FROM user_account WHERE username = #{username}")
+    String getLastActivityTimestampByUsername(String username);
 
 }

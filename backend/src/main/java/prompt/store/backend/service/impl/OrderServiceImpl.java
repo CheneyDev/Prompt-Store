@@ -101,4 +101,14 @@ public class OrderServiceImpl implements OrderService {
         });
         return orderList;
     }
+
+    @Override
+    public String getOrdersTotalSum() {
+        return orderMapper.getOrdersTotalSum();
+    }
+
+    @Override
+    public int getOrdersTotalCount() {
+        return orderMapper.getOrdersTotalCount();
+    }
 }

@@ -68,7 +68,7 @@ export default function DashboardPage() {
               <CalendarDateRangePicker />
               <Button size="sm">
                 <Download className="mr-2 h-4 w-4" />
-                Download
+                下载报表
               </Button>
             </div>
           </div>
