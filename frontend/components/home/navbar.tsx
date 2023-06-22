@@ -20,7 +20,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="navbar bg-base-100 border-b border-inherit">
+      <div className="navbar bg-base-100 ">
         <div className="navbar-start">
           
           <Link href="/" className="btn btn-ghost normal-case text-xl">
@@ -61,8 +61,8 @@ export default function Navbar() {
           </div>
           <div className="dropdown dropdown-end ml-3">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img src="https://prompt-store-bucket.qqdd.dev/resources/default_avatar.png" />
+              <div className="w-10 rounded-full">
+                <img src="https://ui.shadcn.com/avatars/02.png" />
               </div>
             </label>
             <ul

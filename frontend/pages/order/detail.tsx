@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbar";
 import OrderDetailHead from "@/components/order/detail/order-detail-head";
 import OrderPrompt from "@/components/order/detail/order-prompt";
 import OrderRecycle from "@/components/order/detail/order-recycle";

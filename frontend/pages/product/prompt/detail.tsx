@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbar";
 import PromptDetail from "@/components/product/prompt/prompt_detail";
 import axios from "axios";
 import Head from "next/head";

@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbar";
 import OrderItems from "@/components/order/all/order-items";
 import axios from "axios";
 import { useEffect, useState } from "react";
