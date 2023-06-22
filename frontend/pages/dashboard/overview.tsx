@@ -29,6 +29,8 @@ import { RecentSales } from "@/components/dashboard/components/recent-sales";
 import Link from "next/link";
 import Navbar from "@/components/navbar/navbar";
 import Head from "next/head";
+import axios from "axios";
+import { use, useEffect, useState } from "react";
 
 export const metadata: Metadata = {
   title: "后台管理",
@@ -36,6 +38,39 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
+
+  const [ordersTotalSum, setOrdersTotalSum] = useState(0);
+  const [ordersTotalCount, setOrdersTotalCount] = useState(0);
+  const [accountsTotalCount, setAccountsTotalCount] = useState(0);
+  const [onlineAccounts, setOnlineAccounts] = useState(0);
+
+  useEffect(() => {
+    getOrdersTotalSum();
+  }, []);
+
+  const getOrdersTotalSum = async () => {
+    try {
+      const response1 = axios.get(`http://localhost:8080/getOrdersTotalSum`, {
+        withCredentials: true,
+      });
+      const response2 = axios.get(`http://localhost:8080/getOrdersTotalCount`, {
+        withCredentials: true,
+      });
+      const response3 = axios.get(`http://localhost:8080/getAccountsTotalCount`, {
+        withCredentials: true,
+      });
+      const response4 = axios.get(`http://localhost:8080/getOnlineAccounts`, {
+        withCredentials: true,
+      });
+      setOrdersTotalSum((await response1).data.message)
+      setOrdersTotalCount((await response2).data.message)
+      setAccountsTotalCount((await response3).data.message)
+      setOnlineAccounts((await response4).data.message)
+    } catch (error) {
+      console.error("请求出错:", error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -74,7 +109,7 @@ export default function DashboardPage() {
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
-            <TabsTrigger value="overview">概览</TabsTrigger>
+              <TabsTrigger value="overview">概览</TabsTrigger>
               <TabsTrigger value="orders" disabled>
                 订单
               </TabsTrigger>
@@ -98,7 +133,7 @@ export default function DashboardPage() {
                     <JapaneseYen className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-xl font-bold">¥454</div>
+                    <div className="text-xl font-bold">¥ {ordersTotalSum}</div>
                     <p className="text-xs text-muted-foreground">
                       +201 相较于上月
                     </p>
@@ -112,7 +147,7 @@ export default function DashboardPage() {
                     <Users className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+5</div>
+                    <div className="text-2xl font-bold">+{accountsTotalCount}</div>
                     <p className="text-xs text-muted-foreground">
                       +201 相较于上月
                     </p>
@@ -120,11 +155,13 @@ export default function DashboardPage() {
                 </Card>
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">订单量</CardTitle>
+                    <CardTitle className="text-sm font-medium">
+                      订单量
+                    </CardTitle>
                     <CreditCard className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+12</div>
+                    <div className="text-2xl font-bold">+{ordersTotalCount}</div>
                     <p className="text-xs text-muted-foreground">
                       +201 相较于上月
                     </p>
@@ -138,7 +175,7 @@ export default function DashboardPage() {
                     <Activity className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+1</div>
+                    <div className="text-2xl font-bold">+{onlineAccounts}</div>
                     <p className="text-xs text-muted-foreground">
                       +201 相较于上月
                     </p>
@@ -157,9 +194,7 @@ export default function DashboardPage() {
                 <Card className="col-span-3">
                   <CardHeader>
                     <CardTitle>最近订单</CardTitle>
-                    <CardDescription>
-                      这个月完成了 23 笔订单
-                    </CardDescription>
+                    <CardDescription>这个月完成了 23 笔订单</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <RecentSales />

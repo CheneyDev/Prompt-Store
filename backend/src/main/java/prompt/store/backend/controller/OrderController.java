@@ -34,6 +34,7 @@ public class OrderController {
         if (authentication != null) {
             String userName = authentication.getName();
             accountService.updateLastActivityTimestampByUsername(userName);
+            accountService.updateOnlineStatusByUsername(userName, "online");
         }
     }
 
@@ -64,6 +65,12 @@ public class OrderController {
     public RestBean<String> getOrdersTotalSum() {
         String ordersTotalSum = orderService.getOrdersTotalSum();
         return RestBean.success(ordersTotalSum);
+    }
+
+    @GetMapping("/getOrdersTotalCount")
+    public RestBean<String> getOrdersTotalCount() {
+        String ordersTotalCount = String.valueOf(orderService.getOrdersTotalCount());
+        return RestBean.success(ordersTotalCount);
     }
 
 }

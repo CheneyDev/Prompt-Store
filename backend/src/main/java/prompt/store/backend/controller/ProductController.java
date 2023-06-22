@@ -48,6 +48,7 @@ public class ProductController {
         if (authentication != null) {
             String userName = authentication.getName();
             accountService.updateLastActivityTimestampByUsername(userName);
+            accountService.updateOnlineStatusByUsername(userName, "online");
         }
     }
 
