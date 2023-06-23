@@ -67,6 +67,25 @@ public interface OrderMapper {
     })
     List<Order> getOrderListByUsername(String username);
 
+    @Select("SELECT *\n" +
+            "FROM `order`\n" +
+            "WHERE customer_name = #{username}\n" +
+            "LIMIT #{pageSize}\n" +
+            "OFFSET #{offset}\n")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "customer_name", property = "customerName"),
+            @Result(column = "order_date", property = "orderDate"),
+            @Result(column = "product_name", property = "productName"),
+            @Result(column = "quantity", property = "quantity"),
+            @Result(column = "unit_price", property = "unitPrice"),
+            @Result(column = "total_price", property = "totalPrice"),
+            @Result(column = "order_prompt", property = "orderPrompt"),
+            @Result(column = "result_path", property = "resultPath")
+    })
+    List<Order> getOrderListByUsernameWithPagination(@Param("username") String username, @Param("pageSize") int pageSize, @Param("offset") int offset);
+
     @Select("SELECT SUM(`total_price`) AS total_sum FROM `order`;")
     String getOrdersTotalSum();
 

@@ -3,9 +3,7 @@ import Link from "next/link";
 import { MainNav } from "./main-nav";
 import { Search } from "./search";
 import { UserNav } from "./user-nav";
-
-
-
+import { Separator } from "../ui/separator";
 
 
 export default function Navbar() {
@@ -21,10 +19,7 @@ export default function Navbar() {
               <Sparkles size={18} />
               Prompt Store
             </Link>
-            {/* <div className="h-5 flex items-center">
-                <div className="border border-gray-300 h-full"></div>
-            </div> */}
-
+            <Separator orientation="vertical" className="h-5"/>
             <MainNav className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
               <Search />

@@ -62,6 +62,15 @@ public class OrderController {
         return RestBean.success(orderList);
     }
 
+    @GetMapping("/getOrderListByUsernameWithPagination")
+    public RestBean<List<Order>> getOrderListByUsernameWithPagination(@RequestParam("username") String username,
+                                                                       @RequestParam("page") int page,
+                                                                       @RequestParam("pageSize") int pageSize) {
+        List<Order> orderList = orderService.getOrderListByUsernameWithPagination(username, page, pageSize);
+        updateLastActivityTimestamp();
+        return RestBean.success(orderList);
+    }
+
     @GetMapping("/getOrdersTotalSum")
     public RestBean<String> getOrdersTotalSum() {
         String ordersTotalSum = orderService.getOrdersTotalSum();

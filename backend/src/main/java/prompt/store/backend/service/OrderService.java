@@ -21,6 +21,8 @@ public interface OrderService {
 
     List<Order> getOrderListByUsername(String customerId);
 
+    List<Order> getOrderListByUsernameWithPagination(String customerId, int page, int pageSize);
+
     String getOrdersTotalSum();
 
     int getOrdersTotalCount();

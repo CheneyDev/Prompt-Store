@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import prompt.store.backend.entity.order.Order;
 import prompt.store.backend.entity.order.OrderAnalysis;
 import prompt.store.backend.mapper.OrderMapper;
 import prompt.store.backend.service.AccountService;
@@ -32,6 +33,7 @@ class BackendApplicationTests {
 
     @Test
     void Test5() {
-        System.out.println(orderService.getTopFiveOrders());
+//        List<Order> lists=orderService.getOrderListByUsernameWithPagination("admin",2,10);
+//        System.out.println(lists);
     }
 }
