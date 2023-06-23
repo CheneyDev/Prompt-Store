@@ -33,4 +33,14 @@ public class AccountController {
     public RestBean<String> getOnlineAccountsTotalCount() {
         return  RestBean.success(String.valueOf(accountService.getOnlineAccountsTotalCount()));
     }
+
+    @GetMapping("/getAvatarAndEmailByUsername")
+    public RestBean<String> getAvatarAndEmailByUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            String userName = authentication.getName();
+            return RestBean.success(accountService.getAvatarAndEmailByUsername(userName));
+        }
+        return RestBean.failure(400);
+    }
 }

@@ -13,9 +13,9 @@ import { PlusCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Session } from "inspector"
-import Navbar from "@/components/home/navbar"
 import { useEffect, useState } from "react"
 import { Prompt, fetchPrompts } from "@/data/prompts"
+import Navbar from "../navbar/navbar"
 
 export const metadata: Metadata = {
   title: "Home | Prompt Store",

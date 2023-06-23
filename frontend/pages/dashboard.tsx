@@ -7,8 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "@/components/dashboard/components/date-range-picker";
 import Navbar from "@/components/navbar/navbar";
 import Head from "next/head";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import DashboardOverview from "@/components/dashboard/overview";
+import axios from "axios";
 
 export const metadata: Metadata = {
   title: "后台管理",
@@ -16,6 +17,29 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
+  useEffect(() => {
+    async function handleLogin() {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/api/auth/isLogin",
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.data.success) {
+          console.log(response.data.message);
+        } else {
+          console.log(response.data.message);
+          return window.location.replace("auth/login");
+        }
+      } catch (error) {
+        return window.location.replace("auth/login");
+      }
+    }
+    handleLogin();
+  }, []);
+  
   const [activeTab, setActiveTab] = useState("overview");
 
   const handleTabClick = (value: SetStateAction<string>) => {

@@ -17,4 +17,6 @@ public interface AccountService {
     String getLoginTimestampByUsername(String username);
 
     String getLastActivityTimestampByUsername(String username);
+
+    String getAvatarAndEmailByUsername(String username);
 }
