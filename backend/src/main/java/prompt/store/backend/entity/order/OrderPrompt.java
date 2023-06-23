@@ -1,6 +1,7 @@
-package prompt.store.backend.entity;
+package prompt.store.backend.entity.order;
 
 import lombok.Data;
+import prompt.store.backend.entity.ProductPrompt;
 
 @Data
 public class OrderPrompt {

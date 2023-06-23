@@ -19,4 +19,15 @@ public class Account {
     private String accountStatus;
     private LocalDateTime loginTimestamp;
     private LocalDateTime lastActivityTimestamp;
+    private String avatarPath;
+
+    private String avatarURL;
+
+    public void setAvatarURL(String objectStorageUrl) {
+        if (this.avatarPath == null) {
+            this.avatarURL = null;
+        } else {
+            this.avatarURL = objectStorageUrl + this.avatarPath;
+        }
+    }
 }

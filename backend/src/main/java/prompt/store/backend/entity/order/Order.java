@@ -1,4 +1,4 @@
-package prompt.store.backend.entity;
+package prompt.store.backend.entity.order;
 
 import lombok.Data;
 import java.sql.Timestamp;

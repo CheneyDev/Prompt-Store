@@ -1,8 +1,9 @@
 package prompt.store.backend.mapper;
 
 import org.apache.ibatis.annotations.*;
-import prompt.store.backend.entity.Order;
-import prompt.store.backend.entity.OrderPrompt;
+import prompt.store.backend.entity.order.Order;
+import prompt.store.backend.entity.order.OrderAnalysis;
+import prompt.store.backend.entity.order.OrderPrompt;
 
 import java.util.List;
 
@@ -71,5 +72,34 @@ public interface OrderMapper {
 
     @Select("SELECT COUNT(*) AS record_count FROM `order`;")
     int getOrdersTotalCount();
+
+    @Select("SELECT\n" +
+            "    YEAR(`order_date`) AS `year`,\n" +
+            "    MONTH(`order_date`) AS `month`,\n" +
+            "    SUM(`total_price`) AS `total_price_sum`\n" +
+            "FROM\n" +
+            "    `order`\n" +
+            "WHERE\n" +
+            "    YEAR(`order_date`) = #{year}\n" +
+            "GROUP BY\n" +
+            "    YEAR(`order_date`), MONTH(`order_date`)\n" +
+            "ORDER BY\n" +
+            "    YEAR(`order_date`), MONTH(`order_date`);\n")
+    @Results({
+            @Result(column = "year", property = "year"),
+            @Result(column = "month", property = "month"),
+            @Result(column = "total_price_sum", property = "totalPrice")
+    })
+    List<OrderAnalysis> getOrderTotalSumByYear(String year);
+
+    @Select("SELECT customer_name,total_price\n" +
+            "FROM `order`\n" +
+            "ORDER BY `order_date` DESC\n" +
+            "LIMIT 5;")
+    @Results({
+            @Result(column = "customer_name", property = "customerName"),
+            @Result(column = "total_price", property = "totalPrice")
+    })
+    List<Order> getTopFiveOrders();
 
 }

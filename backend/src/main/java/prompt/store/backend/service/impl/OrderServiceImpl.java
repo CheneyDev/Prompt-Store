@@ -1,19 +1,22 @@
 package prompt.store.backend.service.impl;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import prompt.store.backend.entity.Account;
 import prompt.store.backend.entity.Generate;
-import prompt.store.backend.entity.Order;
-import prompt.store.backend.entity.OrderPrompt;
+import prompt.store.backend.entity.order.Order;
+import prompt.store.backend.entity.order.OrderAnalysis;
+import prompt.store.backend.entity.order.OrderPrompt;
 import prompt.store.backend.entity.ProductPrompt;
+import prompt.store.backend.mapper.AccountMapper;
 import prompt.store.backend.mapper.OrderMapper;
 import prompt.store.backend.service.OrderService;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +27,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     OrderMapper orderMapper;
+    @Resource
+    AccountMapper accountMapper;
 
     @Value("${object_storage_url}")
     private String objectStorageUrl;
@@ -111,4 +116,35 @@ public class OrderServiceImpl implements OrderService {
     public int getOrdersTotalCount() {
         return orderMapper.getOrdersTotalCount();
     }
+
+    @Override
+    public List<OrderAnalysis> getOrderTotalSumByYear(String year) {
+        return orderMapper.getOrderTotalSumByYear(year);
+    }
+
+    @Override
+    public String getTopFiveOrders() {
+        // 创建Json返回体
+        JSONArray jsonArray = new JSONArray();
+
+        List<Order> orderList = orderMapper.getTopFiveOrders();
+        orderList.forEach(order -> {
+            Account account = accountMapper.getAvatarPathAndEmailByUsername(order.getCustomerName());
+            account.setAvatarURL(objectStorageUrl);
+            if (account != null) {
+                String avatarURL = account.getAvatarURL();
+                String email = account.getEmail();
+                String orderTotalPrice = String.valueOf(order.getTotalPrice());
+                String username = order.getCustomerName();
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("username", username);
+                jsonObject.put("email", email);
+                jsonObject.put("orderTotalPrice", orderTotalPrice);
+                jsonObject.put("avatarURL", avatarURL);
+                jsonArray.add(jsonObject);
+            }
+        });
+        return jsonArray.toJSONString();
+    }
+
 }

@@ -1,8 +1,9 @@
 package prompt.store.backend.service;
 
 import prompt.store.backend.entity.Generate;
-import prompt.store.backend.entity.Order;
-import prompt.store.backend.entity.OrderPrompt;
+import prompt.store.backend.entity.order.Order;
+import prompt.store.backend.entity.order.OrderAnalysis;
+import prompt.store.backend.entity.order.OrderPrompt;
 
 import java.util.List;
 
@@ -23,4 +24,8 @@ public interface OrderService {
     String getOrdersTotalSum();
 
     int getOrdersTotalCount();
+
+    List<OrderAnalysis> getOrderTotalSumByYear(String year);
+
+    String getTopFiveOrders();
 }

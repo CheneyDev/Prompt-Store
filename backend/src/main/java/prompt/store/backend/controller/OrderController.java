@@ -1,16 +1,17 @@
 package prompt.store.backend.controller;
 
+import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import prompt.store.backend.entity.Order;
-import prompt.store.backend.entity.OrderPrompt;
+import prompt.store.backend.entity.order.Order;
+import prompt.store.backend.entity.order.OrderAnalysis;
+import prompt.store.backend.entity.order.OrderPrompt;
 import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.AccountService;
 import prompt.store.backend.service.OrderService;
@@ -71,6 +72,19 @@ public class OrderController {
     public RestBean<String> getOrdersTotalCount() {
         String ordersTotalCount = String.valueOf(orderService.getOrdersTotalCount());
         return RestBean.success(ordersTotalCount);
+    }
+
+    @GetMapping("/getOrderTotalSumByYear")
+    public RestBean<String> getOrderTotalSumByYear(@RequestParam("year") String year) {
+        List<OrderAnalysis> orderTotalSumByYear = orderService.getOrderTotalSumByYear(year);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("orderTotalSumByYear", orderTotalSumByYear);
+        return RestBean.success(jsonObject.toJSONString());
+    }
+
+    @GetMapping("/getTopFiveOrders")
+    public RestBean<String> getTopFiveOrders() {
+        return RestBean.success(orderService.getTopFiveOrders());
     }
 
 }

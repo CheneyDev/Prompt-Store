@@ -44,4 +44,11 @@ public interface AccountMapper {
     @Select("SELECT last_activity_timestamp FROM user_account WHERE username = #{username}")
     String getLastActivityTimestampByUsername(String username);
 
+    @Select("SELECT avatar_path,email FROM user_account WHERE username = #{username}")
+    @Results({
+            @Result(property = "avatarPath", column = "avatar_path"),
+            @Result(property = "email", column = "email")
+    })
+    Account getAvatarPathAndEmailByUsername(String username);
+
 }
