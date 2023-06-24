@@ -121,4 +121,7 @@ public interface OrderMapper {
     })
     List<Order> getTopFiveOrders();
 
+    @Update("UPDATE `order` SET customer_name=#{customerName},order_date=#{orderDate},total_price=#{totalPrice} WHERE order_id=#{orderId};")
+    void updateOrderByOrderId(@Param("orderId") String orderId, @Param("customerName") String customerName, @Param("orderDate") String orderDate, @Param("totalPrice") String totalPrice);
+
 }

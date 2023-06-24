@@ -30,4 +30,6 @@ public interface OrderService {
     List<OrderAnalysis> getOrderTotalSumByYear(String year);
 
     String getTopFiveOrders();
+
+    void updateOrderByOrderId(String orderId, String customerName, String orderDate, String totalPrice);
 }

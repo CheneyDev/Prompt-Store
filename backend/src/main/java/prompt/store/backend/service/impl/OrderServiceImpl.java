@@ -157,4 +157,9 @@ public class OrderServiceImpl implements OrderService {
         return jsonArray.toJSONString();
     }
 
+    @Override
+    public void updateOrderByOrderId(String orderId, String customerName, String orderDate, String totalPrice) {
+        orderMapper.updateOrderByOrderId(orderId,customerName,orderDate,totalPrice);
+    }
+
 }

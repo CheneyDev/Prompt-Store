@@ -7,12 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.entity.order.Order;
 import prompt.store.backend.entity.order.OrderAnalysis;
 import prompt.store.backend.entity.order.OrderPrompt;
-import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.AccountService;
 import prompt.store.backend.service.OrderService;
 
@@ -64,8 +65,8 @@ public class OrderController {
 
     @GetMapping("/getOrderListByUsernameWithPagination")
     public RestBean<List<Order>> getOrderListByUsernameWithPagination(@RequestParam("username") String username,
-                                                                       @RequestParam("page") int page,
-                                                                       @RequestParam("pageSize") int pageSize) {
+                                                                      @RequestParam("page") int page,
+                                                                      @RequestParam("pageSize") int pageSize) {
         List<Order> orderList = orderService.getOrderListByUsernameWithPagination(username, page, pageSize);
         updateLastActivityTimestamp();
         return RestBean.success(orderList);
@@ -96,4 +97,17 @@ public class OrderController {
         return RestBean.success(orderService.getTopFiveOrders());
     }
 
+    @PostMapping("updateOrderByOrderId")
+    public RestBean<String> updateOrderByOrderId(@RequestParam("orderID") String orderID,
+                                                 @RequestParam("customerName") String customerName,
+                                                 @RequestParam("orderDate") String orderDate,
+                                                 @RequestParam("totalPrice") String totalPrice) {
+        String[] orderDateArray = orderDate.split(" ");
+        String[] orderDateArray1 = orderDateArray[0].split("/");
+        String[] orderDateArray2 = orderDateArray[1].split(":");
+        orderDate = orderDateArray1[2] + "-" + orderDateArray1[0] + "-" + orderDateArray1[1] + " " + orderDateArray2[0] + ":" + orderDateArray2[1] + ":" + orderDateArray2[2];
+        System.out.println(orderID+" "+customerName+" "+orderDate+" "+totalPrice);
+        orderService.updateOrderByOrderId(orderID, customerName, orderDate, totalPrice);
+        return RestBean.success("success");
+    }
 }

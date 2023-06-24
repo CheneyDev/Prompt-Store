@@ -10,6 +10,8 @@ import Head from "next/head";
 import { SetStateAction, useEffect, useState } from "react";
 import DashboardOverview from "@/components/dashboard/overview/overview";
 import axios from "axios";
+import DashboardOrder from "@/components/dashboard/order-manage/order";
+import { set } from "date-fns";
 
 export const metadata: Metadata = {
   title: "后台管理",
@@ -17,6 +19,9 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
+
+  const [username, setUsername] = useState("");
+
   useEffect(() => {
     async function handleLogin() {
       try {
@@ -28,7 +33,7 @@ export default function DashboardPage() {
           }
         );
         if (response.data.success) {
-          console.log(response.data.message);
+          setUsername(response.data.message);
         } else {
           console.log(response.data.message);
           return window.location.replace("auth/login");
@@ -39,7 +44,7 @@ export default function DashboardPage() {
     }
     handleLogin();
   }, []);
-  
+
   const [activeTab, setActiveTab] = useState("overview");
 
   const handleTabClick = (value: SetStateAction<string>) => {
@@ -112,7 +117,7 @@ export default function DashboardPage() {
             </TabsList>
             <TabsContent value={activeTab} className="space-y-4">
               {activeTab === "overview" && <DashboardOverview />}
-              {/* {activeTab === "orders" && <DashboardOrder />} */}
+              {activeTab === "orders" && <DashboardOrder username={username} />}
               {/* {activeTab === "users" && <DashboardUser />} */}
               {/* {activeTab === "prompts" && <DashboardPrompts />} */}
               {/* {activeTab === "models" && <DashboardModels />} */}
