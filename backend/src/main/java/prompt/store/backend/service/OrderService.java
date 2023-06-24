@@ -23,6 +23,8 @@ public interface OrderService {
 
     List<Order> getOrderListByUsernameWithPagination(String customerId, int page, int pageSize);
 
+    List<Order> getAllOrdersWithPagination(int page, int pageSize);
+
     String getOrdersTotalSum();
 
     int getOrdersTotalCount();
@@ -32,4 +34,6 @@ public interface OrderService {
     String getTopFiveOrders();
 
     void updateOrderByOrderId(String orderId, String customerName, String orderDate, String totalPrice);
+
+    void deleteOrderByOrderId(String orderId);
 }

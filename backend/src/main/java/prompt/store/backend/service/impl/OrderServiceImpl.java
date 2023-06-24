@@ -118,6 +118,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getAllOrdersWithPagination(int page, int pageSize) {
+        int offset=(page-1)*pageSize;
+        List<Order> orderList=orderMapper.getAllOrdersWithPagination(pageSize,offset);
+        orderList.forEach(order -> {
+            order.setResultURL(objectStorageUrl);
+        });
+        return orderList;
+    }
+
+    @Override
     public String getOrdersTotalSum() {
         return orderMapper.getOrdersTotalSum();
     }
@@ -160,6 +170,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateOrderByOrderId(String orderId, String customerName, String orderDate, String totalPrice) {
         orderMapper.updateOrderByOrderId(orderId,customerName,orderDate,totalPrice);
+    }
+
+    @Override
+    public void deleteOrderByOrderId(String orderId) {
+        orderMapper.deleteOrderByOrderId(orderId);
     }
 
 }

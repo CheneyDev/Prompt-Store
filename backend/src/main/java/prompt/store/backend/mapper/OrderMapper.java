@@ -86,6 +86,26 @@ public interface OrderMapper {
     })
     List<Order> getOrderListByUsernameWithPagination(@Param("username") String username, @Param("pageSize") int pageSize, @Param("offset") int offset);
 
+    @Select("SELECT *\n" +
+            "FROM `order`\n" +
+            "LIMIT #{pageSize}\n" +
+            "OFFSET #{offset}\n")
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "order_id", property = "orderId"),
+            @Result(column = "customer_name", property = "customerName"),
+            @Result(column = "order_date", property = "orderDate"),
+            @Result(column = "product_name", property = "productName"),
+            @Result(column = "quantity", property = "quantity"),
+            @Result(column = "unit_price", property = "unitPrice"),
+            @Result(column = "total_price", property = "totalPrice"),
+            @Result(column = "order_prompt", property = "orderPrompt"),
+            @Result(column = "result_path", property = "resultPath")
+    })
+    List<Order> getAllOrdersWithPagination(@Param("pageSize") int pageSize, @Param("offset") int offset);
+
+
+
     @Select("SELECT SUM(`total_price`) AS total_sum FROM `order`;")
     String getOrdersTotalSum();
 
@@ -124,4 +144,6 @@ public interface OrderMapper {
     @Update("UPDATE `order` SET customer_name=#{customerName},order_date=#{orderDate},total_price=#{totalPrice} WHERE order_id=#{orderId};")
     void updateOrderByOrderId(@Param("orderId") String orderId, @Param("customerName") String customerName, @Param("orderDate") String orderDate, @Param("totalPrice") String totalPrice);
 
+    @Delete("DELETE FROM `order` WHERE order_id=#{orderId};")
+    void deleteOrderByOrderId(String orderId);
 }

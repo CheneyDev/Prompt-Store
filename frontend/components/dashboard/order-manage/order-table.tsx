@@ -51,7 +51,7 @@ export default function DashboardOrderTable({
 }: {
   _orderList: Order[];
 }) {
-    const [orderList, setOrderList] = useState<Order[]>([]);
+  const [orderList, setOrderList] = useState<Order[]>([]);
   const [orderPromptList, setOrderPromptList] = useState<OrderPrompt[]>([]);
   const [formattedOrderId, setFormattedOrderId] = useState<string[]>([]);
   const [formattedTotalPriceList, setFormattedTotalPriceList] = useState<
@@ -59,11 +59,9 @@ export default function DashboardOrderTable({
   >([]);
   const [formattedDateList, setFormattedDateList] = useState<string[]>([]);
 
-
   useEffect(() => {
     setOrderList(_orderList);
   }, [_orderList]);
-  
 
   useEffect(() => {
     const formattedOrderIds = orderList.map(
@@ -101,7 +99,6 @@ export default function DashboardOrderTable({
   const createdAtRef = useRef<HTMLInputElement>(null);
   const totalPriceRef = useRef<HTMLInputElement>(null);
 
-
   const handleSaveChanges = async () => {
     try {
       const order_id = orderIdRef.current?.value;
@@ -121,26 +118,43 @@ export default function DashboardOrderTable({
       if (response.data.message === "success") {
         // 更新 orderList
         const newOrderList = orderList.map((order) => {
-            if (order.orderId === order_id) {
-              return {
-                ...order,
-                customerName: user_name,
-                orderDate: created_at,
-                totalPrice: Number(total_price),
-              } as Order; // 添加类型断言
-            } else {
-              return order;
-            }
-
+          if (order.orderId === order_id) {
+            return {
+              ...order,
+              customerName: user_name,
+              orderDate: created_at,
+              totalPrice: Number(total_price),
+            } as Order; // 添加类型断言
+          } else {
+            return order;
           }
-
-        );
+        });
         setOrderList(newOrderList);
-    }
+      }
     } catch (error) {
       console.error("Error updating order:", error);
     }
   };
+
+  const handleDeleteOrder = async (orderId: string) => {
+    try {
+        const response = await axios.post(
+            `http://localhost:8080/deleteOrderByOrderId?orderID=${orderId}`,
+            {},
+            {
+                withCredentials: true,
+            }
+        );
+        if (response.data.message === "success") {
+            // 更新 orderList
+            const newOrderList = orderList.filter((order) => order.orderId !== orderId);
+            setOrderList(newOrderList);
+        }
+    } catch (error) {
+        console.error("Error deleting order:", error);
+    }
+    };
+
 
   if (!orderPromptList) {
     return <div>Loading...</div>;
@@ -238,27 +252,34 @@ export default function DashboardOrderTable({
                     </DialogContent>
                   </Dialog>
 
-                  <button className="btn btn-outline btn-error  btn-sm">
-                    <Trash2 size={14} />
-                  </button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="btn btn-outline btn-error  btn-sm">
+                        <Trash2 size={14} />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>确定要删除吗？</DialogTitle>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid items-center gap-4">
+                          <p className="text-gray-600">订单 {formattedOrderId[index]} 删除后不可恢复！</p>
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                        <Button variant="outline">取消</Button>
+                        </DialogClose>
+                        <DialogClose asChild>
+                        <Button variant="destructive" onClick={()=>handleDeleteOrder(order.orderId)}>确定</Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </td>
               </tr>
             ))}
-            {/* <tr>
-              <th>1</th>
-              <td>order#131434354545</td>
-              <td>admin</td>
-              <td>2023-05-32 16:33:34</td>
-              <td>¥ 2</td>
-              <td>
-                <button className="btn btn-outline btn-sm mr-3">
-                  <Edit3 size={14} />
-                </button>
-                <button className="btn btn-outline btn-error  btn-sm">
-                  <Trash2 size={14} />
-                </button>
-              </td>
-            </tr> */}
           </tbody>
         </table>
       </div>

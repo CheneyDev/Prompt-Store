@@ -16,7 +16,7 @@ export default function DashboardOrder({ username }: { username: any }) {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8080/getOrderListByUsernameWithPagination?username=${username}&page=${currentPage}&pageSize=${pageSize}`,
+        `http://localhost:8080/getAllOrdersWithPagination?page=${currentPage}&pageSize=${pageSize}`,
         {
           withCredentials: true,
         }
@@ -52,7 +52,7 @@ export default function DashboardOrder({ username }: { username: any }) {
   ) {
     axios
       .get(
-        `http://localhost:8080/getOrderListByUsernameWithPagination?username=${username}&page=${page}&pageSize=${pageSize}`,
+        `http://localhost:8080/getAllOrdersWithPagination?page=${page}&pageSize=${pageSize}`,
         {
           withCredentials: true,
         }

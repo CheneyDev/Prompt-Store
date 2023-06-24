@@ -72,6 +72,14 @@ public class OrderController {
         return RestBean.success(orderList);
     }
 
+    @GetMapping("/getAllOrdersWithPagination")
+    public RestBean<List<Order>> getAllOrdersWithPagination(@RequestParam("page") int page,
+                                                            @RequestParam("pageSize") int pageSize) {
+        List<Order> orderList = orderService.getAllOrdersWithPagination(page, pageSize);
+        updateLastActivityTimestamp();
+        return RestBean.success(orderList);
+    }
+
     @GetMapping("/getOrdersTotalSum")
     public RestBean<String> getOrdersTotalSum() {
         String ordersTotalSum = orderService.getOrdersTotalSum();
@@ -106,8 +114,14 @@ public class OrderController {
         String[] orderDateArray1 = orderDateArray[0].split("/");
         String[] orderDateArray2 = orderDateArray[1].split(":");
         orderDate = orderDateArray1[2] + "-" + orderDateArray1[0] + "-" + orderDateArray1[1] + " " + orderDateArray2[0] + ":" + orderDateArray2[1] + ":" + orderDateArray2[2];
-        System.out.println(orderID+" "+customerName+" "+orderDate+" "+totalPrice);
+        System.out.println(orderID + " " + customerName + " " + orderDate + " " + totalPrice);
         orderService.updateOrderByOrderId(orderID, customerName, orderDate, totalPrice);
+        return RestBean.success("success");
+    }
+
+    @PostMapping("deleteOrderByOrderId")
+    public RestBean<String> deleteOrderByOrderId(@RequestParam("orderID") String orderID) {
+        orderService.deleteOrderByOrderId(orderID);
         return RestBean.success("success");
     }
 }
