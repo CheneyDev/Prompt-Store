@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../../ui/card";
 import { RecentSales } from "./components/recent-sales";
 import { useEffect, useState } from "react";
 import axios from "axios";

@@ -89,52 +89,29 @@ export default function AllOrders() {
       });
   }
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
-      getOrderListByUsernameWithPagination(username, page, pageSize);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < pageCount) {
-      setCurrentPage((prevPage) => prevPage + 1);
-      getOrderListByUsernameWithPagination(username, page, pageSize);
-    }
-  };
 
   const handlePageClick = (page: number) => {
-    setCurrentPage(page);
-    getOrderListByUsernameWithPagination(username, page, pageSize);
+    if (page >= 1 && page <= pageCount) {
+      setCurrentPage(page);
+      getOrderListByUsernameWithPagination(username, page, pageSize);
+    }
   };
+
+  useEffect(() => {
+    console.log("currentPage:", currentPage);
+  }, [currentPage]);
 
   return (
     <>
       <Navbar />
       <OrderItems orderList={orderList} />
-      {/* <div className="join my-6" style={{ display: 'flex', justifyContent: 'center' }}>
-        <button className="join-item btn" onClick={handlePreviousPage}>«</button>
-        <button className="join-item btn">第 {currentPage} 页</button>
-        <button className="join-item btn" onClick={handleNextPage}>»</button>
-      </div> */}
-      {/* <div className="join grid grid-cols-2 my-6 "  style={{ display: 'flex', justifyContent: 'center' }}>
-        <button className="join-item btn btn-outline">上一页</button>
-        <button className="join-item btn btn-outline">{currentPage}</button>
-        <button className="join-item btn btn-outline">{currentPage+1}</button>
-        <button className="join-item btn btn-outline">{currentPage+2}</button>
-        <button className="join-item btn btn-outline btn-disabled">...</button>
-        <button className="join-item btn btn-outline">{pageCount-2}</button>
-        <button className="join-item btn btn-outline">{pageCount-1}</button>
-        <button className="join-item btn btn-outline">{pageCount}</button>
-        <button className="join-item btn btn-outline">下一页</button>
-      </div> */}
       <div
         className="join grid grid-cols-2 my-6"
         style={{ display: "flex", justifyContent: "center" }}
       >
         <button
           className="join-item btn btn-outline"
-          onClick={handlePreviousPage}
+          onClick={() => handlePageClick(currentPage - 1)}
         >
           上一页
         </button>
@@ -204,7 +181,10 @@ export default function AllOrders() {
             {pageCount}
           </button>
         )}
-        <button className="join-item btn btn-outline" onClick={handleNextPage}>
+        <button
+          className="join-item btn btn-outline"
+          onClick={() => handlePageClick(currentPage + 1)}
+        >
           下一页
         </button>
       </div>

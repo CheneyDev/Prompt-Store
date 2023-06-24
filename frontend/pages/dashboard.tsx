@@ -4,11 +4,11 @@ import { Download } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "@/components/dashboard/components/date-range-picker";
+import { CalendarDateRangePicker } from "@/components/dashboard/overview/components/date-range-picker";
 import Navbar from "@/components/navbar/navbar";
 import Head from "next/head";
 import { SetStateAction, useEffect, useState } from "react";
-import DashboardOverview from "@/components/dashboard/overview";
+import DashboardOverview from "@/components/dashboard/overview/overview";
 import axios from "axios";
 
 export const metadata: Metadata = {
