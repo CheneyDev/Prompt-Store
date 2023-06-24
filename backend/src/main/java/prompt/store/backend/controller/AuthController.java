@@ -63,7 +63,6 @@ public class AuthController {
         if (authorizeService.verifyEmailCode(email, verifyCode) && authorizeService.verifyEmail(email)) {
             result = authorizeService.resetPassword(email, password);
         }
-        System.out.println(result);
         return RestBean.success(String.valueOf(result));
     }
 

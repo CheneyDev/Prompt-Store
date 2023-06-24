@@ -64,7 +64,6 @@ public class AccountServiceImpl implements AccountService {
         jsonObject.put("username", userName);
         jsonObject.put("email", email);
         jsonObject.put("avatarURL", avatarURL);
-        System.out.println(jsonObject.toJSONString());
 
         return jsonObject.toJSONString();
     }
