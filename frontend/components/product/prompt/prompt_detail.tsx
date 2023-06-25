@@ -495,14 +495,14 @@ export default function PromptDetail() {
 
                     <Button
                       onClick={() => {
-                        // window.my_modal_5.showModal();
+                        window.my_modal_5.showModal();
                         handleSubmit(event);
                       }}
                     >
                       <Component size={16} />
                       &nbsp;&nbsp;立即制作
                     </Button>
-                    {/* <dialog
+                    <dialog
                       id="my_modal_5"
                       className="modal modal-bottom sm:modal-middle"
                     >
@@ -517,7 +517,7 @@ export default function PromptDetail() {
                           <Generating setIsGenerated={setIsGenerated} />
                         )}
                       </form>
-                    </dialog> */}
+                    </dialog>
                   </CardFooter>
                 </Card>
               </div>

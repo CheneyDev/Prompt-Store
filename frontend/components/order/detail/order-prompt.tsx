@@ -69,11 +69,8 @@ export default function OrderPrompt({
         <p className="text-lg md:text-xl dark:text-white font-semibold leading-6 xl:leading-5 text-gray-800">
           订单详情
         </p>
-        {/* <div className="mt-4 md:mt-6 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full"> */}
-        {/* <div className="pb-4 md:pb-8 w-full md:w-80"> */}
-
         <div className="mt-4 md:mt-6 grid grid-cols-8 items-start gap-8">
-          <div className="col-span-2">
+          <div className="w-full col-span-2">
             <img
               className="w-full hidden md:block"
               src={orderPrompt.mainImageURL}

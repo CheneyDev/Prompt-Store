@@ -1,5 +1,6 @@
 package prompt.store.backend.controller;
 
+import com.amazonaws.services.s3.AmazonS3;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,11 @@ import prompt.store.backend.utils.ObjectStorageUtil;
 import prompt.store.backend.utils.ReplicateApi;
 import prompt.store.backend.utils.ResultImageUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProductController {
@@ -87,24 +92,24 @@ public class ProductController {
 
     @PostMapping("/generate")
     public RestBean<String> generate(@RequestBody Generate generateEntity) {
-//        String base64Image = productPromptService.onGenerating(generateEntity);
-//        File resultImage;
-//        try {
-//            resultImage = resultImageUtil.createTempFile(base64Image);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        String orderId=orderService.generateOrderId();
-//        String resultImagePath=orderService.generateRsultImageNameAndPath(orderId);
-//
-//        orderService.generateOrder(orderId,resultImagePath,generateEntity);
-//
-//        AmazonS3 s3Client = objectStorageUtil.initS3Client();
-//        objectStorageUtil.uploadFile(s3Client, bucketName, resultImagePath, resultImage);
-//        resultImageUtil.deleteTempFile(resultImage);
-//        Map<String, String> response = new HashMap<>();
-//        response.put("orderId", orderId);
-//        response.put("base64Image", base64Image);
+        String base64Image = productPromptService.onGenerating(generateEntity);
+        File resultImage;
+        try {
+            resultImage = resultImageUtil.createTempFile(base64Image);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String orderId=orderService.generateOrderId();
+        String resultImagePath=orderService.generateRsultImageNameAndPath(orderId);
+
+        orderService.generateOrder(orderId,resultImagePath,generateEntity);
+
+        AmazonS3 s3Client = objectStorageUtil.initS3Client();
+        objectStorageUtil.uploadFile(s3Client, bucketName, resultImagePath, resultImage);
+        resultImageUtil.deleteTempFile(resultImage);
+        Map<String, String> response = new HashMap<>();
+        response.put("orderId", orderId);
+        response.put("base64Image", base64Image);
 
 
 //        String base64Image = replicateApi.downloadAndConvertToBase64("https://replicate.delivery/pbxt/NrvTeMDDGWRJEajwc7el9NfjEBx2k7MUtwGje78f1lHvEtuIC/out-0.png");
@@ -119,13 +124,13 @@ public class ProductController {
 //        response.put("base64Image", base64Image);
 
 
-//        updateLastActivityTimestamp();
-//        return RestBean.success(response.toString());
+        updateLastActivityTimestamp();
+        return RestBean.success(response.toString());
 
 
         //生成假订单到数据库
-        String orderId = orderService.generateOrderId();
-        orderService.generateOrder(orderId, "resources/order_result_image/order1686897283717.jpg", generateEntity);
-        return RestBean.success("true");
+//        String orderId = orderService.generateOrderId();
+//        orderService.generateOrder(orderId, "resources/order_result_image/order1686897283717.jpg", generateEntity);
+//        return RestBean.success("true");
     }
 }

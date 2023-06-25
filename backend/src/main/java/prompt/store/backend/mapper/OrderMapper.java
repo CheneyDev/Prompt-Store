@@ -69,7 +69,8 @@ public interface OrderMapper {
 
     @Select("SELECT *\n" +
             "FROM `order`\n" +
-            "WHERE customer_name = #{username}\n" +
+            "WHERE customer_name = #{username} " +
+            "ORDER BY order_date DESC\n" +
             "LIMIT #{pageSize}\n" +
             "OFFSET #{offset}\n")
     @Results({
@@ -87,7 +88,8 @@ public interface OrderMapper {
     List<Order> getOrderListByUsernameWithPagination(@Param("username") String username, @Param("pageSize") int pageSize, @Param("offset") int offset);
 
     @Select("SELECT *\n" +
-            "FROM `order`\n" +
+            "FROM `order` " +
+            "ORDER BY order_date DESC\n" +
             "LIMIT #{pageSize}\n" +
             "OFFSET #{offset}\n")
     @Results({
