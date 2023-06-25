@@ -1,6 +1,8 @@
 package prompt.store.backend.service;
 
-import org.springframework.stereotype.Service;
+import prompt.store.backend.entity.Account;
+
+import java.util.List;
 
 public interface AccountService {
 
@@ -19,4 +21,10 @@ public interface AccountService {
     String getLastActivityTimestampByUsername(String username);
 
     String getAvatarAndEmailByUsername(String username);
+
+    List<Account> getAllAccountsWithPagination(int page, int offset);
+
+    void updateAccountById(int id, String username, String role, String email, String accountStatus);
+
+    void deleteAccountById(int id);
 }

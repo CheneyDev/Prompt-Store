@@ -3,6 +3,8 @@ package prompt.store.backend.mapper;
 import org.apache.ibatis.annotations.*;
 import prompt.store.backend.entity.Account;
 
+import java.util.List;
+
 @Mapper
 public interface AccountMapper {
 
@@ -50,5 +52,24 @@ public interface AccountMapper {
             @Result(property = "email", column = "email")
     })
     Account getAvatarPathAndEmailByUsername(String username);
+
+    //分页查询所有用户
+    @Select("SELECT id,username,role,email,account_status,avatar_path,last_activity_timestamp FROM user_account LIMIT #{pageSize} OFFSET #{offset}")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "username", column = "username"),
+            @Result(property = "role", column = "role"),
+            @Result(property = "accountStatus", column = "account_status"),
+            @Result(property = "avatarPath", column = "avatar_path"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "lastActivityTimestamp", column = "last_activity_timestamp")
+    })
+    List<Account> getAllAccountsWithPagination(@Param("pageSize") int pageSize, @Param("offset") int offset);
+
+    @Update("UPDATE user_account SET username = #{username},role = #{role},email = #{email},account_status = #{accountStatus} WHERE id = #{id}")
+    void updateAccountById(@Param("id") int id, @Param("username") String username, @Param("role") String role, @Param("email") String email, @Param("accountStatus") String accountStatus);
+
+    @Delete("DELETE FROM user_account WHERE id = #{id}")
+    void deleteAccountById(int id);
 
 }

@@ -12,9 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
-import { set } from "date-fns";
 import { Edit3, Trash2 } from "lucide-react";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Order {
   id: number;
@@ -52,7 +51,6 @@ export default function DashboardOrderTable({
   _orderList: Order[];
 }) {
   const [orderList, setOrderList] = useState<Order[]>([]);
-  const [orderPromptList, setOrderPromptList] = useState<OrderPrompt[]>([]);
   const [formattedOrderId, setFormattedOrderId] = useState<string[]>([]);
   const [formattedTotalPriceList, setFormattedTotalPriceList] = useState<
     string[]
@@ -155,10 +153,6 @@ export default function DashboardOrderTable({
     }
     };
 
-
-  if (!orderPromptList) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <>

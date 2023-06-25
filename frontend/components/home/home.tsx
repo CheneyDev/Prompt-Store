@@ -2,17 +2,12 @@ import { Metadata } from "next"
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 
 import { AlbumArtwork } from "@/components/home/album-artwork"
 import { PodcastEmptyPlaceholder } from "@/components/home/podcast-empty-placeholder"
-import { Sidebar } from "@/components/home/sidebar"
-import { playlists } from "@/data/playlists"
 import Image from "next/image"
-import { PlusCircle } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { Session } from "inspector"
 import { useEffect, useState } from "react"
 import { Prompt, fetchPrompts } from "@/data/prompts"
 import Navbar from "../navbar/navbar"
@@ -54,8 +49,8 @@ export default function HomePage() {
         />
       </div>
       <div className="hidden md:block">
-        <Navbar />
-        <div className="border-t">
+        <Navbar/>
+        <div>
           <div className="bg-background">
             {/* <div className="grid lg:grid-cols-5"> */}
               {/* <Sidebar playlists={playlists} className="hidden lg:block" /> */}

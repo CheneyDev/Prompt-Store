@@ -5,8 +5,11 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import prompt.store.backend.entity.Account;
+import prompt.store.backend.entity.order.Order;
 import prompt.store.backend.mapper.AccountMapper;
 import prompt.store.backend.service.AccountService;
+
+import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -66,5 +69,25 @@ public class AccountServiceImpl implements AccountService {
         jsonObject.put("avatarURL", avatarURL);
 
         return jsonObject.toJSONString();
+    }
+
+    @Override
+    public List<Account> getAllAccountsWithPagination(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        List<Account> accounts = accountMapper.getAllAccountsWithPagination(pageSize, offset);
+        for (Account account : accounts) {
+            account.setAvatarURL(objectStorageUrl);
+        }
+        return accounts;
+    }
+
+    @Override
+    public void updateAccountById(int id, String username, String role, String email, String accountStatus) {
+        accountMapper.updateAccountById(id, username, role, email, accountStatus);
+    }
+
+    @Override
+    public void deleteAccountById(int id) {
+        accountMapper.deleteAccountById(id);
     }
 }
