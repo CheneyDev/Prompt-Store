@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
+import { set } from "date-fns";
 import { ro } from "date-fns/locale";
 import { Edit3, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -162,34 +163,7 @@ export default function DashboardUserTable({
           withCredentials: true,
         }
       );
-      if (response.data.message === "success") {
 
-        //更新 userlist, 重新获取
-        const response = await axios.get(
-            `http://localhost:8080/getAllAccountsWithPagination?page=${currentPage}&pageSize=${pageSize}`,
-            {
-                withCredentials: true,
-            }
-        );
-        const newUserList = response.data.data.map((user: any) => {
-            return {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                role: user.role,
-                accountStatus: user.accountStatus,
-                avatarURL: user.avatarURL,
-                lastActivityTimestamp: user.lastActivityTimestamp,
-            } as User;
-        });
-
-        
-        
-        console.log("success");
-
-
-      };
-        // setUserList(newUserList);
     } catch (error) {
       console.error("Error updating order:", error);
     }
