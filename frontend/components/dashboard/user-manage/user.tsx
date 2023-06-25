@@ -76,7 +76,7 @@ export default function DashboardUser() {
   }, [currentPage]);
 
   return <>
-  <DashboardUserTable _userList={userList}/>
+  <DashboardUserTable _userList={userList} currentPage={currentPage} pageSize={pageSize}/>
 
 
 

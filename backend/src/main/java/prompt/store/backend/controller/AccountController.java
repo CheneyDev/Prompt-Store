@@ -1,14 +1,12 @@
 package prompt.store.backend.controller;
 
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 import prompt.store.backend.entity.Account;
+import prompt.store.backend.entity.AccountPostBody;
 import prompt.store.backend.entity.RestBean;
 import prompt.store.backend.service.AccountService;
 
@@ -31,13 +29,13 @@ public class AccountController {
     @GetMapping("/getAccountsTotalCount")
     public RestBean<String> getAccountsTotalCount() {
         updateLastActivityTimestamp();
-        return  RestBean.success(String.valueOf(accountService.getAccountsTotalCount()));
+        return RestBean.success(String.valueOf(accountService.getAccountsTotalCount()));
     }
 
     @GetMapping("/getOnlineAccounts")
     public RestBean<String> getOnlineAccountsTotalCount() {
         updateLastActivityTimestamp();
-        return  RestBean.success(String.valueOf(accountService.getOnlineAccountsTotalCount()));
+        return RestBean.success(String.valueOf(accountService.getOnlineAccountsTotalCount()));
     }
 
     @GetMapping("/getAvatarAndEmailByUsername")
@@ -68,6 +66,20 @@ public class AccountController {
     public RestBean<String> deleteAccountById(@RequestParam("id") int id) {
         updateLastActivityTimestamp();
         accountService.deleteAccountById(id);
+        return RestBean.success("success");
+    }
+
+    @PostMapping("/insertAccountFromDashboard")
+    public RestBean<String> insertAccountFromDashboard(@RequestBody AccountPostBody accountPostBody) {
+        String username = accountPostBody.getNewUserName();
+        String email = accountPostBody.getNewUserEmail();
+        String password = accountPostBody.getNewUserPassword();
+        String role = accountPostBody.getNewUserRole();
+        String avatarData = accountPostBody.getAvatarData();
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        password = bCryptPasswordEncoder.encode(password);
+        updateLastActivityTimestamp();
+        accountService.insertAccountFromDashboard(username, email, password, role, avatarData);
         return RestBean.success("success");
     }
 }

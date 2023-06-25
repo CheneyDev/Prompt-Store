@@ -3,6 +3,7 @@ package prompt.store.backend.mapper;
 import org.apache.ibatis.annotations.*;
 import prompt.store.backend.entity.Account;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -20,6 +21,11 @@ public interface AccountMapper {
     //添加用户
     @Insert("INSERT INTO user_account (username, email, password,created_at) VALUES (#{username}, #{email}, #{password},#{timestamp})")
     void insertAccount(@Param("username") String username, @Param("email") String email, @Param("password") String password, @Param("timestamp") String timestamp);
+
+    //添加用户 username, email, password, role, avatar_path,created_at
+    @Insert("INSERT INTO user_account (username, email, password, role, avatar_path,created_at) VALUES (#{username}, #{email}, #{password}, #{role}, #{avatarPath},#{timestamp})")
+    void insertAccountFromDashboard(@Param("username") String username, @Param("email") String email, @Param("password") String password, @Param("role") String role, @Param("avatarPath") String avatarPath, @Param("timestamp") Timestamp timestamp);
+
 
     @Insert("UPDATE user_account SET password = #{password} WHERE email = #{email}")
     void updatePasswordByEmail(@Param("email") String email, @Param("password") String password);

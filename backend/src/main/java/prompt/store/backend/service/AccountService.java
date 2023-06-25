@@ -27,4 +27,6 @@ public interface AccountService {
     void updateAccountById(int id, String username, String role, String email, String accountStatus);
 
     void deleteAccountById(int id);
+
+    void insertAccountFromDashboard(String username, String email, String password, String role, String avatarData);
 }
