@@ -2,9 +2,12 @@ import Navbar from "@/components/navbar/navbar";
 import PromptDetail from "@/components/product/prompt/prompt_detail";
 import axios from "axios";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function PromptDetailPage() {
+
+  const [userName, setUserName] = useState("");
+
   useEffect(() => {
     async function handleLogin() {
       try {
@@ -16,9 +19,8 @@ export default function PromptDetailPage() {
           }
         );
         if (response.data.success) {
-          console.log(response.data.message);
+          setUserName(response.data.message);
         } else {
-          console.log(response.data.message);
           return (window.location.href = "/auth/login");
         }
       } catch (error) {
@@ -36,7 +38,7 @@ export default function PromptDetailPage() {
       </Head>
       <div className="h-screen w-screen ">
         <Navbar />
-        <PromptDetail />
+        <PromptDetail username={userName}/>
       </div>
     </>
   );

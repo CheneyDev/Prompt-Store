@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Card,
@@ -9,39 +9,19 @@ import {
   CardTitle,
 } from "@/components/product/prompt/ui/card";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Component, Heart, Scale, X } from "lucide-react";
+import { Component, Heart } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import SwapComponent from "./ui/swap-emoji";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import SwapEmoji from "./ui/swap-emoji";
 import Generating from "./ui/generating-dialog";
 
 import Generated from "./ui/generated-dialog";
-import { useRouter } from "next/router";
 
 let modelNames: any[] = [];
 let modelIds: any[] = [];
 let resolutionList: any[] = [];
 let orderId="";
 
-export default function PromptDetail() {
+export default function PromptDetail({username}:{username:any}) {
   let sku:string = "";
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -53,8 +33,6 @@ export default function PromptDetail() {
   const [isGenerated, setIsGenerated] = useState(false);
 
   const [id, setId] = useState("");
-
-  const [username, setUserName] = useState("");
 
   const [productName, setProductName] = useState("");
   const [mainImageURL, setMainImageURL] = useState("");
@@ -75,27 +53,12 @@ export default function PromptDetail() {
   const [maxSteps, setMaxSteps] = useState("");
 
   useEffect(() => {
-    checkLogin();
     fetchProductPrompt();
     fetchProductModel();
     fetchSupportedResolutionsByModelID();
     fetchSamplerList(modelId);
   }, [modelId]);
 
-  const checkLogin = async () => {
-    const response = await axios.post(
-      "http://localhost:8080/api/auth/isLogin",
-      {},
-      {
-        withCredentials: true,
-      }
-    );
-    if (response.data.success) {
-      setUserName(response.data.message);
-    } else {
-      return null;
-    }
-  };
 
   const fetchProductPrompt = async () => {
     try {
@@ -127,7 +90,6 @@ export default function PromptDetail() {
         setMaxOutputs(productPrompt.message.maxOutputs);
         setMaxSteps(productPrompt.message.maxSteps);
 
-        console.log(response.data);
       } else {
         return window.location.replace("auth/login");
       }
@@ -137,7 +99,6 @@ export default function PromptDetail() {
   };
 
   const fetchSamplerList = async (modelId: any) => {
-    console.log("modelID:", modelId);
     const encodedModelId = encodeURIComponent(modelId);
     try {
       const response = await axios.get(
@@ -296,7 +257,6 @@ export default function PromptDetail() {
       if (res) {
         const match = res.message.match(/\{orderId=(.*), base64Image=(.*)\}/);
         orderId = match[1];
-        console.log("orderId:", orderId);
         const base64Image = match[2];
         setIsGenerated(true);
         setGeneratedResult("data:image/png;base64," + base64Image);
@@ -346,7 +306,7 @@ export default function PromptDetail() {
                           id="prompt"
                           value={prompt}
                           onChange={handlePromptChange}
-                          className="textarea textarea-bordered textarea-md leading-normal h-36"
+                          className="textarea textarea-bordered textarea-md leading-normal h-32"
                           placeholder="Input here"
                         ></textarea>
                       </div>
@@ -356,7 +316,7 @@ export default function PromptDetail() {
                           id="prompt"
                           value={negativePrompt || ""}
                           onChange={handleNegativePromptChange}
-                          className="textarea textarea-bordered textarea-md h-36"
+                          className="textarea textarea-bordered textarea-md h-32"
                           placeholder="Input here"
                         ></textarea>
                       </div>

@@ -25,8 +25,10 @@ public class ProductPromptServiceImpl implements ProductPromptService {
     @Override
     public ProductPrompt getProductPromptBySku(String sku) {
         ProductPrompt productPrompt = productPromptMapper.getProductPromptBySku(sku);
+        if (productPrompt == null) {
+            return null;
+        }
         productPrompt.setMainImageUrl(objectStorageUrl);
-        System.out.println(productPrompt.getMainImageURL());
         return productPrompt;
     }
 
