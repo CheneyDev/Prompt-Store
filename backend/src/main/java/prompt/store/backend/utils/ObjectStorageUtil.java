@@ -38,6 +38,11 @@ public class ObjectStorageUtil {
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
+    //删除文件
+    public void deleteFile(AmazonS3 s3Client,String bucketName, String fileName) {
+        s3Client.deleteObject(bucketName, fileName);
+    }
+
 
 
 

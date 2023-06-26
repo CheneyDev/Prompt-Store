@@ -2,6 +2,7 @@ package prompt.store.backend.service.impl;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.amazonaws.services.s3.AmazonS3;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import prompt.store.backend.entity.ProductPrompt;
 import prompt.store.backend.mapper.AccountMapper;
 import prompt.store.backend.mapper.OrderMapper;
 import prompt.store.backend.service.OrderService;
+import prompt.store.backend.utils.ObjectStorageUtil;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -30,8 +32,14 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     AccountMapper accountMapper;
 
+    @Resource
+    private ObjectStorageUtil objectStorageUtil;
+
     @Value("${object_storage_url}")
     private String objectStorageUrl;
+
+    @Value("${cloudflare.r2.bucket}")
+    public String bucketName;
 
     @Override
     public Order getOrderById(String orderId) {
@@ -175,6 +183,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrderByOrderId(String orderId) {
         orderMapper.deleteOrderByOrderId(orderId);
+        AmazonS3 s3Client = objectStorageUtil.initS3Client();
+        String filePath = "resources/order_result_image/" + orderId + ".jpg";
+        objectStorageUtil.deleteFile(s3Client, bucketName, filePath);
     }
 
 }

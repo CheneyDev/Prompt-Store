@@ -105,7 +105,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void deleteAccountById(int id) {
+        AmazonS3 s3Client = objectStorageUtil.initS3Client();
+        String avatarPath = accountMapper.getAvatarPathById(id);
+        avatarPath = avatarPath.substring(1);
+        objectStorageUtil.deleteFile(s3Client, bucketName, avatarPath);
+
         accountMapper.deleteAccountById(id);
+
     }
 
     @Override

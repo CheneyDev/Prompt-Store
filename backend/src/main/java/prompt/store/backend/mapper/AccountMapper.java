@@ -78,4 +78,6 @@ public interface AccountMapper {
     @Delete("DELETE FROM user_account WHERE id = #{id}")
     void deleteAccountById(int id);
 
+    @Select("SELECT avatar_path FROM user_account WHERE id = #{id}")
+    String getAvatarPathById(int id);
 }

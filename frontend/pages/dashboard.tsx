@@ -106,15 +106,15 @@ export default function DashboardPage() {
                 onClick={() => handleTabClick("prompts")}
                 disabled={activeTab === "prompts"}
               >
-                Prompts
+                商品
               </TabsTrigger>
-              <TabsTrigger
+              {/* <TabsTrigger
                 value="models"
                 onClick={() => handleTabClick("models")}
                 disabled={activeTab === "models"}
               >
                 Models
-              </TabsTrigger>
+              </TabsTrigger> */}
             </TabsList>
             <TabsContent value={activeTab} className="space-y-4">
               {activeTab === "overview" && <DashboardOverview />}
