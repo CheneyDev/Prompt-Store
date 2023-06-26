@@ -15,17 +15,41 @@ import { Separator } from "@/components/ui/separator";
 import Generating from "./ui/generating-dialog";
 
 import Generated from "./ui/generated-dialog";
+import { set } from "date-fns";
+
+interface ProductModelObject {
+  id: number;
+  mainImagePath: string;
+  modelName: string;
+  modelDetailsUrl: string;
+  modelApiId: string;
+  defaultPrompt: string;
+  defaultNegativePrompt: string;
+  defaultResolution: string;
+  supportedResolutions: string;
+  defaultOutputs: number;
+  supportedOutputs: string;
+  defaultSampler: string;
+  supportedSamplers: string;
+  defaultSteps: number;
+  maxSteps: number;
+  defaultScale: number;
+  maxScale: number;
+  seed: number;
+  mainImageURL: string;
+}
 
 let modelNames: any[] = [];
-let modelIds: any[] = [];
+// let modelIds: any[] = [];
 let resolutionList: any[] = [];
-let orderId="";
+let instantSamplerList: any[] = [];
+let orderId = "";
 
-export default function PromptDetail({username}:{username:any}) {
-  let sku:string = "";
+export default function PromptDetail({ username }: { username: any }) {
+  let sku: string = "";
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    sku = urlParams.get("sku")||"";
+    sku = urlParams.get("sku") || "";
   }, []);
 
   const [samplerList, setSamplerList] = useState([]);
@@ -52,13 +76,14 @@ export default function PromptDetail({username}:{username:any}) {
   const [maxOutputs, setMaxOutputs] = useState(0);
   const [maxSteps, setMaxSteps] = useState("");
 
+  const [modelObjects, setModelObjects] = useState<ProductModelObject[]>([]);
+
   useEffect(() => {
-    fetchProductPrompt();
     fetchProductModel();
+    fetchProductPrompt();
     fetchSupportedResolutionsByModelID();
     fetchSamplerList(modelId);
   }, [modelId]);
-
 
   const fetchProductPrompt = async () => {
     try {
@@ -89,7 +114,6 @@ export default function PromptDetail({username}:{username:any}) {
         setMaxScale(productPrompt.message.maxScale);
         setMaxOutputs(productPrompt.message.maxOutputs);
         setMaxSteps(productPrompt.message.maxSteps);
-
       } else {
         return window.location.replace("auth/login");
       }
@@ -129,6 +153,7 @@ export default function PromptDetail({username}:{username:any}) {
       const productModel = response.data;
       if (productModel) {
         modelNames = productModel.message.map((item: any) => item.modelName);
+        setModelObjects(productModel.message);
       } else {
         return null;
       }
@@ -136,6 +161,7 @@ export default function PromptDetail({username}:{username:any}) {
       console.error("Error fetching product models:", error);
     }
   };
+
   const fetchSupportedResolutionsByModelID = async () => {
     const encodedModelID = encodeURIComponent(modelId);
     try {
@@ -191,10 +217,25 @@ export default function PromptDetail({username}:{username:any}) {
     setNegativePrompt(event.target.value);
   };
 
-  const handleModelChange = (event: any) => {
-    const value = event.target.value;
-    setModel(event.target.value);
-    fetchSupportedResolutionsByModelID();
+  // const handleModelChange = (event: any) => {
+  //   const value = event.target.value;
+  //   setModel(event.target.value);
+  //   fetchSupportedResolutionsByModelID();
+  // };
+
+  const handleModelChangeTemp = (selectedModelId: any) => {
+    let currentModel = modelObjects.filter(
+      (item: any) => item.id == selectedModelId
+    );
+    setModel(currentModel[0].modelName);
+    if ((currentModel[0].supportedResolutions == null)&&(currentModel[0].supportedSamplers == null)) {
+      resolutionList = [];
+      instantSamplerList = [];
+    }else{
+      resolutionList = currentModel[0].supportedResolutions.split(",");
+      instantSamplerList = currentModel[0].supportedSamplers.split(",");
+    }
+    
   };
 
   const handleSamplerChange = (event: any) => {
@@ -285,47 +326,47 @@ export default function PromptDetail({username}:{username:any}) {
                 />
               </div> */}
             </div>
-              <div className="px-5">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{productName}</CardTitle>
-                    <CardDescription>{description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="grid gap-6">
-                    <div className="grid gap-2 grid-cols-2">
-                      <div className="grid gap-2">
-                        <Label htmlFor="prompt">
-                          Prompt&nbsp;
-                          {promptError && (
-                            <span className="text-sm text-red-500">
-                              {promptError}
-                            </span>
-                          )}
-                        </Label>
-                        <textarea
-                          id="prompt"
-                          value={prompt}
-                          onChange={handlePromptChange}
-                          className="textarea textarea-bordered textarea-md leading-normal h-32"
-                          placeholder="Input here"
-                        ></textarea>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="description">Negative Prompt</Label>
-                        <textarea
-                          id="prompt"
-                          value={negativePrompt || ""}
-                          onChange={handleNegativePromptChange}
-                          className="textarea textarea-bordered textarea-md h-32"
-                          placeholder="Input here"
-                        ></textarea>
-                      </div>
+            <div className="px-5">
+              <Card>
+                <CardHeader>
+                  <CardTitle>{productName}</CardTitle>
+                  <CardDescription>{description}</CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-6">
+                  <div className="grid gap-2 grid-cols-2">
+                    <div className="grid gap-2">
+                      <Label htmlFor="prompt">
+                        Prompt&nbsp;
+                        {promptError && (
+                          <span className="text-sm text-red-500">
+                            {promptError}
+                          </span>
+                        )}
+                      </Label>
+                      <textarea
+                        id="prompt"
+                        value={prompt}
+                        onChange={handlePromptChange}
+                        className="textarea textarea-bordered textarea-md leading-normal h-32"
+                        placeholder="Input here"
+                      ></textarea>
                     </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="description">Negative Prompt</Label>
+                      <textarea
+                        id="prompt"
+                        value={negativePrompt || ""}
+                        onChange={handleNegativePromptChange}
+                        className="textarea textarea-bordered textarea-md h-32"
+                        placeholder="Input here"
+                      ></textarea>
+                    </div>
+                  </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="model">Model</Label>
-                        <select
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="model">Model</Label>
+                      {/* <select
                           onChange={handleModelChange}
                           className="select select-accent w-full max-w-xs"
                         >
@@ -337,150 +378,168 @@ export default function PromptDetail({username}:{username:any}) {
                                 <option>{modelName}</option>
                               )
                             )}
-                        </select>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="sampler">Sampler</Label>
-                        <select
-                          onChange={handleSamplerChange}
-                          className="select select-accent w-full max-w-xs"
-                        >
-                          {samplerList &&
-                            samplerList.map((samplerName, index) =>
-                              samplerName === sampler ? (
-                                <option selected>{samplerName}</option>
-                              ) : (
-                                <option>{samplerName}</option>
-                              )
-                            )}
-                        </select>
-                      </div>
+                        </select> */}
+
+                      <select
+                        onChange={(event) =>
+                          handleModelChangeTemp(event.target.value)
+                        }
+                        className="select select-accent w-full max-w-xs"
+                      >
+                        {modelObjects &&
+                          modelObjects.map((currentModel, index) => (
+                            <option
+                              key={currentModel.id}
+                              value={currentModel.id}
+                              selected={currentModel.modelName === model}
+                            >
+                              {currentModel.modelName}
+                            </option>
+                          ))}
+                      </select>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="width">Width</Label>
-                        <select
-                          onChange={handleResolutionChange}
-                          className="select select-accent w-full max-w-xs"
-                        >
-                          {resolutionList &&
-                            resolutionList.map((resolutions, index) =>
-                              resolutions === width ? (
-                                <option selected>{resolutions}</option>
-                              ) : (
-                                <option>{resolutions}</option>
-                              )
-                            )}
-                        </select>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="height">Height</Label>
-                        <select
-                          onChange={handleResolutionChange}
-                          className="select select-accent w-full max-w-xs"
-                        >
-                          {resolutionList &&
-                            resolutionList.map((resolutions, index) =>
-                              resolutions === height ? (
-                                <option selected>{resolutions}</option>
-                              ) : (
-                                <option>{resolutions}</option>
-                              )
-                            )}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="guidanceScale">
-                          Guidance Scale <span>：{guidanceScale}</span>
-                        </Label>
-                        <input
-                          id="guidanceScale"
-                          type="range"
-                          min="1"
-                          max={maxScale}
-                          value={guidanceScale}
-                          className="range range-xs"
-                          onChange={handleGuidanceScaleChange}
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="steps">
-                          Steps <span>：{steps}</span>
-                        </Label>
-                        <input
-                          id="steps"
-                          type="range"
-                          min="1"
-                          max={maxSteps}
-                          value={steps}
-                          className="range range-xs"
-                          onChange={handleStepsChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="seed">
-                          Seed&nbsp;
-                          {seedError && (
-                            <span className="text-sm text-red-500">
-                              {seedError}
-                            </span>
+                    <div className="grid gap-2">
+                      <Label htmlFor="sampler">Sampler</Label>
+                      <select
+                        onChange={handleSamplerChange}
+                        className="select select-accent w-full max-w-xs"
+                      >
+                        {instantSamplerList &&
+                          instantSamplerList.map((samplerName, index) =>
+                            samplerName === sampler ? (
+                              <option selected>{samplerName}</option>
+                            ) : (
+                              <option>{samplerName}</option>
+                            )
                           )}
-                        </Label>
-                        <input
-                          type="text"
-                          id="seed"
-                          value={seed}
-                          onChange={handleSeedChange}
-                          className="input input-bordered w-full max-w-xs"
-                        />
-                      </div>
+                      </select>
                     </div>
-                  </CardContent>
-                  <Separator className="my-5" />
-
-                  <div className="grid gap-2 my-4">
-                    <h1 className="text-4xl">
-                      <span className="text-xl">¥</span>&nbsp;9.89
-                    </h1>
                   </div>
-                  <CardFooter className="justify-end space-x-2">
-                    <Button variant="outline">
-                      <Heart size={16} />
-                      &nbsp;&nbsp;加入心愿单
-                    </Button>
-
-                    <Button
-                      onClick={() => {
-                        window.my_modal_5.showModal();
-                        handleSubmit(event);
-                      }}
-                    >
-                      <Component size={16} />
-                      &nbsp;&nbsp;立即制作
-                    </Button>
-                    <dialog
-                      id="my_modal_5"
-                      className="modal modal-bottom sm:modal-middle"
-                    >
-                      <form method="dialog" className="modal-box p-12">
-                        {isGenerated ? (
-                          <Generated
-                            generatedResult={generatedResult}
-                            setIsGenerated={setIsGenerated} 
-                            orderId={orderId}
-                          />
-                        ) : (
-                          <Generating setIsGenerated={setIsGenerated} />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="width">Width</Label>
+                      <select
+                        onChange={handleResolutionChange}
+                        className="select select-accent w-full max-w-xs"
+                      >
+                        {resolutionList &&
+                          resolutionList.map((resolutions, index) =>
+                            resolutions === width ? (
+                              <option selected>{resolutions}</option>
+                            ) : (
+                              <option>{resolutions}</option>
+                            )
+                          )}
+                      </select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="height">Height</Label>
+                      <select
+                        onChange={handleResolutionChange}
+                        className="select select-accent w-full max-w-xs"
+                      >
+                        {resolutionList &&
+                          resolutionList.map((resolutions, index) =>
+                            resolutions === height ? (
+                              <option selected>{resolutions}</option>
+                            ) : (
+                              <option>{resolutions}</option>
+                            )
+                          )}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="guidanceScale">
+                        Guidance Scale <span>：{guidanceScale}</span>
+                      </Label>
+                      <input
+                        id="guidanceScale"
+                        type="range"
+                        min="1"
+                        max={maxScale}
+                        value={guidanceScale}
+                        className="range range-xs"
+                        onChange={handleGuidanceScaleChange}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="steps">
+                        Steps <span>：{steps}</span>
+                      </Label>
+                      <input
+                        id="steps"
+                        type="range"
+                        min="1"
+                        max={maxSteps}
+                        value={steps}
+                        className="range range-xs"
+                        onChange={handleStepsChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="seed">
+                        Seed&nbsp;
+                        {seedError && (
+                          <span className="text-sm text-red-500">
+                            {seedError}
+                          </span>
                         )}
-                      </form>
-                    </dialog>
-                  </CardFooter>
-                </Card>
-              </div>
+                      </Label>
+                      <input
+                        type="text"
+                        id="seed"
+                        value={seed}
+                        onChange={handleSeedChange}
+                        className="input input-bordered w-full max-w-xs"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+                <Separator className="my-5" />
+
+                <div className="grid gap-2 my-4">
+                  <h1 className="text-4xl">
+                    <span className="text-xl">¥</span>&nbsp;9.89
+                  </h1>
+                </div>
+                <CardFooter className="justify-end space-x-2">
+                  <Button variant="outline">
+                    <Heart size={16} />
+                    &nbsp;&nbsp;加入心愿单
+                  </Button>
+
+                  <Button
+                    onClick={() => {
+                      window.my_modal_5.showModal();
+                      handleSubmit(event);
+                    }}
+                  >
+                    <Component size={16} />
+                    &nbsp;&nbsp;立即制作
+                  </Button>
+                  <dialog
+                    id="my_modal_5"
+                    className="modal modal-bottom sm:modal-middle"
+                  >
+                    <form method="dialog" className="modal-box p-12">
+                      {isGenerated ? (
+                        <Generated
+                          generatedResult={generatedResult}
+                          setIsGenerated={setIsGenerated}
+                          orderId={orderId}
+                        />
+                      ) : (
+                        <Generating setIsGenerated={setIsGenerated} />
+                      )}
+                    </form>
+                  </dialog>
+                </CardFooter>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
