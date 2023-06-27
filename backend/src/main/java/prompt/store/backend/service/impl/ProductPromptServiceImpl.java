@@ -42,6 +42,15 @@ public class ProductPromptServiceImpl implements ProductPromptService {
     }
 
     @Override
+    public List<ProductPrompt> getPromptListWithPagination(int offset, int size) {
+        List<ProductPrompt> promptList = productPromptMapper.getPromptListWithPagination(offset, size);
+        for (ProductPrompt productPrompt : promptList) {
+            productPrompt.setMainImageUrl(objectStorageUrl);
+        }
+        return promptList;
+    }
+
+    @Override
     public List<String> getSamplerByModelId(String modelId) {
         return productPromptMapper.getSamplerByModelId(modelId);
     }
@@ -63,6 +72,11 @@ public class ProductPromptServiceImpl implements ProductPromptService {
         } while (!predictionStatus.contains("\"status\":\"succeeded\""));
         String outputImageUrl = replicateApi.extractOutputImageUrl(predictionStatus);
         return replicateApi.downloadAndConvertToBase64(outputImageUrl);
+    }
+
+    @Override
+    public void deleteProductPromptBySku(String sku) {
+        productPromptMapper.deleteProductPromptBySku(sku);
     }
 
 

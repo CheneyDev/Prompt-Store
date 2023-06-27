@@ -1,70 +1,62 @@
 import axios from "axios";
-import { set } from "date-fns";
 import { useEffect, useState } from "react";
-import DashboardUserTable from "./user-table";
+import DashboardPromptTable from "./prompt-table";
 
-export default function DashboardUser() {
+interface PromptObject {
+  id: number;
+  sku: string;
+  productName: string;
+  mainImagePath: string;
+  description: string;
+  prompt: string;
+  negativePrompt: string;
+  width: number;
+  height: number;
+  numOutputs: number;
+  steps: number;
+  guidanceScale: number;
+  seed: number;
+  model: string;
+  modelId: number;
+  sampler: string;
+  maxSteps: number;
+  maxScale: number;
+  maxOutputs: number;
+  mainImageURL: string;
+}
+
+export default function DashboardPrompts() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageCount, setPageCount] = useState<number>(0);
+  const [promptsTotalCount, setPromptsTotalCount] = useState<number>(0);
 
-  const [userList, setUserList] = useState([]);
+  const [promptList, setPromptList] = useState<PromptObject[]>([]);
 
-  const [usersTotalCount, setUsersTotalCount] = useState<number>(0);
 
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/getAllAccountsWithPagination?page=${currentPage}&pageSize=${pageSize}`,
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        const usersData = response.data.message;
-        setUserList(usersData);
-      })
-      .catch((error) => {
-        console.error("Error fetching order:", error);
-      });
-  }, []);
+    useEffect(() => {
+        axios
+            .get(
+                `http://localhost:8080/getPromptListWithPagination?page=${currentPage}&pageSize=${pageSize}`,
+                {
+                    withCredentials: true,
+                }
+            )
+            .then((response) => {
+                const promptsData = response.data.message;
+                setPromptList(promptsData);
+            })
+            .catch((error) => {
+                console.error("Error fetching order:", error);
+            });
+    }, []);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8080/getAccountsTotalCount`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        const usersTotalCount = response.data.message;
-        setUsersTotalCount(usersTotalCount);
-        setPageCount(Math.ceil(usersTotalCount / pageSize));
-      })
-      .catch((error) => {
-        console.error("Error fetching order:", error);
-      });
-  }, []);
 
-  function getUserListByUsernameWithPagination(page: number, pageSize: number) {
-    axios
-      .get(
-        `http://localhost:8080/getAllAccountsWithPagination?page=${page}&pageSize=${pageSize}`,
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        const usersData = response.data.message;
-        setUserList(usersData);
-      })
-      .catch((error) => {
-        console.error("Error fetching order:", error);
-      });
-  }
 
   const handlePageClick = (page: number) => {
     if (page >= 1 && page <= pageCount) {
       setCurrentPage(page);
-      getUserListByUsernameWithPagination(page, pageSize);
+      //   getUserListByUsernameWithPagination(page, pageSize);
     }
   };
 
@@ -74,12 +66,12 @@ export default function DashboardUser() {
 
   return (
     <>
-      <DashboardUserTable
-        _userList={userList}
+    <DashboardPromptTable
+        _promptList={promptList}
         currentPage={currentPage}
         pageSize={pageSize}
-      />
-
+        />
+    
       <div
         className="join grid grid-cols-2 my-6"
         style={{ display: "flex", justifyContent: "center" }}

@@ -10,7 +10,11 @@ public interface ProductPromptService {
 
     List<ProductPrompt> getPromptList();
 
+    List<ProductPrompt> getPromptListWithPagination(int offset, int size);
+
     List<String> getSamplerByModelId(String modelId);
 
     String onGenerating(Generate generateEntity);
+
+    void deleteProductPromptBySku(String sku);
 }

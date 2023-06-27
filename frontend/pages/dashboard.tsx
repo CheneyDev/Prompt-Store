@@ -13,6 +13,7 @@ import axios from "axios";
 import DashboardOrder from "@/components/dashboard/order-manage/order";
 import { set } from "date-fns";
 import DashboardUser from "@/components/dashboard/user-manage/user";
+import DashboardPrompts from "@/components/dashboard/prompt-manage/prompt";
 
 export const metadata: Metadata = {
   title: "后台管理",
@@ -120,7 +121,7 @@ export default function DashboardPage() {
               {activeTab === "overview" && <DashboardOverview />}
               {activeTab === "orders" && <DashboardOrder username={username} />}
               {activeTab === "users" && <DashboardUser />}
-              {/* {activeTab === "prompts" && <DashboardPrompts />} */}
+              {activeTab === "prompts" && <DashboardPrompts />}
               {/* {activeTab === "models" && <DashboardModels />} */}
             </TabsContent>
           </Tabs>
