@@ -80,4 +80,11 @@ public interface ProductPromptMapper {
             "SET product_name = #{productName}, description = #{description}, model = #{model}, steps = #{steps}\n" +
             "WHERE sku = #{sku};")
     void updateProductPromptBySku(ProductPrompt productPrompt);
+
+
+    @Insert("INSERT INTO product_prompt\n" +
+            "(sku, product_name, description, prompt, negative_prompt, width, height, guidance_scale, model, model_id, sampler, max_steps, max_scale,main_image_path)\n" +
+            "VALUES\n" +
+            "(#{sku}, #{productName}, #{description}, #{prompt}, #{negativePrompt}, #{width}, #{height}, #{guidanceScale}, #{model}, #{modelId}, #{sampler}, #{maxSteps}, #{maxScale},#{mainImagePath});")
+    void insertProductPrompt(ProductPrompt productPrompt);
 }

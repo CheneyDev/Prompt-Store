@@ -19,4 +19,6 @@ public interface ProductPromptService {
     void deleteProductPromptBySku(String sku);
 
     void updateProductPromptBySku(ProductPrompt productPrompt);
+
+    void insertProductPrompt(ProductPrompt productPrompt);
 }

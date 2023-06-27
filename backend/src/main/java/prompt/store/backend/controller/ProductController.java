@@ -88,6 +88,13 @@ public class ProductController {
         return RestBean.success("success");
     }
 
+    @PostMapping("/insertProductPrompt")
+    public RestBean<String> insertProductPrompt(@RequestBody ProductPrompt productPrompt) {
+        updateLastActivityTimestamp();
+        productPromptService.insertProductPrompt(productPrompt);
+        return RestBean.success("success");
+    }
+
 
     @GetMapping("/getProductModels")
     public RestBean<List<ProductModel>> getProductModels() {
