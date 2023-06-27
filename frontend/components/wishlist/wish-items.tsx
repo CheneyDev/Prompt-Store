@@ -1,7 +1,10 @@
 import axios from "axios";
 import { set } from "date-fns";
+import { is } from "date-fns/locale";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 
 interface WishPromptObject {
   id: number;
@@ -107,6 +110,7 @@ export default function WishItems() {
       getOrderListByUsernameWithPagination(page, pageSize);
     }
   };
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     console.log("currentPage:", currentPage);
@@ -114,43 +118,40 @@ export default function WishItems() {
 
   return (
     <>
-    <div className="border rounded-lg mx-12">
-      {wishPromptList.map((wish, index) => (
-        <Link href={`/order/detail?orderId=${wish.id}`}>
+      <div className="border rounded-lg mx-12">
+        {wishPromptList.map((wish, index) => (
+          // <Link href={`/order/detail?orderId=${wish.id}`}>
           <div className=" grid grid-cols-8  justify-start items-start p-8 ">
-            {/* <p className="text-lg md:text-xl dark:text-white font-semibold leading-6 xl:leading-5 text-gray-800">
-              {wish.id}
-            </p> */}
-            <div className=" col-span-8 items-start gap-8 border-b">
-              <div className="grid grid-cols-8 gap-8 mb-4">
-                <div className="col-span-2 ">
-                    <img
-                      className="w-full max-h-72  rounded hidden md:block"
-                      src="https://images.unsplash.com/photo-1542451313056-b7c8e626645f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=654&q=80"
-                      alt="result image"
-                    />
+            <div className=" col-span-8 items-start gap-8 border-b border-gray-600">
+              <div className="grid grid-cols-8 mb-6">
+                <div className="col-span-2">
+                  <img
+                    className="w-56 h-56 col-span-2 rounded-lg border border-gray-600"
+                    src={wish.mainImageURL}
+                    alt="result image"
+                  />
+                  <div className="join col-span-2  mt-2">
+                    <button className="btn join-item btn-sm btn-outline w-28">
+                      移除列表
+                    </button>
+                    <button className="btn join-item btn-sm btn-outline w-28">
+                      立即生成
+                    </button>
+                  </div>
                 </div>
                 <div className="col-span-6 pr-4 ">
                   <div className="grid grid-cols-6 gap-8">
-                    <div className="col-span-2">
+                    <div className="col-span-4">
                       <h3 className="text-xl dark:text-white font-semibold leading-6 text-gray-800">
                         模型：{wish.model}
                       </h3>
                     </div>
-
                     <div className="col-span-2">
-                      <p className="text-base dark:text-white  leading-6">
-                        数量：144
-                      </p>
-                    </div>
-
-                    <div className="col-span-2">
-                      <p className="text-base  leading-6">
-                        价格：¥ 898
-                      </p>
+                      <p className="text-base  leading-6">价格：¥ 2.00</p>
                     </div>
                   </div>
-                  <div className="flex justify-start items-start flex-col space-y-2 pb-4">
+                  <div className="my-4 border-b border-gray-600" />
+                  <div className="flex justify-start items-start flex-col space-y-2 pb-4 mt-4">
                     <p className="text-sm dark:text-white leading-1 text-gray-800">
                       <span className="text-gray-500">Prompt：</span>
                       {wish.prompt}
@@ -184,8 +185,8 @@ export default function WishItems() {
               </div>
             </div>
           </div>
-        </Link>
-      ))}
+          // </Link>
+        ))}
       </div>
 
       <div

@@ -12,4 +12,6 @@ public interface WishListService {
 
     //根据 用户名 查找记录数
     int getWishListByUsernameCount(String username);
+
+    void insertWishPrompt(WishPrompt wishPrompt);
 }

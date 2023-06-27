@@ -10,12 +10,13 @@ import {
 } from "@/components/product/prompt/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Component, Heart } from "lucide-react";
+import { AlertCircle, CheckCircle, Component, Heart } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import Generating from "./ui/generating-dialog";
 
 import Generated from "./ui/generated-dialog";
 import { set } from "date-fns";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface ProductModelObject {
   id: number;
@@ -228,14 +229,16 @@ export default function PromptDetail({ username }: { username: any }) {
       (item: any) => item.id == selectedModelId
     );
     setModel(currentModel[0].modelName);
-    if ((currentModel[0].supportedResolutions == null)&&(currentModel[0].supportedSamplers == null)) {
+    if (
+      currentModel[0].supportedResolutions == null &&
+      currentModel[0].supportedSamplers == null
+    ) {
       resolutionList = [];
       instantSamplerList = [];
-    }else{
+    } else {
       resolutionList = currentModel[0].supportedResolutions.split(",");
       instantSamplerList = currentModel[0].supportedSamplers.split(",");
     }
-    
   };
 
   const handleSamplerChange = (event: any) => {
@@ -301,6 +304,41 @@ export default function PromptDetail({ username }: { username: any }) {
         const base64Image = match[2];
         setIsGenerated(true);
         setGeneratedResult("data:image/png;base64," + base64Image);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching generated image:", error);
+    }
+  };
+
+  const [showSuccessAlter, setShowSuccessAlter] = useState(false);
+  const handleAddWishList = async (event: any) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/addWishPrompt`,
+        {
+          prompt: prompt,
+          negativePrompt: negativePrompt,
+          width: width,
+          height: height,
+          steps: steps,
+          guidanceScale: guidanceScale,
+          seed: seed,
+          model: model,
+          modelId: modelId,
+          sampler: sampler,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      const res = response.data;
+      if (res.message == "success") {
+        setShowSuccessAlter(true); // 显示提示组件
+        setTimeout(() => {
+          setShowSuccessAlter(false); // 5秒后隐藏提示组件
+        }, 3000);
       } else {
         return null;
       }
@@ -503,11 +541,23 @@ export default function PromptDetail({ username }: { username: any }) {
 
                 <div className="grid gap-2 my-4">
                   <h1 className="text-4xl">
-                    <span className="text-xl">¥</span>&nbsp;9.89
+                    <span className="text-xl">¥</span>&nbsp;2.00
                   </h1>
                 </div>
                 <CardFooter className="justify-end space-x-2">
-                  <Button variant="outline">
+                  <div className="fixed bottom-1/2 right-60 drop-shadow-2xl">
+                  {showSuccessAlter && (
+                    <Alert>
+                      <AlertTitle className="text-2xl">
+                        <div className="flex items-center">
+                          <CheckCircle className="h-6 w-6" />
+                          <p className="ml-2 mr-8">添加成功</p>
+                        </div>
+                      </AlertTitle>
+                    </Alert>
+                    )}
+                  </div>
+                  <Button variant="outline" onClick={handleAddWishList}>
                     <Heart size={16} />
                     &nbsp;&nbsp;加入心愿单
                   </Button>
