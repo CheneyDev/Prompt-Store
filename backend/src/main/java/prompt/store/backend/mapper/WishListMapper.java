@@ -60,4 +60,5 @@ public interface WishListMapper {
     //根据 id 删除记录
     @Delete("DELETE FROM wishlist_prompt WHERE id=#{id};")
     void deleteWishPromptById(int id);
+
 }

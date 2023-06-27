@@ -108,7 +108,8 @@ export default function WishItems() {
       });
   }
 
-  const handleDeleteItem = (wishId: number) => () => {
+  const handleDeleteItem = (wishId: any) => () => {
+    console.log(wishId);
     axios
       .post(
         `http://localhost:8080/deleteWishPromptById?id=${wishId}`,
@@ -123,6 +124,28 @@ export default function WishItems() {
           getOrderListByUsernameWithPagination(currentPage, pageSize);
         } else {
           alert("删除失败");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching order:", error);
+      });
+  };
+
+
+  const handleDeleteItemAfterGenerated = (wishId: any) => () => {
+    console.log(wishId);
+    axios
+      .post(
+        `http://localhost:8080/deleteWishPromptById?id=${wishId}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        if (response.data.success) {
+          getOrderListByUsernameWithPagination(currentPage, pageSize);
+        } else {
         }
       })
       .catch((error) => {
@@ -160,6 +183,9 @@ export default function WishItems() {
         const base64Image = match[2];
         setIsGenerated(true);
         setGeneratedResult("data:image/png;base64," + base64Image);
+        console.log("ready to delete")
+        handleDeleteItemAfterGenerated(wish.id)();
+        console.log("deleted")
       } else {
         alert("生成失败");
       }
