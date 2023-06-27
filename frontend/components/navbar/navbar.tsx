@@ -14,10 +14,6 @@ export default function Navbar() {
             href="/"
             className="btn btn-ghost normal-case text-base font-bold"
           >
-            {/* <Sparkles size={20} color="#3d378b" />
-            <span className="text-xl font-bold from-purple-600 via-pink-600 to-blue-600 bg-gradient-to-r bg-clip-text text-transparent">
-            Prompt Store
-            </span> */}
             <Sparkles size={18} />
             Prompt Store
           </Link>

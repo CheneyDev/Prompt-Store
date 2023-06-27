@@ -19,7 +19,7 @@ export function MainNav({
       </Link>
 
       <Link
-        href="/examples/dashboard"
+        href="/prompts"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         商品列表
