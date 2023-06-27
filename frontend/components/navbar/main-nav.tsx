@@ -11,24 +11,30 @@ export function MainNav({
       className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
+      <Link
+        href="/"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        首页
+      </Link>
 
       <Link
         href="/examples/dashboard"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Prompts
+        商品列表
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/wishlist"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Models
+        心愿单
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/order/all"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Playground
+        订单列表
       </Link>
     </nav>
   )
