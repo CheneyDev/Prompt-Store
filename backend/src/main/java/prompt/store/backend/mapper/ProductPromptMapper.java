@@ -74,4 +74,10 @@ public interface ProductPromptMapper {
 
     @Delete("DELETE FROM product_prompt WHERE sku = #{sku};")
     void deleteProductPromptBySku(String sku);
+
+    //根据 sku 修改 promptName，description，model，steps
+    @Update("UPDATE product_prompt\n" +
+            "SET product_name = #{productName}, description = #{description}, model = #{model}, steps = #{steps}\n" +
+            "WHERE sku = #{sku};")
+    void updateProductPromptBySku(ProductPrompt productPrompt);
 }

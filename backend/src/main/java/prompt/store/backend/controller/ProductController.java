@@ -80,6 +80,14 @@ public class ProductController {
         return RestBean.success("success");
     }
 
+    @PostMapping("/updateProductPromptBySku")
+    public RestBean<String> updateProductPromptBySku(@RequestBody ProductPrompt productPrompt) {
+        System.out.println(productPrompt);
+        updateLastActivityTimestamp();
+        productPromptService.updateProductPromptBySku(productPrompt);
+        return RestBean.success("success");
+    }
+
 
     @GetMapping("/getProductModels")
     public RestBean<List<ProductModel>> getProductModels() {

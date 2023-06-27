@@ -79,5 +79,10 @@ public class ProductPromptServiceImpl implements ProductPromptService {
         productPromptMapper.deleteProductPromptBySku(sku);
     }
 
+    @Override
+    public void updateProductPromptBySku(ProductPrompt productPrompt) {
+        productPromptMapper.updateProductPromptBySku(productPrompt);
+    }
+
 
 }

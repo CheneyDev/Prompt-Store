@@ -17,4 +17,6 @@ public interface ProductPromptService {
     String onGenerating(Generate generateEntity);
 
     void deleteProductPromptBySku(String sku);
+
+    void updateProductPromptBySku(ProductPrompt productPrompt);
 }
