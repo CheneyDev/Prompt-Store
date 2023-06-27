@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import Generating from "./generating-dialog";
+import Generated from "./generated-dialog";
 
 interface WishPromptObject {
   id: number;
@@ -25,6 +27,8 @@ interface WishPromptObject {
   mainImageURL: string;
 }
 
+
+let orderId = 0;
 export default function WishItems() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -104,6 +108,68 @@ export default function WishItems() {
       });
   }
 
+  const handleDeleteItem = (wishId: number) => () => {
+    axios
+      .post(
+        `http://localhost:8080/deleteWishPromptById?id=${wishId}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        if (response.data.success) {
+          alert("删除成功");
+          getOrderListByUsernameWithPagination(currentPage, pageSize);
+        } else {
+          alert("删除失败");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching order:", error);
+      });
+  };
+
+  const [isGenerated, setIsGenerated] = useState<boolean>(false);
+  const [generatedResult, setGeneratedResult] = useState<string>("");
+  const handleGenerating = async (wish:WishPromptObject) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/generate`,
+        {
+          username: encodeURIComponent(wish.customerId),
+          prompt: encodeURIComponent(wish.prompt),
+          negativePrompt: encodeURIComponent(wish.negativePrompt),
+          model: encodeURIComponent(wish.model),
+          sampler: encodeURIComponent(wish.sampler),
+          width: encodeURIComponent(wish.width),
+          height: encodeURIComponent(wish.height),
+          steps: encodeURIComponent(wish.steps),
+          guidanceScale: encodeURIComponent(wish.guidanceScale),
+          seed: encodeURIComponent(wish.seed),
+          numOutputs: encodeURIComponent(wish.numOutputs),
+        },
+        {
+          withCredentials: true,
+        }
+      ).then((response) => {
+      const res = response.data;
+      if (res) {
+        const match = res.message.match(/\{orderId=(.*), base64Image=(.*)\}/);
+        orderId = match[1];
+        const base64Image = match[2];
+        setIsGenerated(true);
+        setGeneratedResult("data:image/png;base64," + base64Image);
+      } else {
+        alert("生成失败");
+      }
+    });
+    } catch (error) {
+      console.error("Error fetching order:", error);
+    }
+   
+  }
+
   const handlePageClick = (page: number) => {
     if (page >= 1 && page <= pageCount) {
       setCurrentPage(page);
@@ -131,12 +197,20 @@ export default function WishItems() {
                     alt="result image"
                   />
                   <div className="join col-span-2  mt-2">
-                    <button className="btn join-item btn-sm btn-outline w-28">
-                      移除列表
+                    <button
+                      onClick={handleDeleteItem(wish.id)}
+                      className="btn join-item btn-sm btn-outline w-28"
+                    >
+                      移出列表
                     </button>
-                    <button className="btn join-item btn-sm btn-outline w-28">
+
+                    <label
+                      htmlFor="my_modal_6"
+                      onClick={() => handleGenerating(wish)}
+                      className="btn join-item btn-sm btn-outline w-28"
+                    >
                       立即生成
-                    </button>
+                    </label>
                   </div>
                 </div>
                 <div className="col-span-6 pr-4 ">
@@ -187,6 +261,22 @@ export default function WishItems() {
           </div>
           // </Link>
         ))}
+
+        {/* Put this part before </body> tag */}
+        <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box">
+            {isGenerated ? (
+              <Generated
+                generatedResult={generatedResult}
+                setIsGenerated={setIsGenerated}
+                orderId={orderId}
+              />
+            ) : (
+              <Generating setIsGenerated={setIsGenerated} />
+            )}
+          </div>
+        </div>
       </div>
 
       <div

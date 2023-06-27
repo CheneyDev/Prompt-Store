@@ -94,7 +94,6 @@ public class OrderServiceImpl implements OrderService {
         orderPrompt.setGuidanceScale(Integer.parseInt(guidanceScale));
         orderPrompt.setSeed(Integer.parseInt(seed));
 
-
         orderMapper.insertOrder(order);
         orderMapper.insertOrderPrompt(orderPrompt);
     }

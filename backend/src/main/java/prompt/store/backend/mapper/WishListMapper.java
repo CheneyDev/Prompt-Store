@@ -56,4 +56,8 @@ public interface WishListMapper {
 
     @Insert("INSERT INTO wishlist_prompt(customer_name,prompt,negative_prompt,width,height,steps,guidance_scale,seed,model,sampler) VALUES(#{customerId},#{prompt},#{negativePrompt},#{width},#{height},#{steps},#{guidanceScale},#{seed},#{model},#{sampler});")
     void insertWishPrompt(WishPrompt wishPrompt);
+
+    //根据 id 删除记录
+    @Delete("DELETE FROM wishlist_prompt WHERE id=#{id};")
+    void deleteWishPromptById(int id);
 }

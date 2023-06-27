@@ -14,4 +14,6 @@ public interface WishListService {
     int getWishListByUsernameCount(String username);
 
     void insertWishPrompt(WishPrompt wishPrompt);
+
+    void deleteWishPromptById(int id);
 }

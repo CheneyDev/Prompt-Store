@@ -48,10 +48,8 @@ public class ProductPromptServiceImpl implements ProductPromptService {
 
     @Override
     public String onGenerating(Generate generateEntity) {
-        System.out.println(generateEntity);
         String predictionResponse = replicateApi.generateImage(generateEntity);
         String predictionId = JSONObject.parseObject(predictionResponse).getString("id");
-        System.out.println(predictionId);
         String predictionStatus;
         do {
             predictionStatus = replicateApi.getPredictionStatus(predictionId);

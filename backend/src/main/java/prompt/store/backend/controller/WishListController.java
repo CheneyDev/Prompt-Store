@@ -75,4 +75,11 @@ public class WishListController {
         }
         return RestBean.failure(400);
     }
+
+    @PostMapping("/deleteWishPromptById")
+    public RestBean<String> deleteWishPromptById(@RequestParam("id") int id) {
+        updateLastActivityTimestamp();
+        wishListService.deleteWishPromptById(id);
+        return RestBean.success("success");
+    }
 }

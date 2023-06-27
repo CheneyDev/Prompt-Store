@@ -46,4 +46,9 @@ public class WishListServiceImpl implements WishListService {
         wishListMapper.insertWishPrompt(wishPrompt);
     }
 
+    @Override
+    public void deleteWishPromptById(int id) {
+        wishListMapper.deleteWishPromptById(id);
+    }
+
 }
