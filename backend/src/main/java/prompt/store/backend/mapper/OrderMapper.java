@@ -150,7 +150,7 @@ public interface OrderMapper {
     void deleteOrderByOrderId(String orderId);
 
     //查询所有 public 字段为 true 的记录
-    @Select("SELECT * FROM `order_prompt` WHERE public = 'true';")
+    @Select("SELECT * FROM `order_prompt` WHERE public = 'true' ORDER BY id DESC;")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "orderId", column = "order_id"),
@@ -166,4 +166,7 @@ public interface OrderMapper {
             @Result(property = "sampler", column = "sampler")
     })
     List<OrderPrompt> getAllPublicOrderPrompt();
+
+    @Update("UPDATE `order_prompt` SET public = 'true' WHERE order_id = #{orderId} ;")
+    void setOrderPromptPublic(String orderId);
 }

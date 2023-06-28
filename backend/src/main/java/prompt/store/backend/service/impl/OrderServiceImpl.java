@@ -196,4 +196,9 @@ public class OrderServiceImpl implements OrderService {
         return orderPromptList;
     }
 
+    @Override
+    public void setOrderPromptPublic(String orderId) {
+        orderMapper.setOrderPromptPublic(orderId);
+    }
+
 }

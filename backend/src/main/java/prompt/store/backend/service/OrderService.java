@@ -38,4 +38,6 @@ public interface OrderService {
     void deleteOrderByOrderId(String orderId);
 
     List<OrderPrompt> getAllPublicOrderPrompt();
+
+    void setOrderPromptPublic(String orderId);
 }

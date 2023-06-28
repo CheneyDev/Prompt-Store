@@ -84,7 +84,7 @@ export default function OrderDetail() {
               <OrderPrompt orderIdParam={orderIdParam} order={order} />
               <div className="flex justify-center flex-col md:flex-row flex-col items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
                 <OrderSummary order={order}/>
-                <OrderRecycle />
+                <OrderRecycle orderId={order.orderId} />
               </div>
             </div>
           </div>

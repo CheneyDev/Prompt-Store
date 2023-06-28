@@ -131,4 +131,10 @@ public class OrderController {
         updateLastActivityTimestamp();
         return RestBean.success(orderPromptList);
     }
+
+    @PostMapping("/sharePrompt")
+    public RestBean<String> sharePrompt(@RequestParam("orderID") String orderID) {
+        orderService.setOrderPromptPublic(orderID);
+        return RestBean.success("success");
+    }
 }

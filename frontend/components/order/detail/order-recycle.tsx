@@ -1,6 +1,30 @@
+import axios from "axios";
 import { Recycle, Trees } from "lucide-react";
 
-export default function OrderRecycle() {
+export default function OrderRecycle({orderId}:{orderId:any}) {
+
+  const handleSharePrompt = async () => {
+    console.log("deferferfergfergfergfer");
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/sharePrompt?orderID=${orderId}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        window.location.replace("/gallery");
+      }else{
+        console.log("ddd");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   return (
     <>
       <div className="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 dark:bg-gray-800 space-y-6">
@@ -23,7 +47,9 @@ export default function OrderRecycle() {
           
         </div>
         <div className="w-full flex justify-center items-center">
-          <button className="hover:bg-black dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">
+          <button
+          onClick={handleSharePrompt}
+          className="hover:bg-black dark:bg-white dark:text-gray-800 dark:hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">
             分享成果
           </button>
         </div>
