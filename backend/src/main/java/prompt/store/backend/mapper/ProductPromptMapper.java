@@ -87,4 +87,8 @@ public interface ProductPromptMapper {
             "VALUES\n" +
             "(#{sku}, #{productName}, #{description}, #{prompt}, #{negativePrompt}, #{width}, #{height}, #{guidanceScale}, #{model}, #{modelId}, #{sampler}, #{maxSteps}, #{maxScale},#{mainImagePath});")
     void insertProductPrompt(ProductPrompt productPrompt);
+
+    //查询记录总数
+    @Select("SELECT COUNT(*) FROM product_prompt;")
+    int getTotalPromptCount();
 }

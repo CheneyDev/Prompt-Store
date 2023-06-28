@@ -21,4 +21,6 @@ public interface ProductPromptService {
     void updateProductPromptBySku(ProductPrompt productPrompt);
 
     void insertProductPrompt(ProductPrompt productPrompt);
+
+    int getTotalPromptCount();
 }

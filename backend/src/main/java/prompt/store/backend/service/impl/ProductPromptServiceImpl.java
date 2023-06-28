@@ -127,5 +127,10 @@ public class ProductPromptServiceImpl implements ProductPromptService {
         productPromptMapper.insertProductPrompt(productPrompt);
     }
 
+    @Override
+    public int getTotalPromptCount() {
+        return productPromptMapper.getTotalPromptCount();
+    }
+
 
 }

@@ -51,12 +51,45 @@ export default function DashboardPrompts() {
             });
     }, []);
 
+    useEffect(() => {
+      axios
+        .get(`http://localhost:8080/getTotalPromptCount`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          const ordersTotalCount = response.data.message;
+          setPromptsTotalCount(ordersTotalCount);
+          setPageCount(Math.ceil(ordersTotalCount / pageSize));
+        })
+        .catch((error) => {
+          console.error("Error fetching order:", error);
+        });
+    }, []);
 
+    function getPromptListWithPagination(
+      page: number,
+      pageSize: number
+    ) {
+      axios
+        .get(
+          `http://localhost:8080/getPromptListWithPagination?page=${page}&pageSize=${pageSize}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          const promptsData = response.data.message;
+          setPromptList(promptsData);
+        })
+        .catch((error) => {
+          console.error("Error fetching order:", error);
+        });
+    }
 
   const handlePageClick = (page: number) => {
     if (page >= 1 && page <= pageCount) {
       setCurrentPage(page);
-      //   getUserListByUsernameWithPagination(page, pageSize);
+        getPromptListWithPagination(page, pageSize);
     }
   };
 

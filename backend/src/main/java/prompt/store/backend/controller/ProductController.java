@@ -73,6 +73,12 @@ public class ProductController {
         return RestBean.success(productPromptService.getPromptListWithPagination(offset, pageSize));
     }
 
+    @GetMapping("/getTotalPromptCount")
+    public RestBean<Integer> getTotalPromptCount() {
+        updateLastActivityTimestamp();
+        return RestBean.success(productPromptService.getTotalPromptCount());
+    }
+
     @PostMapping("/deleteProductPromptBySku")
     public RestBean<String> deleteProductPromptBySku(@RequestParam("sku") String sku) {
         updateLastActivityTimestamp();
