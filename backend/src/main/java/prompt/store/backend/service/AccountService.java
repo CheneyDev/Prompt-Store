@@ -29,4 +29,6 @@ public interface AccountService {
     void deleteAccountById(int id);
 
     void insertAccountFromDashboard(String username, String email, String password, String role, String avatarData);
+
+    Account getAccountByUsername(String username);
 }

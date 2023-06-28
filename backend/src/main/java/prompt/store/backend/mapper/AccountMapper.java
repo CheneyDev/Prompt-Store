@@ -13,6 +13,21 @@ public interface AccountMapper {
     Account findAccountByUsernameOrEmail(String usernameOrEmail);
 
     @Select("SELECT * FROM user_account WHERE username = #{username}")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "username", column = "username"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "role", column = "role"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "firstName", column = "first_name"),
+            @Result(property = "lastName", column = "last_name"),
+            @Result(property = "createAt", column = "created_at"),
+            @Result(property = "onlineStatus", column = "online_status"),
+            @Result(property = "accountStatus", column = "account_status"),
+            @Result(property = "loginTimestamp", column = "login_timestamp"),
+            @Result(property = "lastActivityTimestamp", column = "last_activity_timestamp"),
+            @Result(property = "avatarPath", column = "avatar_path"),
+    })
     Account findAccountByUsername(String username);
 
     @Select("SELECT * FROM user_account WHERE email = #{email}")

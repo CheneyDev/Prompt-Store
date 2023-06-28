@@ -82,4 +82,11 @@ public class AccountController {
         accountService.insertAccountFromDashboard(username, email, password, role, avatarData);
         return RestBean.success("success");
     }
+
+    @GetMapping("/getAccountByUsername")
+    public RestBean<Account> getAccountByUsername() {
+        updateLastActivityTimestamp();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return RestBean.success(accountService.getAccountByUsername(username));
+    }
 }
