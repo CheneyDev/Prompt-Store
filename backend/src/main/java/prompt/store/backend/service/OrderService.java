@@ -36,4 +36,6 @@ public interface OrderService {
     void updateOrderByOrderId(String orderId, String customerName, String orderDate, String totalPrice);
 
     void deleteOrderByOrderId(String orderId);
+
+    List<OrderPrompt> getAllPublicOrderPrompt();
 }

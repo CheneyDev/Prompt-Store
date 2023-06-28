@@ -187,4 +187,13 @@ public class OrderServiceImpl implements OrderService {
         objectStorageUtil.deleteFile(s3Client, bucketName, filePath);
     }
 
+    @Override
+    public List<OrderPrompt> getAllPublicOrderPrompt() {
+        List<OrderPrompt> orderPromptList=orderMapper.getAllPublicOrderPrompt();
+        orderPromptList.forEach(orderPrompt -> {
+            orderPrompt.setMainImageUrl(objectStorageUrl);
+        });
+        return orderPromptList;
+    }
+
 }

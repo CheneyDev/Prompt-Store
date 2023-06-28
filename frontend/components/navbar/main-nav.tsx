@@ -25,6 +25,12 @@ export function MainNav({
         商品列表
       </Link>
       <Link
+        href="/gallery"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        画廊
+      </Link>
+      <Link
         href="/wishlist"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >

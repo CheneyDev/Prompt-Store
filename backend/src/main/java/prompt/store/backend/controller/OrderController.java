@@ -124,4 +124,11 @@ public class OrderController {
         orderService.deleteOrderByOrderId(orderID);
         return RestBean.success("success");
     }
+
+    @GetMapping("/getAllPublicOrderPrompt")
+    public RestBean<List<OrderPrompt>> getAllPublicOrderPrompt() {
+        List<OrderPrompt> orderPromptList = orderService.getAllPublicOrderPrompt();
+        updateLastActivityTimestamp();
+        return RestBean.success(orderPromptList);
+    }
 }

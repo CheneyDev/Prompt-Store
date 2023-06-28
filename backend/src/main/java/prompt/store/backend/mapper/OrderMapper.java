@@ -148,4 +148,22 @@ public interface OrderMapper {
 
     @Delete("DELETE FROM `order` WHERE order_id=#{orderId};")
     void deleteOrderByOrderId(String orderId);
+
+    //查询所有 public 字段为 true 的记录
+    @Select("SELECT * FROM `order_prompt` WHERE public = 'true';")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "orderId", column = "order_id"),
+            @Result(property = "mainImagePath", column = "main_image_path"),
+            @Result(property = "prompt", column = "prompt"),
+            @Result(property = "negativePrompt", column = "negative_prompt"),
+            @Result(property = "width", column = "width"),
+            @Result(property = "height", column = "height"),
+            @Result(property = "steps", column = "steps"),
+            @Result(property = "guidanceScale", column = "guidance_scale"),
+            @Result(property = "seed", column = "seed"),
+            @Result(property = "model", column = "model"),
+            @Result(property = "sampler", column = "sampler")
+    })
+    List<OrderPrompt> getAllPublicOrderPrompt();
 }
