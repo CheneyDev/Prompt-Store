@@ -33,7 +33,7 @@ public interface ProductPromptMapper {
     })
     ProductPrompt getProductPromptBySku(String sku);
 
-    @Select("SELECT id,sku,product_name,description,main_image_path FROM product_prompt;")
+    @Select("SELECT id,sku,product_name,description,main_image_path FROM product_prompt ORDER BY id DESC;")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "sku", column = "sku"),
