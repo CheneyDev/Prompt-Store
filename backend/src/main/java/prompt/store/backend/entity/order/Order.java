@@ -1,6 +1,7 @@
 package prompt.store.backend.entity.order;
 
 import lombok.Data;
+
 import java.sql.Timestamp;
 
 @Data
@@ -16,7 +17,6 @@ public class Order {
     private float totalPrice;
     private String orderPrompt;
     private String resultPath;
-
     private String resultURL;
 
     public void setResultURL(String objectStorageUrl) {

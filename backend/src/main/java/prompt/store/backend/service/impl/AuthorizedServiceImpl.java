@@ -47,19 +47,13 @@ public class AuthorizedServiceImpl implements AuthorizeService {
 
     @Override
     public boolean sendVerifyEmail(String email) {
-        //生成6位数的验证吗
         String verifyCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
-        //将验证码存入redis
         redisTemplate.opsForValue().set(email, verifyCode, 5, TimeUnit.MINUTES);
-//        if (redisTemplate.opsForValue().get(email) != null) {
-//            return false;
-//        }
         try {
             resendApiUtil.sendEmail("onboarding@resend.dev", email, "Prompt Store 验证码", "您的验证码是：" + verifyCode + "，有效期5分钟。");
         } catch (InterruptedException | IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
-
         return true;
     }
 

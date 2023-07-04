@@ -150,7 +150,6 @@ public class ReplicateApi {
             if (entity != null) {
                 // 下载图片
                 byte[] imageBytes = IOUtils.toByteArray(entity.getContent());
-
                 // 将图片转换为Base64字符串
                 return Base64.encodeBase64String(imageBytes);
             }

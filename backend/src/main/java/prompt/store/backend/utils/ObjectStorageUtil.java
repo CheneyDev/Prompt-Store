@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+
 @Component
 public class ObjectStorageUtil {
 
@@ -34,19 +35,14 @@ public class ObjectStorageUtil {
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .build();
     }
-    public void uploadFile(AmazonS3 s3Client,String bucketName, String fileName, File file) {
+
+    public void uploadFile(AmazonS3 s3Client, String bucketName, String fileName, File file) {
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
-    //删除文件
-    public void deleteFile(AmazonS3 s3Client,String bucketName, String fileName) {
+    public void deleteFile(AmazonS3 s3Client, String bucketName, String fileName) {
         s3Client.deleteObject(bucketName, fileName);
     }
-
-
-
-
-
 
 
 }

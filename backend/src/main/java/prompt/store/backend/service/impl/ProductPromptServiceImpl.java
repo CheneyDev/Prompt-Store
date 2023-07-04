@@ -93,7 +93,7 @@ public class ProductPromptServiceImpl implements ProductPromptService {
     public void deleteProductPromptBySku(String sku) {
 
         AmazonS3 s3Client = objectStorageUtil.initS3Client();
-        String imagePath= productPromptMapper.getProductPromptBySku(sku).getMainImagePath();
+        String imagePath = productPromptMapper.getProductPromptBySku(sku).getMainImagePath();
         imagePath = imagePath.substring(1);
         objectStorageUtil.deleteFile(s3Client, bucketName, imagePath);
 
@@ -108,7 +108,7 @@ public class ProductPromptServiceImpl implements ProductPromptService {
     @Override
     public void insertProductPrompt(ProductPrompt productPrompt) {
         String imageData = productPrompt.getMainImagePath();
-        String uploadPath="resources/prompt-images/" + productPrompt.getSku() + "/" + productPrompt.getSku() + "-main.jpg";
+        String uploadPath = "resources/prompt-images/" + productPrompt.getSku() + "/" + productPrompt.getSku() + "-main.jpg";
         imageData = imageData.substring(imageData.indexOf(",") + 1);
         File imageFile;
         try {
@@ -117,13 +117,10 @@ public class ProductPromptServiceImpl implements ProductPromptService {
             e.printStackTrace();
             return;
         }
-
         AmazonS3 s3Client = objectStorageUtil.initS3Client();
         objectStorageUtil.uploadFile(s3Client, bucketName, uploadPath, imageFile);
         productPrompt.setMainImagePath("/" + uploadPath);
-
         resultImageUtil.deleteTempFile(imageFile);
-
         productPromptMapper.insertProductPrompt(productPrompt);
     }
 

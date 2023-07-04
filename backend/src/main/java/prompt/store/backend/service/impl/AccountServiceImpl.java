@@ -6,7 +6,6 @@ import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import prompt.store.backend.entity.Account;
-import prompt.store.backend.entity.order.Order;
 import prompt.store.backend.mapper.AccountMapper;
 import prompt.store.backend.service.AccountService;
 import prompt.store.backend.utils.ObjectStorageUtil;
@@ -16,7 +15,6 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class AccountServiceImpl implements AccountService {

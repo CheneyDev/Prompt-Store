@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import prompt.store.backend.entity.Account;
 import prompt.store.backend.entity.Generate;
+import prompt.store.backend.entity.ProductPrompt;
 import prompt.store.backend.entity.order.Order;
 import prompt.store.backend.entity.order.OrderAnalysis;
 import prompt.store.backend.entity.order.OrderPrompt;
-import prompt.store.backend.entity.ProductPrompt;
 import prompt.store.backend.mapper.AccountMapper;
 import prompt.store.backend.mapper.OrderMapper;
 import prompt.store.backend.service.OrderService;
@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String generateOrderId() {
-        return "order"+System.currentTimeMillis();
+        return "order" + System.currentTimeMillis();
     }
 
     @Override
@@ -107,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrderListByUsername(String customerId) {
-        List<Order> orderList=orderMapper.getOrderListByUsername(customerId);
+        List<Order> orderList = orderMapper.getOrderListByUsername(customerId);
         orderList.forEach(order -> {
             order.setResultURL(objectStorageUrl);
         });
@@ -116,18 +116,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrderListByUsernameWithPagination(String customerId, int page, int pageSize) {
-        int offset=(page-1)*pageSize;
-        List<Order> orderList=orderMapper.getOrderListByUsernameWithPagination(customerId,pageSize,offset);
-        orderList.forEach(order -> {
-            order.setResultURL(objectStorageUrl);
-        });
+        int offset = (page - 1) * pageSize;
+        List<Order> orderList = orderMapper.getOrderListByUsernameWithPagination(customerId, pageSize, offset);
+        orderList.forEach(order -> order.setResultURL(objectStorageUrl));
         return orderList;
     }
 
+
     @Override
     public List<Order> getAllOrdersWithPagination(int page, int pageSize) {
-        int offset=(page-1)*pageSize;
-        List<Order> orderList=orderMapper.getAllOrdersWithPagination(pageSize,offset);
+        int offset = (page - 1) * pageSize;
+        List<Order> orderList = orderMapper.getAllOrdersWithPagination(pageSize, offset);
         orderList.forEach(order -> {
             order.setResultURL(objectStorageUrl);
         });
@@ -176,7 +175,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrderByOrderId(String orderId, String customerName, String orderDate, String totalPrice) {
-        orderMapper.updateOrderByOrderId(orderId,customerName,orderDate,totalPrice);
+        orderMapper.updateOrderByOrderId(orderId, customerName, orderDate, totalPrice);
     }
 
     @Override
@@ -189,7 +188,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderPrompt> getAllPublicOrderPrompt() {
-        List<OrderPrompt> orderPromptList=orderMapper.getAllPublicOrderPrompt();
+        List<OrderPrompt> orderPromptList = orderMapper.getAllPublicOrderPrompt();
         orderPromptList.forEach(orderPrompt -> {
             orderPrompt.setMainImageUrl(objectStorageUrl);
         });

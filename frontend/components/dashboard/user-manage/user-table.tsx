@@ -34,8 +34,8 @@ export default function DashboardUserTable({
   pageSize,
 }: {
   _userList: User[];
-    currentPage: any;
-    pageSize: any;
+  currentPage: any;
+  pageSize: any;
 }) {
   const [userList, setUserList] = useState<User[]>([]);
 
@@ -149,21 +149,20 @@ export default function DashboardUserTable({
       const newUserRole = newUserRoleRef.current?.value;
       const newUserPassword = newUserPasswordRef.current?.value;
 
-      const avatarData=imageUrl;
+      const avatarData = imageUrl;
       const response = await axios.post(
         `http://localhost:8080/insertAccountFromDashboard`,
         {
-            newUserName,
-            newUserEmail,
-            newUserRole,
-            newUserPassword,
-            avatarData,
+          newUserName,
+          newUserEmail,
+          newUserRole,
+          newUserPassword,
+          avatarData,
         },
         {
           withCredentials: true,
         }
       );
-
     } catch (error) {
       console.error("Error updating order:", error);
     }

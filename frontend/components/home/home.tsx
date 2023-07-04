@@ -62,9 +62,7 @@ export default function HomePage() {
                       <h2 className="text-2xl font-semibold tracking-tight">
                         Prompts
                       </h2>
-                      <p className="text-sm text-muted-foreground">
-                        Top picks for you. Updated daily.
-                      </p>
+                      
                     </div>
                   </div>
                   <Separator className="my-4" />
@@ -89,9 +87,7 @@ export default function HomePage() {
                     <h2 className="text-2xl font-semibold tracking-tight">
                       Made for You
                     </h2>
-                    <p className="text-sm text-muted-foreground">
-                      Your personal playlists. Updated daily.
-                    </p>
+                    
                   </div>
                   <Separator className="my-4" />
                   <div className="relative">
